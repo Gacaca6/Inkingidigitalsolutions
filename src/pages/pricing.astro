@@ -1,0 +1,495 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Cta from "../components/Cta.astro";
+import Arrow from "../components/Arrow.astro";
+import { tiers } from "../data/site";
+
+const compare = [
+  { f: "Designed, not templated", v: [true, true, true, true] },
+  { f: "Content you manage yourself", v: [true, true, true, true] },
+  { f: "Custom platform", v: [false, true, true, true] },
+  { f: "Roles & permissions", v: [false, true, true, true] },
+  { f: "Automated reporting", v: [false, true, true, true] },
+  { f: "Native mobile app", v: [false, false, true, true] },
+  { f: "Workflow automation", v: [false, false, true, true] },
+  { f: "Applied AI", v: [false, false, true, true] },
+  { f: "Cloud architecture & CI/CD", v: [false, false, true, true] },
+  { f: "Systems integration", v: [false, false, false, true] },
+  { f: "Data platform & BI", v: [false, false, false, true] },
+  { f: "Service level agreement", v: [false, false, false, true] },
+];
+---
+
+<Base
+  title="Pricing"
+  description="Transparent pricing in Rwandan francs for websites, business platforms, automation and enterprise systems. Four engagement tiers with timelines and inclusions."
+>
+  <PageHead
+    idx="01"
+    label="Pricing"
+    title='What it costs, <span class="accent">before</span> you ask.'
+    lede="Most firms in this market will not publish a number. We will. These are real starting points from real engagements — the strategy session turns one into a fixed quote."
+  />
+
+  <section class="tiers">
+    <div class="page">
+      <div class="grid">
+        {
+          tiers.map((t, i) => (
+            <article
+              class:list={["tier", { hero: t.featured }]}
+              data-reveal
+              style={`--rd:${i * 70}ms`}
+            >
+              {t.featured && <span class="flag">Most chosen</span>}
+
+              <header>
+                <h2>{t.name}</h2>
+                <p class="sum">{t.summary}</p>
+              </header>
+
+              <p class="price">
+                <span class="pv num">{t.price}</span>
+                <span class="pu">{t.unit}</span>
+              </p>
+
+              <dl class="facts">
+                <div>
+                  <dt>Timeline</dt>
+                  <dd class="num">{t.timeline}</dd>
+                </div>
+                <div>
+                  <dt>Built for</dt>
+                  <dd>{t.ideal}</dd>
+                </div>
+              </dl>
+
+              <ul class="inc">
+                {t.includes.map((x) => (
+                  <li>
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path
+                        d="m3 8.3 3.2 3.2L13 4.6"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    {x}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="/contact"
+                class:list={["btn", t.featured ? "accentbtn" : "ghost"]}
+              >
+                {t.cta}
+                <span class="well">
+                  <Arrow />
+                </span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="vat xs">
+        Prices exclude VAT. Payment in three stages: 40% to begin, 40% at
+        design sign-off, 20% on launch. Fixed scope, fixed price — if the scope
+        changes we re-quote before doing the work, never after.
+      </p>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="cmp on-navy">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">02</span> Compare</p>
+      <h2 class="d2" data-reveal style="--rd:60ms">Line by line.</h2>
+
+      <div class="tbl-wrap" data-reveal style="--rd:120ms">
+        <table class="tbl">
+          <caption class="sr">Feature comparison across the four tiers</caption>
+          <thead>
+            <tr>
+              <th scope="col">Included</th>
+              {tiers.map((t) => <th scope="col">{t.name}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              compare.map((row) => (
+                <tr>
+                  <th scope="row">{row.f}</th>
+                  {row.v.map((on, i) => (
+                    <td>
+                      <span class:list={["cell", { on }]}>
+                        {on ? (
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path
+                              d="m3 8.3 3.2 3.2L13 4.6"
+                              stroke="currentColor"
+                              stroke-width="2.2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        ) : (
+                          <i />
+                        )}
+                        <span class="sr">
+                          {on ? "included in" : "not in"} {tiers[i].name}
+                        </span>
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Honest notes -->
+  <section class="notes">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">03</span> Straight answers</p>
+      <div class="qa">
+        {
+          [
+            {
+              q: "Why publish prices at all?",
+              a: "Because the alternative wastes your time and ours. If our starting point is beyond your budget this quarter, you should know that from a web page rather than after three meetings.",
+            },
+            {
+              q: "What makes a project go above the starting price?",
+              a: "Integration with systems that have no API. Data migration from paper. Regulatory evidence requirements. Multi-language content. We name these at Discover, before you commit.",
+            },
+            {
+              q: "Do you work with startups?",
+              a: "Yes, though rarely at Starter. If you are pre-revenue we will usually tell you to build less than you asked for and come back when the market has answered a question or two.",
+            },
+            {
+              q: "What happens after launch?",
+              a: "Support is included for the period in your tier. After that most clients move to a monthly partnership — typically 8–12% of build cost annually, covering maintenance, hosting oversight, and a standing allocation of engineering time.",
+            },
+            {
+              q: "Do you charge for the strategy session?",
+              a: "No. You leave it with a written brief whether or not you engage us. We would rather be the firm that gave you a useful hour than the one that sent an invoice for it.",
+            },
+          ].map((x, i) => (
+            <details class="q" data-reveal style={`--rd:${i * 50}ms`}>
+              <summary>
+                <span>{x.q}</span>
+                <i aria-hidden="true" />
+              </summary>
+              <p>{x.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Cta
+    eyebrow="No obligation"
+    title="Get a fixed quote for your foundation."
+    body="Bring us the problem, not a specification. We will tell you what it takes, what it costs, and what you should not build."
+  />
+</Base>
+
+<style>
+  /* ---- tiers ---- */
+  .tiers {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-4);
+    align-items: stretch;
+  }
+
+  .tier {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: var(--s-5);
+    padding: var(--s-6) var(--s-5) var(--s-5);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    transition: box-shadow var(--d-slow) var(--e-swift),
+      transform var(--d-slow) var(--e-swift);
+  }
+  .tier:hover {
+    transform: translateY(-4px);
+    box-shadow: inset 0 0 0 1px var(--hair-2), var(--lift-2);
+  }
+  .tier.hero {
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1.5px var(--emerald), var(--lift-2);
+  }
+  .tier.hero:hover {
+    box-shadow: inset 0 0 0 1.5px var(--emerald), var(--lift-3);
+  }
+
+  .flag {
+    position: absolute;
+    inset-block-start: -0.7rem;
+    inset-inline-start: var(--s-5);
+    padding: 0.22rem 0.7rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .tier h2 {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: var(--tr-tight);
+  }
+  .sum {
+    margin-block-start: 0.6rem;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+
+  .price {
+    display: grid;
+    gap: 0.2rem;
+    padding-block-end: var(--s-4);
+    border-block-end: 1px solid var(--hair);
+  }
+  .pv {
+    font-size: clamp(1.5rem, 2.4vw, 1.95rem);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+  .pu {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .facts dt {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+  .facts dd {
+    margin: 0.2rem 0 0;
+    font-size: var(--t-xs);
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .inc {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .inc li {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 0.55rem;
+    font-size: var(--t-xs);
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .inc svg {
+    inline-size: 12px;
+    block-size: 12px;
+    color: var(--emerald-2);
+    margin-block-start: 0.28rem;
+  }
+
+  .tier .btn {
+    justify-self: stretch;
+    justify-content: space-between;
+  }
+
+  .vat {
+    margin-block-start: var(--s-7);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    color: var(--ink-4);
+    max-inline-size: 78ch;
+  }
+
+  /* ---- comparison ---- */
+  .cmp {
+    padding-block: var(--band);
+  }
+  .cmp h2 {
+    margin-block-start: var(--s-4);
+  }
+  .tbl-wrap {
+    margin-block-start: var(--s-7);
+    overflow-x: auto;
+  }
+  .tbl {
+    inline-size: 100%;
+    min-inline-size: 40rem;
+    border-collapse: collapse;
+    text-align: start;
+  }
+  .tbl thead th {
+    padding: 0 0 var(--s-4);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+    text-align: center;
+  }
+  .tbl thead th:first-child {
+    text-align: start;
+  }
+  .tbl tbody th {
+    padding: 0.75rem 1rem 0.75rem 0;
+    font-size: var(--t-sm);
+    font-weight: 500;
+    color: var(--ink-2);
+    text-align: start;
+    border-block-start: 1px solid var(--hair);
+  }
+  .tbl td {
+    padding: 0.75rem 0;
+    text-align: center;
+    border-block-start: 1px solid var(--hair);
+  }
+  .tbl tbody tr:hover th,
+  .tbl tbody tr:hover td {
+    background: color-mix(in srgb, #fff 3%, transparent);
+  }
+  .cell {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+  }
+  .cell svg {
+    inline-size: 13px;
+    block-size: 13px;
+    color: var(--emerald);
+  }
+  .cell i {
+    inline-size: 9px;
+    block-size: 1px;
+    background: var(--hair-2);
+  }
+
+  /* ---- Q&A ---- */
+  .notes {
+    padding-block: var(--band);
+  }
+  .qa {
+    margin-block-start: var(--s-6);
+    max-inline-size: 62rem;
+  }
+  .q {
+    border-block-start: 1px solid var(--hair);
+  }
+  .q:last-of-type {
+    border-block-end: 1px solid var(--hair);
+  }
+  .q summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding-block: var(--s-5);
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .q summary::-webkit-details-marker {
+    display: none;
+  }
+  .q summary:hover {
+    color: var(--emerald-2);
+  }
+  .q summary i {
+    position: relative;
+    inline-size: 13px;
+    block-size: 13px;
+    flex: none;
+  }
+  .q summary i::before,
+  .q summary i::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 13px;
+    block-size: 1.6px;
+    background: currentColor;
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .q summary i::after {
+    rotate: 90deg;
+  }
+  .q[open] summary i::after {
+    transform: scaleX(0);
+  }
+  .q p {
+    padding-block-end: var(--s-5);
+    color: var(--ink-2);
+    max-inline-size: 68ch;
+    animation: qIn 0.45s var(--e-out);
+  }
+  @keyframes qIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-5);
+    }
+  }
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .q summary {
+      font-size: 1.1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .q p {
+      animation: none;
+    }
+  }
+</style>

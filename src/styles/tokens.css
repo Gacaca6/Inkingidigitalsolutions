@@ -1,0 +1,189 @@
+/* ============================================================
+   INKINGI DIGITAL SOLUTIONS — DESIGN TOKENS
+   Handcrafted. No framework. Every value deliberate.
+   ============================================================ */
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/satoshi-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/satoshi-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/satoshi-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/satoshi-900.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Type ---------------------------------------------- */
+  --font: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+
+  /* Fluid display scale — 0.92 leading on the largest, opening up as it shrinks */
+  --t-hero: clamp(3rem, 8.4vw, 7.75rem);
+  --t-d1: clamp(2.35rem, 5.4vw, 4.5rem);
+  --t-d2: clamp(1.85rem, 3.4vw, 2.9rem);
+  --t-d3: clamp(1.4rem, 2.1vw, 1.85rem);
+  --t-lead: clamp(1.075rem, 1.35vw, 1.375rem);
+  --t-body: 1.0625rem;
+  --t-sm: 0.9375rem;
+  --t-xs: 0.8125rem;
+  --t-micro: 0.6875rem;
+
+  --lh-hero: 0.9;
+  --lh-tight: 1.06;
+  --lh-snug: 1.22;
+  --lh-body: 1.62;
+
+  --tr-hero: -0.045em;
+  --tr-tight: -0.03em;
+  --tr-flat: -0.011em;
+  --tr-wide: 0.22em;
+
+  /* ---- Space — a 4pt-rooted fluid scale ------------------ */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: clamp(4rem, 8vw, 7rem);
+  --s-10: clamp(6rem, 12vw, 11rem);
+  --s-11: clamp(8rem, 16vw, 15rem);
+
+  /* Section rhythm — deliberately varied, never uniform */
+  --band: clamp(5.5rem, 11vw, 10rem);
+  --band-tight: clamp(4rem, 7vw, 6.5rem);
+  --band-vast: clamp(7rem, 15vw, 14rem);
+
+  /* ---- Measure ------------------------------------------- */
+  --page: 1240px;
+  --page-wide: 1440px;
+  --gut: clamp(1.25rem, 5vw, 3.5rem);
+  --measure: 62ch;
+  --measure-tight: 46ch;
+
+  /* ---- Radius — squircle-ish, concentric pairs ----------- */
+  --r-1: 6px;
+  --r-2: 12px;
+  --r-3: 20px;
+  --r-4: 28px;
+  --r-pill: 999px;
+
+  /* ---- Motion -------------------------------------------- */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-swift: cubic-bezier(0.32, 0.72, 0, 1);
+  --e-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-fast: 220ms;
+  --d-mid: 420ms;
+  --d-slow: 760ms;
+  --d-cine: 1150ms;
+
+  /* ---- Layers -------------------------------------------- */
+  --z-base: 0;
+  --z-raise: 10;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-grain: 300;
+
+  /* ============ LIGHT — "warm paper & clay" ==============
+     Variable names are kept from the original green build so the
+     whole system re-skins from these values alone. Conceptually:
+     --emerald* = terracotta accent, --blue = warm ochre signal,
+     --navy* = engineered warm-black. */
+  --paper: #f6f2ea; /* warm cream, from the brand mark */
+  --paper-2: #ffffff; /* crisp product surfaces on cream */
+  --paper-3: #ece6d9;
+  --ink: #1a1512; /* warm near-black */
+  --ink-2: #463c34;
+  --ink-3: #786c5f;
+  --ink-4: #a99d8d;
+  --hair: rgba(26, 21, 18, 0.12);
+  --hair-2: rgba(26, 21, 18, 0.2);
+  --emerald: #c0562e; /* terracotta — the single accent (fills, mark) */
+  --emerald-2: #9e4426; /* burnt sienna — accent as text/links, AA on cream */
+  --emerald-wash: rgba(192, 86, 46, 0.1);
+  --blue: #c99a3e; /* ochre — second signal colour, kept warm */
+  --navy: #14100e; /* warm-black island */
+  --navy-deep: #0e0c0b; /* deepest warm-black — footer */
+  --on-accent: #f7f3ec; /* cream text/icons sitting on the accent */
+  --shade: 26, 21, 18;
+
+  /* Elevation — tinted to the background hue, never neutral black */
+  --lift-1: 0 1px 2px rgba(var(--shade), 0.04),
+    0 6px 16px -8px rgba(var(--shade), 0.08);
+  --lift-2: 0 2px 4px rgba(var(--shade), 0.04),
+    0 22px 48px -20px rgba(var(--shade), 0.16);
+  --lift-3: 0 3px 6px rgba(var(--shade), 0.05),
+    0 40px 80px -32px rgba(var(--shade), 0.24);
+
+  color-scheme: light;
+}
+
+/* ============ DARK — "engineered black" ================== */
+:root[data-theme="dark"] {
+  --paper: #0e0c0b; /* warm near-black — reads as black, tinted to clay */
+  --paper-2: #17130f; /* raised surface */
+  --paper-3: #201a15;
+  --ink: #ede7de; /* warm off-white — never pure white (halation) */
+  --ink-2: #c4b9ac;
+  --ink-3: #948a7c;
+  --ink-4: #6b6156;
+  --hair: rgba(237, 231, 222, 0.1);
+  --hair-2: rgba(237, 231, 222, 0.2);
+  --emerald: #d2673c; /* clay brightened so it lifts off black */
+  --emerald-2: #e08a5c; /* accent as text on black */
+  --emerald-wash: rgba(210, 103, 60, 0.14);
+  --blue: #e0b24e; /* ochre brightened on black */
+  --navy: #17130f;
+  --navy-deep: #0e0c0b;
+  --shade: 0, 0, 0;
+
+  --lift-1: 0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 16px -8px rgba(0, 0, 0, 0.42);
+  --lift-2: 0 2px 4px rgba(0, 0, 0, 0.3), 0 22px 48px -20px rgba(0, 0, 0, 0.55);
+  --lift-3: 0 3px 6px rgba(0, 0, 0, 0.34), 0 40px 80px -32px rgba(0, 0, 0, 0.66);
+
+  color-scheme: dark;
+}
+
+/* An inverted island inside a light page (and vice versa).
+   Everything inside reads against engineered warm-black. */
+.on-navy {
+  --paper: #0e0c0b;
+  --paper-2: #17130f;
+  --paper-3: #201a15;
+  --ink: #f1ebe2;
+  --ink-2: #c8bdb0;
+  --ink-3: #988e80;
+  --ink-4: #6b6156;
+  --hair: rgba(247, 243, 236, 0.11);
+  --hair-2: rgba(247, 243, 236, 0.22);
+  --emerald: #d2673c;
+  --emerald-2: #e08a5c;
+  --emerald-wash: rgba(210, 103, 60, 0.16);
+  --blue: #e0b24e;
+  --shade: 0, 0, 0;
+  color-scheme: dark;
+  background: var(--paper);
+  color: var(--ink);
+}

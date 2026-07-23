@@ -1,0 +1,261 @@
+---
+/* AI shown doing something specific: reading a delivery note nobody has time to read. */
+const fields = [
+  { k: "Supplier", v: "Nyabihu Tea Estate", c: 99, d: 1500 },
+  { k: "Delivery note", v: "DN-77341", c: 99, d: 2100 },
+  { k: "Net weight", v: "1,840 kg", c: 97, d: 2700 },
+  { k: "Grade", v: "BOP1", c: 91, d: 3300 },
+  { k: "Received", v: "18 Jul 2026", c: 99, d: 3900 },
+];
+---
+
+<div class="ai" aria-hidden="true">
+  <div class="tray">
+    <div class="plate">
+      <div class="head">
+        <b>Delivery notes · intake</b>
+        <span class="chipx num">312 today</span>
+      </div>
+
+      <div class="split">
+        <!-- the document -->
+        <div class="doc">
+          <div class="paper">
+            <span class="hd"></span>
+            <span class="ln w9"></span>
+            <span class="ln w7 hi" style="--hd:1300ms"></span>
+            <span class="ln w8"></span>
+            <span class="ln w6 hi" style="--hd:1900ms"></span>
+            <span class="ln w9"></span>
+            <span class="ln w5 hi" style="--hd:2500ms"></span>
+            <span class="ln w8"></span>
+            <span class="ln w4 hi" style="--hd:3100ms"></span>
+            <span class="ln w7"></span>
+            <span class="ln w6 hi" style="--hd:3700ms"></span>
+            <span class="ln w3"></span>
+          </div>
+          <span class="scan"></span>
+        </div>
+
+        <!-- what it read -->
+        <div class="out">
+          <p class="olabel">Extracted</p>
+          <ul class="fields">
+            {fields.map((f) => (
+              <li style={`--fd:${f.d}ms`}>
+                <i>{f.k}</i>
+                <b>{f.v}</b>
+                <em class:list={["conf", { low: f.c < 95 }]}>
+                  <span class="num">{f.c}%</span>
+                </em>
+              </li>
+            ))}
+          </ul>
+          <div class="verdict">
+            <span class="vtick"></span>
+            <i>Matched to PO-88214 · posted to inventory</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ai { inline-size: 100%; }
+  .plate {
+    padding: 1.15rem 1.3rem 1.2rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .head b {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .chipx {
+    padding: 0.22rem 0.6rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald-wash);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--emerald-2);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 0.82fr 1fr;
+    gap: 0.85rem;
+    align-items: start;
+  }
+
+  /* document */
+  .doc {
+    position: relative;
+    padding: 0.85rem 0.8rem;
+    border-radius: var(--r-2);
+    background: color-mix(in srgb, var(--ink) 3%, transparent);
+    overflow: hidden;
+  }
+  .paper {
+    display: grid;
+    gap: 6px;
+  }
+  .hd {
+    block-size: 8px;
+    inline-size: 55%;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--ink) 30%, transparent);
+    margin-block-end: 3px;
+  }
+  .ln {
+    block-size: 4px;
+    border-radius: 2px;
+    background: var(--hair-2);
+    position: relative;
+  }
+  .w9 { inline-size: 92%; }
+  .w8 { inline-size: 82%; }
+  .w7 { inline-size: 72%; }
+  .w6 { inline-size: 64%; }
+  .w5 { inline-size: 54%; }
+  .w4 { inline-size: 44%; }
+  .w3 { inline-size: 34%; }
+
+  /* the model marks what it recognises */
+  .ln.hi::after {
+    content: "";
+    position: absolute;
+    inset: -3px -4px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--emerald) 26%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--emerald) 60%, transparent);
+    opacity: 0;
+    scale: 0.9 1;
+    transform-origin: left;
+    animation: mark 0.5s var(--e-out) forwards;
+    animation-delay: var(--hd);
+  }
+  @keyframes mark {
+    to { opacity: 1; scale: 1 1; }
+  }
+
+  /* scanning sweep */
+  .scan {
+    position: absolute;
+    inset-inline: 0;
+    block-size: 46px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--emerald) 16%, transparent),
+      transparent
+    );
+    animation: sweep 4.6s var(--e-io) 0.9s;
+  }
+  @keyframes sweep {
+    from { transform: translateY(-46px); }
+    to { transform: translateY(230px); }
+  }
+
+  /* extracted fields */
+  .out {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+  .olabel {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+  .fields {
+    display: grid;
+    gap: 1px;
+  }
+  .fields li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "k c" "v c";
+    align-items: center;
+    gap: 0 0.5rem;
+    padding-block: 0.32rem;
+    border-block-end: 1px solid var(--hair);
+    opacity: 0;
+    transform: translateX(-7px);
+    animation: fIn 0.55s var(--e-out) forwards;
+    animation-delay: var(--fd);
+  }
+  @keyframes fIn {
+    to { opacity: 1; transform: none; }
+  }
+  .fields i {
+    grid-area: k;
+    font-size: 0.56rem;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-4);
+  }
+  .fields b {
+    grid-area: v;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .conf {
+    grid-area: c;
+    font-size: 0.55rem;
+    font-style: normal;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald-wash);
+    color: var(--emerald-2);
+  }
+  .conf.low {
+    background: color-mix(in srgb, #e0a03d 16%, transparent);
+    color: #c0821f;
+  }
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-block-start: 0.2rem;
+    opacity: 0;
+    animation: fIn 0.6s var(--e-out) 4500ms forwards;
+  }
+  .vtick {
+    inline-size: 6px; block-size: 6px;
+    border-radius: 2px;
+    rotate: 45deg;
+    background: var(--emerald);
+    flex: none;
+  }
+  .verdict i {
+    font-size: 0.62rem;
+    font-style: normal;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 520px) {
+    .split { grid-template-columns: 1fr; }
+    .doc { max-block-size: 9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ln.hi::after, .fields li, .verdict { opacity: 1; scale: 1 1; transform: none; animation: none; }
+    .scan { display: none; }
+  }
+</style>

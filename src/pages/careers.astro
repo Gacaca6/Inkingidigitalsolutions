@@ -1,0 +1,248 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Cta from "../components/Cta.astro";
+import { roles, site } from "../data/site";
+
+const offers = [
+  {
+    t: "Craft is the job, not a luxury",
+    b: "Code review on every change. Design critique every week. Time budgeted to do things properly, because the alternative costs more later.",
+  },
+  {
+    t: "Work that reaches people",
+    b: "Your code runs a cooperative's harvest planning and a SACCO's loan book. You will meet the people using it — we take engineers into the field.",
+  },
+  {
+    t: "Senior-minded, small team",
+    b: "No layers to route around. You will talk to clients, shape the architecture, and own decisions from your first month.",
+  },
+  {
+    t: "Growth, engineered",
+    b: "An annual learning budget, a named mentor, and a ladder based on demonstrated capability rather than time served.",
+  },
+];
+---
+
+<Base
+  title="Careers"
+  description="Open roles at Inkingi Digital Solutions in Kigali: engineering, product design, AI and cloud reliability. Build world-class technology from Rwanda."
+>
+  <PageHead
+    idx="01"
+    label="Careers"
+    title='Do your best work <span class="accent">from here</span>.'
+    lede="We are building a team that settles the question of whether world-class engineering happens in Kigali. Small, senior-minded, and serious about craft."
+  />
+
+  <section class="off">
+    <div class="page">
+      <div class="ogrid">
+        {
+          offers.map((o, i) => (
+            <div class="ocell" data-reveal style={`--rd:${i * 60}ms`}>
+              <span class="on num">{String(i + 1).padStart(2, "0")}</span>
+              <h2>{o.t}</h2>
+              <p>{o.b}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="rl on-navy">
+    <div class="page">
+      <div class="rl-head">
+        <div>
+          <p class="tag" data-reveal><span class="idx">02</span> Open roles</p>
+          <h2 class="d1" data-reveal style="--rd:60ms">Four seats.</h2>
+        </div>
+        <p class="body" data-reveal style="--rd:120ms">
+          Send work, not a cover letter. A repository, a case study, a system
+          you are proud of — anything that shows how you think.
+        </p>
+      </div>
+
+      <ul class="roles">
+        {
+          roles.map((r, i) => (
+            <li data-reveal style={`--rd:${i * 60}ms`}>
+              <a
+                href={`mailto:${site.careersEmail}?subject=${encodeURIComponent(
+                  `${r.title} — application`
+                )}`}
+              >
+                <span class="r-t">{r.title}</span>
+                <span class="r-b">{r.body}</span>
+                <span class="r-m">
+                  <span class="r-loc">{r.location}</span>
+                  <span class="r-ty">{r.type}</span>
+                </span>
+                <span class="r-go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="rnote xs">
+        Nothing here that fits? We keep a bench of exceptional people —
+        <a href={`mailto:${site.careersEmail}`}>introduce yourself</a>.
+      </p>
+    </div>
+  </section>
+
+  <Cta
+    eyebrow="Not looking for a role?"
+    title="Then let's talk about your business."
+    body="Same address, different conversation. Tell us what is slowing your operation down."
+  />
+</Base>
+
+<style>
+  .off {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .ogrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-7) clamp(2rem, 6vw, 5rem);
+  }
+  .ogrid > :nth-child(even) {
+    margin-block-start: var(--s-6);
+  }
+  .ocell {
+    display: grid;
+    gap: 0.7rem;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .on {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--emerald-2);
+  }
+  .ocell h2 {
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    max-inline-size: 22ch;
+  }
+  .ocell p {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    max-inline-size: 46ch;
+  }
+
+  .rl {
+    padding-block: var(--band);
+  }
+  .rl-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-6);
+    align-items: end;
+  }
+  .rl-head h2 {
+    margin-block-start: var(--s-4);
+  }
+
+  .roles {
+    margin-block-start: var(--s-8);
+  }
+  .roles li {
+    border-block-start: 1px solid var(--hair);
+  }
+  .roles li:last-child {
+    border-block-end: 1px solid var(--hair);
+  }
+  .roles a {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr auto 1.5rem;
+    gap: var(--s-5);
+    align-items: center;
+    padding-block: var(--s-5);
+    transition: padding-inline-start var(--d-slow) var(--e-swift);
+  }
+  .roles a:hover {
+    padding-inline-start: 0.75rem;
+  }
+  .r-t {
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .roles a:hover .r-t {
+    color: var(--emerald);
+  }
+  .r-b {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    max-inline-size: 46ch;
+  }
+  .r-m {
+    display: grid;
+    gap: 0.25rem;
+    text-align: end;
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .r-loc {
+    color: var(--ink-2);
+  }
+  .r-ty {
+    color: var(--ink-4);
+  }
+  .r-go {
+    color: var(--emerald);
+    text-align: end;
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .roles a:hover .r-go {
+    transform: translateX(4px);
+  }
+  .rnote {
+    margin-block-start: var(--s-6);
+    color: var(--ink-4);
+  }
+  .rnote a {
+    color: var(--emerald);
+    font-weight: 700;
+  }
+  .rnote a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .ogrid,
+    .rl-head {
+      grid-template-columns: 1fr;
+    }
+    .ogrid > :nth-child(even) {
+      margin-block-start: 0;
+    }
+    .roles a {
+      grid-template-columns: 1fr auto;
+      gap: var(--s-3);
+    }
+    .r-b {
+      grid-column: 1 / -1;
+    }
+    .r-m {
+      grid-column: 1;
+      text-align: start;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: 0.9rem;
+    }
+    .r-go {
+      grid-row: 1;
+      grid-column: 2;
+    }
+  }
+</style>

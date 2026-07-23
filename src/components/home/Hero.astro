@@ -1,0 +1,463 @@
+---
+import Arrow from "../Arrow.astro";
+---
+
+<section class="hero" data-hero>
+  <div class="page hero-in">
+    <!-- Left: the statement -->
+    <div class="say">
+      <p class="tag" data-reveal>Kigali, Rwanda · est. 2024</p>
+
+      <h1 class="hero-type lines">
+        <span><span style="--ld:80ms">The digital</span></span>
+        <span><span style="--ld:180ms">foundation</span></span>
+        <span><span style="--ld:280ms">African business</span></span>
+        <span><span style="--ld:380ms" class="accent">runs on.</span></span>
+      </h1>
+
+      <p class="lead" data-reveal style="--rd:620ms">
+        We engineer the software, automation and infrastructure that let a
+        business modernise once — and keep building on it for a decade.
+      </p>
+
+      <div class="acts" data-reveal style="--rd:740ms">
+        <a href="/contact" class="btn">
+          Book a strategy session
+          <span class="well"><Arrow /></span>
+        </a>
+        <a href="/work" class="btn ghost">
+          See the work
+          <span class="well"><Arrow /></span>
+        </a>
+      </div>
+
+      <dl class="facts" data-reveal style="--rd:880ms">
+        <div>
+          <dt>Systems live in</dt>
+          <dd class="num">3 countries</dd>
+        </div>
+        <div>
+          <dt>People using them daily</dt>
+          <dd class="num">54,000+</dd>
+        </div>
+        <div>
+          <dt>Clients still with us after year one</dt>
+          <dd class="num">100%</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Right: the foundation assembles -->
+    <div class="draw" aria-hidden="true">
+      <svg viewBox="0 0 520 600" fill="none" class="struct">
+        <!-- ground -->
+        <g class="ground">
+          <path d="M28 540h464" class="ln base" />
+          {
+            Array.from({ length: 24 }).map((_, i) => (
+              <path
+                d={`M${34 + i * 19.5} 540l-11 15`}
+                class="ln hatch"
+                style={`--hd:${900 + i * 22}ms`}
+              />
+            ))
+          }
+        </g>
+
+        <!-- pillars: inkingi -->
+        <g class="pillars">
+          <path d="M104 540V236" class="ln pil" style="--hd:420ms" />
+          <path d="M260 540V150" class="ln pil" style="--hd:520ms" />
+          <path d="M416 540V268" class="ln pil" style="--hd:620ms" />
+        </g>
+
+        <!-- beams -->
+        <g class="beams">
+          <path d="M104 430h312" class="ln beam" style="--hd:760ms" />
+          <path d="M104 330h312" class="ln beam" style="--hd:840ms" />
+          <path d="M104 236 260 150 416 268" class="ln beam" style="--hd:920ms" />
+        </g>
+
+        <!-- joints -->
+        <g class="joints">
+          {
+            [
+              [104, 430],
+              [260, 430],
+              [416, 430],
+              [104, 330],
+              [260, 330],
+              [416, 330],
+              [104, 540],
+              [260, 540],
+              [416, 540],
+            ].map(([x, y], i) => (
+              <rect
+                x={x - 3.5}
+                y={y - 3.5}
+                width="7"
+                height="7"
+                rx="1.5"
+                class="joint"
+                style={`--hd:${1080 + i * 46}ms; --jx:${x}px; --jy:${y}px`}
+              />
+            ))
+          }
+        </g>
+
+        <!-- the mark, locked in as the capital -->
+        <g class="cap">
+          <rect x="243" y="118" width="34" height="34" rx="9" class="dia n" style="--hd:1320ms" />
+          <rect x="87" y="204" width="34" height="34" rx="9" class="dia n" style="--hd:1420ms" />
+          <rect x="399" y="236" width="34" height="34" rx="9" class="dia e" style="--hd:1520ms" />
+        </g>
+
+        <!-- signal travelling up the structure -->
+        <circle r="3.5" class="pulse">
+          <animateMotion
+            dur="4.6s"
+            repeatCount="indefinite"
+            begin="2s"
+            path="M104 540V236L260 150"
+            keyPoints="0;1"
+            keyTimes="0;1"
+            calcMode="linear"
+          ></animateMotion>
+        </circle>
+        <circle r="3" class="pulse p2">
+          <animateMotion
+            dur="5.8s"
+            repeatCount="indefinite"
+            begin="3.4s"
+            path="M416 540V268L260 150"
+          ></animateMotion>
+        </circle>
+
+        <!-- dimension annotation -->
+        <g class="dim" style="--hd:1700ms">
+          <path d="M468 150v390" class="ln dimline" />
+          <path d="M463 150h10M463 540h10" class="ln dimline" />
+          <text x="474" y="352" class="dimtext">FOUNDATION</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="cue" aria-hidden="true"><span></span></div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-block-size: 100dvh;
+    display: grid;
+    /* single auto row in a taller box — align-content places it, not align-items */
+    align-content: center;
+    padding-block: 8rem 6rem;
+    overflow: clip;
+  }
+
+  /* One restrained bloom, bottom-right, behind the drawing */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 30%;
+    inset-inline-end: -12%;
+    inline-size: 46rem;
+    block-size: 46rem;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--emerald) 22%, transparent) 0%,
+      transparent 62%
+    );
+    filter: blur(60px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero-in {
+    display: grid;
+    grid-template-columns: 1fr 0.92fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .say {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+  .say h1 {
+    margin-block-start: var(--s-2);
+  }
+  .say .lead {
+    max-inline-size: 42ch;
+  }
+
+  .acts {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-block-start: var(--s-3);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-5);
+    margin-block-start: var(--s-6);
+    padding-block-start: var(--s-5);
+    border-block-start: 1px solid var(--hair);
+    inline-size: 100%;
+    max-inline-size: 36rem;
+  }
+  .facts dt {
+    font-size: var(--t-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-4);
+    font-weight: 700;
+    max-inline-size: 16ch;
+  }
+  .facts dd {
+    margin-block-start: 0.35rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+  }
+
+  /* ---- the structural drawing ---- */
+  .draw {
+    justify-self: end;
+    inline-size: min(100%, 36rem);
+    /* gentle cursor parallax, set from JS */
+    translate: calc(var(--mx, 0) * 9px) calc(var(--my, 0) * 9px);
+    transition: translate 900ms var(--e-out);
+  }
+  .struct {
+    inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .ln {
+    stroke-linecap: round;
+    fill: none;
+    stroke-dasharray: var(--len, 600);
+    stroke-dashoffset: var(--len, 600);
+    animation: draw 1.15s var(--e-out) forwards;
+    animation-delay: var(--hd, 0ms);
+  }
+  .base {
+    stroke: var(--ink);
+    stroke-width: 2;
+    --len: 470;
+  }
+  .hatch {
+    stroke: var(--hair-2);
+    stroke-width: 1.2;
+    --len: 20;
+  }
+  .pil {
+    stroke: var(--ink-3);
+    stroke-width: 1.6;
+    --len: 400;
+  }
+  .beam {
+    stroke: var(--hair-2);
+    stroke-width: 1.4;
+    --len: 380;
+  }
+  .dimline {
+    stroke: var(--emerald);
+    stroke-width: 1.1;
+    --len: 400;
+    opacity: 0.7;
+  }
+  .dimtext {
+    fill: var(--emerald-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    writing-mode: vertical-rl;
+    text-anchor: middle;
+    opacity: 0;
+    animation: fade 0.9s var(--e-out) forwards;
+    animation-delay: calc(var(--hd, 0ms) + 400ms);
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes fade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .joint {
+    fill: var(--paper);
+    stroke: var(--ink-3);
+    stroke-width: 1.4;
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 45deg;
+    opacity: 0;
+    animation: pop 0.6s var(--e-out) forwards;
+    animation-delay: var(--hd, 0ms);
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.3;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  .dia {
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 45deg;
+    opacity: 0;
+    animation: lock 0.85s var(--e-out) forwards;
+    animation-delay: var(--hd, 0ms);
+  }
+  .dia.n {
+    fill: var(--ink);
+  }
+  .dia.e {
+    fill: var(--emerald);
+  }
+  @keyframes lock {
+    from {
+      opacity: 0;
+      translate: 0 -26px;
+      scale: 0.5;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+      scale: 1;
+    }
+  }
+
+  .pulse {
+    fill: var(--emerald);
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--emerald) 70%, transparent));
+  }
+  .pulse.p2 {
+    fill: var(--blue);
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--blue) 60%, transparent));
+  }
+
+  /* scroll cue */
+  .cue {
+    position: absolute;
+    inset-block-end: 2rem;
+    inset-inline-start: var(--gut);
+    opacity: 0;
+    animation: fade 1s var(--e-out) 2.2s forwards;
+  }
+  .cue span {
+    display: block;
+    inline-size: 1px;
+    block-size: 46px;
+    background: linear-gradient(var(--hair-2), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+  .cue span::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: 14px;
+    background: var(--emerald);
+    animation: trickle 2.4s var(--e-io) infinite;
+  }
+  @keyframes trickle {
+    0% {
+      transform: translateY(-16px);
+    }
+    100% {
+      transform: translateY(48px);
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .hero-in {
+      grid-template-columns: 1fr;
+      gap: var(--s-7);
+    }
+    .draw {
+      order: -1;
+      inline-size: min(100%, 21rem);
+      justify-self: start;
+    }
+    .cue {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .facts {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
+    .facts > div {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-4);
+    }
+    .facts dd {
+      margin-block-start: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ln,
+    .joint,
+    .dia,
+    .dimtext,
+    .cue {
+      animation: none;
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    .pulse {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Cursor parallax on the drawing — pointer-driven, rAF-guarded
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  const draw = hero?.querySelector<HTMLElement>(".draw");
+  if (hero && draw && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let raf = 0;
+    hero.addEventListener(
+      "pointermove",
+      (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = hero.getBoundingClientRect();
+          draw.style.setProperty("--mx", String((e.clientX - r.width / 2) / r.width));
+          draw.style.setProperty("--my", String((e.clientY - r.height / 2) / r.height));
+          raf = 0;
+        });
+      },
+      { passive: true }
+    );
+    hero.addEventListener("pointerleave", () => {
+      draw.style.setProperty("--mx", "0");
+      draw.style.setProperty("--my", "0");
+    });
+  }
+</script>

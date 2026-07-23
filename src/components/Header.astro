@@ -1,0 +1,398 @@
+---
+import Mark from "./Mark.astro";
+import { nav } from "../data/site";
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="hdr" data-hdr>
+  <div class="hdr-in">
+    <a href="/" class="brand" aria-label="Inkingi Digital Solutions — home">
+      <Mark size={30} />
+      <span class="brand-txt">
+        <span class="brand-name">inkingi</span>
+        <span class="brand-sub">Digital Solutions</span>
+      </span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      {
+        nav.map((l) => (
+          <a href={l.href} class:list={["link", { on: isActive(l.href) }]}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="acts">
+      <button class="icn" data-theme-toggle aria-label="Switch colour theme">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="i-sun">
+          <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"></circle>
+          <path
+            d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7M18.5 18.5l-1.7-1.7M7.2 7.2 5.5 5.5"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"></path>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="i-moon">
+          <path
+            d="M20.4 14.6A8.6 8.6 0 0 1 9.4 3.6a8.6 8.6 0 1 0 11 11Z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+
+      <a href="/contact" class="cta">Start a conversation</a>
+
+      <button
+        class="burger"
+        data-menu-toggle
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="mobile-menu" data-menu hidden>
+  <nav class="sheet-nav" aria-label="Mobile">
+    {
+      nav.map((l, i) => (
+        <a href={l.href} style={`--i:${i}`}>
+          <span>{l.label}</span>
+          <i aria-hidden="true"></i>
+        </a>
+      ))
+    }
+    <a href="/contact" style={`--i:${nav.length}`}>
+      <span>Contact</span>
+      <i aria-hidden="true"></i>
+    </a>
+  </nav>
+</div>
+
+<style>
+  .hdr {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-nav);
+    padding-block-start: var(--s-4);
+    padding-inline: var(--gut);
+    transition: padding-block-start var(--d-slow) var(--e-out);
+  }
+
+  .hdr-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    inline-size: min(100%, var(--page-wide));
+    margin-inline: auto;
+    padding: 0.55rem 0.55rem 0.55rem 1rem;
+    border-radius: var(--r-pill);
+    /* Detached island — background only materialises once scrolled */
+    background: transparent;
+    box-shadow: inset 0 0 0 1px transparent;
+    transition: background-color var(--d-slow) var(--e-out),
+      box-shadow var(--d-slow) var(--e-out),
+      backdrop-filter var(--d-slow) var(--e-out),
+      max-inline-size var(--d-slow) var(--e-out);
+  }
+
+  :global([data-hdr].lifted) .hdr-in {
+    max-inline-size: min(100%, var(--page));
+    background: color-mix(in srgb, var(--paper) 78%, transparent);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-2);
+  }
+
+  /* Brand */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+  }
+  .brand :global(.mark) {
+    transition: rotate var(--d-slow) var(--e-out);
+  }
+  .brand:hover :global(.mark) {
+    rotate: 12deg;
+  }
+  .brand-txt {
+    display: grid;
+    line-height: 1;
+  }
+  .brand-name {
+    font-size: 1.06rem;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+  }
+  .brand-sub {
+    margin-block-start: 3px;
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--emerald-2);
+  }
+
+  /* Links */
+  .links {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1.6vw, 1.35rem);
+  }
+  .link {
+    position: relative;
+    padding: 0.45rem 0.2rem;
+    font-size: var(--t-xs);
+    font-weight: 500;
+    color: var(--ink-3);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .link:hover {
+    color: var(--ink);
+  }
+  .link.on {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .link.on::after {
+    content: "";
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline-start: 50%;
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    translate: -50% 0;
+    background: var(--emerald);
+  }
+
+  .acts {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+  }
+
+  .icn {
+    display: grid;
+    place-items: center;
+    inline-size: 2.15rem;
+    block-size: 2.15rem;
+    border-radius: 50%;
+    color: var(--ink-3);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    transition: color var(--d-mid) var(--e-swift),
+      box-shadow var(--d-mid) var(--e-swift);
+  }
+  .icn:hover {
+    color: var(--emerald-2);
+    box-shadow: inset 0 0 0 1px var(--emerald);
+  }
+  .icn svg {
+    inline-size: 15px;
+    block-size: 15px;
+  }
+  .i-moon {
+    display: none;
+  }
+  :global([data-theme="dark"]) .i-sun {
+    display: none;
+  }
+  :global([data-theme="dark"]) .i-moon {
+    display: block;
+  }
+
+  .cta {
+    padding: 0.6rem 1.15rem;
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background-color var(--d-mid) var(--e-swift),
+      color var(--d-mid) var(--e-swift), transform 150ms var(--e-swift);
+  }
+  .cta:hover {
+    background: var(--emerald);
+    color: var(--on-accent);
+  }
+  .cta:active {
+    transform: scale(0.97);
+  }
+
+  /* Burger — morphs to an X */
+  .burger {
+    display: none;
+    place-items: center;
+    inline-size: 2.15rem;
+    block-size: 2.15rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--hair);
+    position: relative;
+  }
+  .burger span {
+    position: absolute;
+    inline-size: 15px;
+    block-size: 1.6px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .burger span:nth-child(1) {
+    transform: translateY(-3.2px);
+  }
+  .burger span:nth-child(2) {
+    transform: translateY(3.2px);
+  }
+  .burger[aria-expanded="true"] span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .burger[aria-expanded="true"] span:nth-child(2) {
+    transform: rotate(-45deg);
+  }
+
+  /* Sheet */
+  .sheet {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-nav) - 1);
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    display: grid;
+    align-content: center;
+    padding: 6rem var(--gut) var(--gut);
+    opacity: 0;
+    transition: opacity var(--d-mid) var(--e-out);
+  }
+  .sheet.open {
+    opacity: 1;
+  }
+  .sheet-nav {
+    display: grid;
+    inline-size: min(100%, var(--page));
+    margin-inline: auto;
+  }
+  .sheet-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.05rem;
+    border-block-end: 1px solid var(--hair);
+    font-size: clamp(1.75rem, 8vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: var(--tr-tight);
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .sheet.open .sheet-nav a {
+    animation: sheetIn 0.62s var(--e-out) forwards;
+    animation-delay: calc(60ms + var(--i) * 48ms);
+  }
+  .sheet-nav i {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 2px;
+    rotate: 45deg;
+    background: var(--emerald);
+  }
+  @keyframes sheetIn {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1060px) {
+    .links {
+      display: none;
+    }
+    .burger {
+      display: grid;
+    }
+  }
+  @media (max-width: 560px) {
+    .cta {
+      display: none;
+    }
+    .brand-sub {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet.open .sheet-nav a {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Header lift — rAF-throttled, never a raw scroll handler doing layout work
+  const hdr = document.querySelector("[data-hdr]");
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      hdr?.classList.toggle("lifted", window.scrollY > 20);
+      ticking = false;
+    });
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Menu sheet
+  const burger = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const sheet = document.querySelector<HTMLElement>("[data-menu]");
+  const setMenu = (open: boolean) => {
+    if (!burger || !sheet) return;
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.documentElement.style.overflow = open ? "hidden" : "";
+    if (open) {
+      sheet.hidden = false;
+      requestAnimationFrame(() => sheet.classList.add("open"));
+    } else {
+      sheet.classList.remove("open");
+      setTimeout(() => {
+        sheet.hidden = true;
+      }, 420);
+    }
+  };
+  burger?.addEventListener("click", () =>
+    setMenu(burger.getAttribute("aria-expanded") !== "true")
+  );
+  sheet?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) setMenu(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && burger?.getAttribute("aria-expanded") === "true")
+      setMenu(false);
+  });
+
+  // Theme
+  document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+    const next =
+      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem("inkingi-theme", next);
+    } catch {}
+  });
+</script>

@@ -1,0 +1,310 @@
+---
+import { journey } from "../../data/site";
+---
+
+<section class="jr on-navy" data-track>
+  <div class="page">
+    <div class="jr-head">
+      <div>
+        <p class="tag" data-reveal><span class="idx">03</span> How we work</p>
+        <h2 class="d1" data-reveal style="--rd:60ms">
+          A foundation is poured in stages.
+        </h2>
+      </div>
+      <p class="body" data-reveal style="--rd:120ms">
+        Five of them. You always know which one you are in, what it produces,
+        and what it costs before it starts.
+      </p>
+    </div>
+
+    <!-- The path -->
+    <div class="path" role="tablist" aria-label="Our process">
+      <span class="spine" aria-hidden="true"></span>
+      <span class="spine live" aria-hidden="true"></span>
+      {
+        journey.map((s, i) => (
+          <button
+            class:list={["stop", { on: i === 0 }]}
+            role="tab"
+            id={`jt-${i}`}
+            aria-selected={i === 0}
+            aria-controls={`jp-${i}`}
+            tabindex={i === 0 ? 0 : -1}
+            data-stop={i}
+            style={`--sd:${i * 90}ms`}
+          >
+            <span class="knot" aria-hidden="true" />
+            <span class="sn num">{s.idx}</span>
+            <span class="st">{s.title}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- The detail -->
+    <div class="panes">
+      {
+        journey.map((s, i) => (
+          <div
+            class:list={["pane", { on: i === 0 }]}
+            role="tabpanel"
+            id={`jp-${i}`}
+            aria-labelledby={`jt-${i}`}
+            hidden={i !== 0}
+          >
+            <p class="pl">{s.lead}</p>
+            <p class="pb">{s.body}</p>
+            <p class="po">
+              <span class="pk">You receive</span>
+              {s.output}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .jr {
+    padding-block: var(--band-vast);
+  }
+
+  .jr-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-7);
+    align-items: end;
+  }
+  .jr-head h2 {
+    margin-block-start: var(--s-4);
+    max-inline-size: 15ch;
+  }
+
+  /* ---- path ---- */
+  .path {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--s-4);
+    margin-block: var(--s-9) var(--s-8);
+  }
+  .spine {
+    position: absolute;
+    inset-block-start: 10px;
+    inset-inline: 6%;
+    block-size: 1px;
+    background: var(--hair-2);
+  }
+  .spine.live {
+    background: var(--emerald);
+    transform-origin: left;
+    /* draws with scroll position through the section */
+    transform: scaleX(clamp(0, calc((var(--p, 0) - 0.2) * 2.2), 1));
+    transition: transform 120ms linear;
+  }
+
+  .stop {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: 0.55rem;
+    padding-block-start: 0;
+    text-align: start;
+    opacity: 0;
+    animation: stopIn 0.7s var(--e-out) forwards;
+    animation-delay: var(--sd);
+  }
+  @keyframes stopIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .knot {
+    inline-size: 21px;
+    block-size: 21px;
+    border-radius: 5px;
+    rotate: 45deg;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1.6px var(--hair-2);
+    transition: box-shadow var(--d-mid) var(--e-swift),
+      background-color var(--d-mid) var(--e-swift),
+      scale var(--d-mid) var(--e-swift);
+  }
+  .stop:hover .knot {
+    box-shadow: inset 0 0 0 1.6px var(--emerald);
+  }
+  .stop.on .knot {
+    background: var(--emerald);
+    box-shadow: inset 0 0 0 1.6px var(--emerald),
+      0 0 0 5px color-mix(in srgb, var(--emerald) 16%, transparent);
+    scale: 1.08;
+  }
+
+  .sn {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--ink-4);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .stop.on .sn {
+    color: var(--emerald);
+  }
+  .st {
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    color: var(--ink-3);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .stop:hover .st {
+    color: var(--ink-2);
+  }
+  .stop.on .st {
+    color: var(--ink);
+  }
+
+  /* ---- panes ---- */
+  .panes {
+    position: relative;
+    min-block-size: 12rem;
+    padding-block-start: var(--s-6);
+    border-block-start: 1px solid var(--hair);
+  }
+  .pane {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr;
+    gap: var(--s-7);
+    align-items: start;
+  }
+  .pane[hidden] {
+    display: none;
+  }
+  .pane.on {
+    animation: paneIn 0.6s var(--e-out);
+  }
+  @keyframes paneIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .pl {
+    font-size: var(--t-d3);
+    font-weight: 700;
+    line-height: 1.28;
+    letter-spacing: var(--tr-tight);
+    max-inline-size: 22ch;
+  }
+  .pb {
+    color: var(--ink-2);
+    max-inline-size: 54ch;
+  }
+  .po {
+    grid-column: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-block-start: var(--s-4);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    font-size: var(--t-sm);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pk {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--emerald);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 940px) {
+    .jr-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+    .path {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-block: var(--s-7) var(--s-6);
+    }
+    .spine {
+      inset-block: 12px 12px;
+      inset-inline: 10px auto;
+      inline-size: 1px;
+      block-size: auto;
+    }
+    .spine.live {
+      transform: scaleY(clamp(0, calc((var(--p, 0) - 0.2) * 2.2), 1));
+      transform-origin: top;
+    }
+    .stop {
+      grid-template-columns: 21px auto 1fr;
+      grid-template-areas: "k n t";
+      align-items: center;
+      gap: 0.75rem;
+      padding-block: 0.55rem;
+    }
+    .knot { grid-area: k; }
+    .sn { grid-area: n; }
+    .st { grid-area: t; }
+    .pane {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
+    .po {
+      grid-column: 1;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stop { opacity: 1; animation: none; }
+    .pane.on { animation: none; }
+    .spine.live { transform: scaleX(1); }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>(".jr");
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-stop]"));
+    const panes = Array.from(root.querySelectorAll<HTMLElement>(".pane"));
+
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, n) => {
+        const on = n === i;
+        t.classList.toggle("on", on);
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      panes.forEach((p, n) => {
+        p.hidden = n !== i;
+        p.classList.toggle("on", n === i);
+      });
+      if (focus) tabs[i].focus();
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const keys: Record<string, number> = {
+          ArrowRight: i + 1,
+          ArrowDown: i + 1,
+          ArrowLeft: i - 1,
+          ArrowUp: i - 1,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        const next = keys[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        select((next + tabs.length) % tabs.length, true);
+      });
+    });
+  }
+</script>

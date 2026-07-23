@@ -1,0 +1,215 @@
+/* ============================================================
+   COMPONENTS — buttons, surfaces, forms
+   ============================================================ */
+
+/* ---- Buttons -------------------------------------------- */
+/* Nested-icon architecture: the arrow lives in its own well,
+   flush with the pill's inner edge. It never floats naked. */
+
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-well: rgba(255, 255, 255, 0.14);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  border-radius: var(--r-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: -0.008em;
+  white-space: nowrap;
+  transition: background-color var(--d-mid) var(--e-swift),
+    color var(--d-mid) var(--e-swift), transform 160ms var(--e-swift),
+    box-shadow var(--d-mid) var(--e-swift);
+  box-shadow: var(--lift-1);
+}
+
+.btn .well {
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 50%;
+  background: var(--btn-well);
+  flex: none;
+  transition: transform var(--d-mid) var(--e-swift),
+    background-color var(--d-mid) var(--e-swift);
+}
+
+.btn .well svg {
+  inline-size: 12px;
+  block-size: 12px;
+}
+
+.btn:hover {
+  box-shadow: var(--lift-2);
+}
+.btn:hover .well {
+  transform: translate3d(2px, -1px, 0) scale(1.06);
+}
+.btn:active {
+  transform: scale(0.982);
+  box-shadow: var(--lift-1);
+}
+
+.btn.accentbtn {
+  --btn-bg: var(--emerald);
+  --btn-fg: var(--on-accent);
+  --btn-well: rgba(20, 10, 5, 0.18);
+}
+
+.btn.ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-well: var(--emerald-wash);
+  box-shadow: inset 0 0 0 1px var(--hair-2);
+}
+.btn.ghost:hover {
+  box-shadow: inset 0 0 0 1px var(--emerald);
+  color: var(--emerald-2);
+}
+.btn.ghost:hover .well {
+  background: var(--emerald-wash);
+}
+
+/* Text link with a rule that draws in from the left */
+.tlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--emerald-2);
+  padding-block-end: 0.35rem;
+  position: relative;
+  transition: color var(--d-mid) var(--e-swift);
+}
+.tlink::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--d-mid) var(--e-swift);
+}
+.tlink:hover::after {
+  transform: scaleX(1);
+}
+.tlink svg {
+  inline-size: 11px;
+  block-size: 11px;
+  transition: transform var(--d-mid) var(--e-swift);
+}
+.tlink:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---- Surfaces ------------------------------------------- */
+/* Double-bezel: a machined tray holding an inner plate.
+   Used only where elevation carries meaning. */
+
+.tray {
+  padding: 6px;
+  border-radius: var(--r-4);
+  background: color-mix(in srgb, var(--ink) 3.5%, transparent);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+
+.plate {
+  border-radius: calc(var(--r-4) - 6px);
+  background: var(--paper-2);
+  box-shadow: inset 0 0 0 1px var(--hair), var(--lift-1);
+}
+
+/* Hairline-divided list — grouping by line, not by box */
+.divided > * + * {
+  border-block-start: 1px solid var(--hair);
+}
+
+/* ---- Forms ---------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.field > label {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.field .hint {
+  font-size: var(--t-xs);
+  color: var(--ink-4);
+}
+
+.input {
+  inline-size: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--r-2);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--hair-2);
+  font-size: var(--t-sm);
+  transition: border-color var(--d-fast) var(--e-swift),
+    box-shadow var(--d-fast) var(--e-swift), background-color var(--d-fast);
+}
+.input::placeholder {
+  color: var(--ink-4);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 3px var(--emerald-wash);
+}
+.input[aria-invalid="true"] {
+  border-color: #e0483d;
+  box-shadow: 0 0 0 3px rgba(224, 72, 61, 0.12);
+}
+
+.err {
+  font-size: var(--t-xs);
+  color: #d4382d;
+  display: none;
+}
+.err.on {
+  display: block;
+}
+
+:root[data-theme="dark"] .err,
+.on-navy .err {
+  color: #ff8b81;
+}
+
+/* Chip — multi-select toggle */
+.chip {
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hair-2);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--ink-3);
+  transition: all var(--d-fast) var(--e-swift);
+}
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--hair-2);
+}
+.chip[aria-pressed="true"] {
+  background: var(--emerald-wash);
+  border-color: var(--emerald);
+  color: var(--emerald-2);
+  font-weight: 700;
+}
+.chip:active {
+  transform: scale(0.97);
+}

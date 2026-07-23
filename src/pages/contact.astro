@@ -1,0 +1,678 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Arrow from "../components/Arrow.astro";
+import { site } from "../data/site";
+
+const kinds = [
+  { id: "site", label: "Digital presence", lo: 780000, hi: 1600000, w: [3, 5] },
+  { id: "platform", label: "Business platform", lo: 2650000, hi: 5200000, w: [8, 14] },
+  { id: "mobile", label: "Mobile application", lo: 3400000, hi: 6800000, w: [10, 16] },
+  { id: "automation", label: "Automation & integration", lo: 1900000, hi: 4400000, w: [6, 12] },
+  { id: "ai", label: "Applied AI", lo: 2800000, hi: 6200000, w: [7, 14] },
+  { id: "enterprise", label: "Enterprise system", lo: 12000000, hi: 30000000, w: [20, 36] },
+];
+
+const scales = [
+  { id: "one", label: "One workflow", mult: 1, hint: "Launch the core, prove it, extend later" },
+  { id: "dept", label: "One department", mult: 1.7, hint: "Complete feature set and integrations" },
+  { id: "org", label: "Whole organisation", mult: 2.6, hint: "Multiple roles, branches, reporting" },
+];
+
+const interests = [
+  "Custom software",
+  "Business platform",
+  "Automation",
+  "Applied AI",
+  "Cloud & infrastructure",
+  "Mobile app",
+  "Website",
+  "Not sure yet",
+];
+---
+
+<Base
+  title="Contact"
+  description="Book a free 45-minute strategy session with Inkingi Digital Solutions in Kigali, or estimate your project budget in Rwandan francs."
+>
+  <PageHead
+    idx="01"
+    label="Contact"
+    title='One conversation. <span class="accent">Zero</span> obligation.'
+    lede="Forty-five minutes in which we map your operation and tell you honestly what to build, what to buy, and what to leave alone. You keep the written brief either way."
+  />
+
+  <section class="main">
+    <div class="page main-in">
+      <!-- form -->
+      <div class="fwrap" data-reveal>
+        <form class="form" data-form novalidate>
+          <div class="frow">
+            <div class="field">
+              <label for="name">Your name</label>
+              <input class="input" id="name" name="name" required autocomplete="name" placeholder="Full name" />
+              <p class="err" data-err-for="name">Please tell us your name.</p>
+            </div>
+            <div class="field">
+              <label for="email">Work email</label>
+              <input class="input" id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.rw" />
+              <p class="err" data-err-for="email">That email address does not look right.</p>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="field">
+              <label for="company">Company</label>
+              <input class="input" id="company" name="company" autocomplete="organization" placeholder="Organisation name" />
+              <p class="hint">Optional</p>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input class="input" id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+250 …" />
+              <p class="hint">Optional — for a callback instead</p>
+            </div>
+          </div>
+
+          <fieldset class="fs">
+            <legend>What is this about?</legend>
+            <div class="chips">
+              {
+                interests.map((t) => (
+                  <button type="button" class="chip" aria-pressed="false" data-chip>
+                    {t}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="msg">The situation</label>
+            <textarea
+              class="input"
+              id="msg"
+              name="message"
+              rows="5"
+              required
+              placeholder="A few sentences about the business and what keeps going wrong. Plain language is perfect — no need to describe a solution."
+            ></textarea>
+            <p class="err" data-err-for="msg">A sentence or two is enough to start.</p>
+          </div>
+
+          <button class="btn send" type="submit" data-send>
+            <span class="lbl">Request the session</span>
+            <span class="well"><Arrow /></span>
+          </button>
+          <p class="fine xs">
+            We reply within one business day. Your details are never shared or
+            sold.
+          </p>
+        </form>
+
+        <!-- success -->
+        <div class="sent" data-sent hidden>
+          <span class="s-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="m9 16.5 4.8 4.8L23 11.5" stroke="currentColor" stroke-width="2.6"
+                stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <h2 class="d2">Received.</h2>
+          <p class="body">
+            We reply within one business day with two or three times that suit
+            us. If it is urgent, call {site.phone} and ask for the studio.
+          </p>
+          <ol class="next">
+            <li><span class="num">01</span> We confirm a time — 45 minutes, video or in Kigali.</li>
+            <li><span class="num">02</span> We talk about the business, not the software.</li>
+            <li><span class="num">03</span> You receive a one-page technology brief. Yours to keep.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- aside -->
+      <aside class="side">
+        <div class="scell" data-reveal style="--rd:80ms">
+          <p class="sk">Direct</p>
+          <ul class="sl">
+            <li><a href={`mailto:${site.email}`}>{site.email}</a><i>new work</i></li>
+            <li><a href={`mailto:${site.careersEmail}`}>{site.careersEmail}</a><i>joining us</i></li>
+            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a><i>studio line</i></li>
+          </ul>
+        </div>
+
+        <div class="scell" data-reveal style="--rd:140ms">
+          <p class="sk">Studio</p>
+          <p class="sv">{site.city}</p>
+          <p class="sm">{site.hours}</p>
+        </div>
+
+        <div class="scell" data-reveal style="--rd:200ms">
+          <p class="sk">What we will ask</p>
+          <ul class="ask">
+            <li>Where does work currently get stuck?</li>
+            <li>What does someone re-key by hand every week?</li>
+            <li>What question can nobody answer quickly?</li>
+            <li>What would change if that were solved?</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- estimator -->
+  <section class="est on-navy" id="estimator">
+    <div class="page">
+      <div class="est-head">
+        <div>
+          <p class="tag" data-reveal><span class="idx">02</span> Estimator</p>
+          <h2 class="d1" data-reveal style="--rd:60ms">
+            A number, in two clicks.
+          </h2>
+        </div>
+        <p class="body" data-reveal style="--rd:120ms">
+          Directional, not a quote — but built from what our engagements
+          actually cost. It will not be wildly off.
+        </p>
+      </div>
+
+      <div class="est-body" data-reveal style="--rd:160ms">
+        <div class="est-pick">
+          <fieldset class="fs">
+            <legend><span class="num">1</span> What are we building?</legend>
+            <div class="chips" data-group="kind">
+              {
+                kinds.map((k, i) => (
+                  <button
+                    type="button"
+                    class="chip"
+                    aria-pressed={i === 0 ? "true" : "false"}
+                    data-kind={k.id}
+                    data-lo={k.lo}
+                    data-hi={k.hi}
+                    data-w={k.w.join(",")}
+                  >
+                    {k.label}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend><span class="num">2</span> At what scale?</legend>
+            <div class="scales" data-group="scale">
+              {
+                scales.map((s, i) => (
+                  <button
+                    type="button"
+                    class="scale"
+                    aria-pressed={i === 0 ? "true" : "false"}
+                    data-mult={s.mult}
+                  >
+                    <b>{s.label}</b>
+                    <i>{s.hint}</i>
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="est-out">
+          <div class="eo">
+            <p class="eok">Indicative investment</p>
+            <p class="eov num" data-out-money>RWF 780,000 – 1,600,000</p>
+          </div>
+          <div class="eo">
+            <p class="eok">Indicative timeline</p>
+            <p class="eov num" data-out-time>3 – 5 weeks</p>
+          </div>
+          <div class="eo">
+            <p class="eok">Closest tier</p>
+            <p class="eov" data-out-tier>Starter</p>
+          </div>
+          <p class="eon xs">
+            Assumes discovery has not yet happened. A fixed quote follows the
+            strategy session, and it is the number we hold ourselves to.
+          </p>
+          <a href="#main" class="btn accentbtn eob">
+            Turn this into a quote
+            <span class="well"><Arrow /></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .main {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .main-in {
+    display: grid;
+    grid-template-columns: 1.5fr 0.85fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .form {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .frow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+  }
+  .fs {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .fs legend {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    margin-block-end: var(--s-3);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  textarea.input {
+    resize: vertical;
+    min-block-size: 7rem;
+    line-height: 1.6;
+  }
+  .send {
+    justify-self: start;
+    margin-block-start: var(--s-2);
+  }
+  .send[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.72;
+  }
+  .fine {
+    color: var(--ink-4);
+  }
+
+  /* success */
+  .sent {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+    padding: var(--s-7) var(--s-6);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--emerald) 40%, transparent);
+    background: var(--emerald-wash);
+    animation: sIn 0.6s var(--e-out);
+  }
+  @keyframes sIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  .s-mark {
+    display: grid;
+    place-items: center;
+    inline-size: 2.6rem;
+    block-size: 2.6rem;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--on-accent);
+  }
+  .s-mark svg {
+    inline-size: 17px;
+    block-size: 17px;
+  }
+  .next {
+    display: grid;
+    gap: 0.7rem;
+    margin-block-start: var(--s-3);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    inline-size: 100%;
+  }
+  .next li {
+    display: flex;
+    gap: 0.85rem;
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+  }
+  .next .num {
+    font-weight: 700;
+    color: var(--emerald-2);
+    flex: none;
+  }
+
+  /* aside */
+  .side {
+    display: grid;
+    gap: var(--s-6);
+    position: sticky;
+    inset-block-start: 6.5rem;
+  }
+  .scell {
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .sk {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-4);
+  }
+  .sl {
+    display: grid;
+    gap: 0.75rem;
+    margin-block-start: var(--s-4);
+  }
+  .sl li {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .sl a {
+    font-size: var(--t-sm);
+    font-weight: 700;
+    transition: color var(--d-fast) var(--e-swift);
+  }
+  .sl a:hover {
+    color: var(--emerald-2);
+  }
+  .sl i {
+    font-size: var(--t-micro);
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+  .sv {
+    margin-block-start: var(--s-3);
+    font-size: var(--t-sm);
+    font-weight: 700;
+  }
+  .sm {
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+  }
+  .ask {
+    display: grid;
+    gap: 0.6rem;
+    margin-block-start: var(--s-4);
+  }
+  .ask li {
+    position: relative;
+    padding-inline-start: 1rem;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+  .ask li::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.5em;
+    inset-inline-start: 0;
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    background: var(--emerald);
+  }
+
+  /* estimator */
+  .est {
+    padding-block: var(--band);
+  }
+  .est-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-6);
+    align-items: end;
+  }
+  .est-head h2 {
+    margin-block-start: var(--s-4);
+  }
+  .est-body {
+    display: grid;
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    margin-block-start: var(--s-8);
+    align-items: start;
+  }
+  .est-pick {
+    display: grid;
+    gap: var(--s-6);
+  }
+  .est .fs legend {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--t-xs);
+    margin-block-end: var(--s-4);
+  }
+  .est .fs legend .num {
+    display: grid;
+    place-items: center;
+    inline-size: 1.3rem;
+    block-size: 1.3rem;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+
+  .scales {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .scale {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: var(--r-2);
+    text-align: start;
+    box-shadow: inset 0 0 0 1px var(--hair-2);
+    transition: box-shadow var(--d-mid) var(--e-swift),
+      background-color var(--d-mid) var(--e-swift);
+  }
+  .scale:hover {
+    box-shadow: inset 0 0 0 1px var(--hair-2), var(--lift-1);
+  }
+  .scale[aria-pressed="true"] {
+    background: var(--emerald-wash);
+    box-shadow: inset 0 0 0 1.5px var(--emerald);
+  }
+  .scale b {
+    font-size: var(--t-xs);
+    font-weight: 700;
+  }
+  .scale i {
+    font-size: var(--t-micro);
+    font-style: normal;
+    color: var(--ink-4);
+    line-height: 1.45;
+  }
+  .scale:active {
+    transform: scale(0.985);
+  }
+
+  .est-out {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--s-5);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    background: color-mix(in srgb, #fff 3%, transparent);
+  }
+  .eok {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-4);
+  }
+  .eov {
+    margin-block-start: 0.3rem;
+    font-size: 1.28rem;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+  .eo + .eo {
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .eon {
+    color: var(--ink-4);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .eob {
+    justify-self: start;
+  }
+
+  @media (max-width: 980px) {
+    .main-in,
+    .est-body,
+    .est-head {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+    }
+  }
+  @media (max-width: 600px) {
+    .frow,
+    .scales {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sent { animation: none; }
+  }
+</style>
+
+<script>
+  /* ---- multi-select chips on the contact form ---- */
+  document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((c) => {
+    c.addEventListener("click", () =>
+      c.setAttribute(
+        "aria-pressed",
+        c.getAttribute("aria-pressed") === "true" ? "false" : "true"
+      )
+    );
+  });
+
+  /* ---- form: inline validation, busy state, success ---- */
+  const form = document.querySelector<HTMLFormElement>("[data-form]");
+  const sent = document.querySelector<HTMLElement>("[data-sent]");
+  const send = document.querySelector<HTMLButtonElement>("[data-send]");
+
+  const showErr = (id: string, on: boolean) => {
+    const field = document.getElementById(id);
+    const err = document.querySelector(`[data-err-for="${id}"]`);
+    field?.setAttribute("aria-invalid", String(on));
+    err?.classList.toggle("on", on);
+  };
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name") as HTMLInputElement;
+    const email = document.getElementById("email") as HTMLInputElement;
+    const msg = document.getElementById("msg") as HTMLTextAreaElement;
+
+    const bad = [
+      ["name", name.value.trim().length < 2],
+      ["email", !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())],
+      ["msg", msg.value.trim().length < 10],
+    ] as [string, boolean][];
+
+    bad.forEach(([id, isBad]) => showErr(id, isBad));
+    const first = bad.find(([, isBad]) => isBad);
+    if (first) {
+      document.getElementById(first[0])?.focus();
+      return;
+    }
+
+    // Optimistic: acknowledge immediately, then swap in confirmation.
+    send?.setAttribute("aria-busy", "true");
+    send!.querySelector(".lbl")!.textContent = "Sending…";
+    setTimeout(() => {
+      form.hidden = true;
+      if (sent) sent.hidden = false;
+      sent?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 620);
+  });
+
+  ["name", "email", "msg"].forEach((id) => {
+    document
+      .getElementById(id)
+      ?.addEventListener("input", () => showErr(id, false));
+  });
+
+  /* ---- estimator ---- */
+  const est = document.querySelector<HTMLElement>("#estimator");
+  if (est) {
+    const kinds = Array.from(est.querySelectorAll<HTMLButtonElement>("[data-kind]"));
+    const scales = Array.from(est.querySelectorAll<HTMLButtonElement>("[data-mult]"));
+    const outMoney = est.querySelector<HTMLElement>("[data-out-money]")!;
+    const outTime = est.querySelector<HTMLElement>("[data-out-time]")!;
+    const outTier = est.querySelector<HTMLElement>("[data-out-tier]")!;
+
+    const fmt = (n: number) =>
+      Math.round(n / 10000) * 10 >= 1000
+        ? (Math.round(n / 100000) / 10).toFixed(1).replace(/\.0$/, "") + "M"
+        : Math.round(n / 1000).toLocaleString("en-US") + "K";
+
+    const tierFor = (lo: number) =>
+      lo >= 10000000
+        ? "Enterprise"
+        : lo >= 6000000
+          ? "Professional"
+          : lo >= 2000000
+            ? "Business"
+            : "Starter";
+
+    const paint = () => {
+      const k = kinds.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const s = scales.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const m = Number(s.dataset.mult);
+      const lo = Number(k.dataset.lo) * m;
+      const hi = Number(k.dataset.hi) * m;
+      const [w1, w2] = k.dataset.w!.split(",").map(Number);
+
+      outMoney.textContent = `RWF ${fmt(lo)} – ${fmt(hi)}`;
+      outTime.textContent = `${Math.round(w1 * (m * 0.72 + 0.28))} – ${Math.round(
+        w2 * (m * 0.72 + 0.28)
+      )} weeks`;
+      outTier.textContent = tierFor(lo);
+
+      [outMoney, outTime, outTier].forEach((el) => {
+        el.animate(
+          [
+            { opacity: 0, transform: "translateY(5px)" },
+            { opacity: 1, transform: "none" },
+          ],
+          { duration: 320, easing: "cubic-bezier(0.16,1,0.3,1)" }
+        );
+      });
+    };
+
+    const wire = (group: HTMLButtonElement[]) =>
+      group.forEach((b) =>
+        b.addEventListener("click", () => {
+          group.forEach((x) => x.setAttribute("aria-pressed", "false"));
+          b.setAttribute("aria-pressed", "true");
+          paint();
+        })
+      );
+
+    wire(kinds);
+    wire(scales);
+    paint();
+  }
+</script>

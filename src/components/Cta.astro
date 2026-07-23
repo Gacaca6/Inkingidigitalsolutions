@@ -1,0 +1,117 @@
+---
+import Arrow from "./Arrow.astro";
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+}
+const {
+  eyebrow = "Next step",
+  title = "Let's build your digital foundation.",
+  body = "One conversation is enough to know whether we are the right partner. No deck, no pressure — a straight look at what your business actually needs, and what it would take.",
+} = Astro.props;
+---
+
+<section class="cta" data-track>
+  <div class="page cta-in">
+    <!-- the mark, rebuilt at scale as the closing image -->
+    <svg viewBox="0 0 200 200" class="glyph" aria-hidden="true">
+      <rect x="66" y="14" width="68" height="68" rx="18" class="g1" />
+      <rect x="24" y="70" width="68" height="68" rx="18" class="g2" />
+      <rect x="94" y="82" width="68" height="68" rx="18" class="g3" />
+    </svg>
+
+    <p class="tag" data-reveal>{eyebrow}</p>
+    <h2 class="hero-type ttl" data-reveal style="--rd:60ms" set:html={title.replace(
+      /foundation\./,
+      '<span class="accent">foundation.</span>'
+    )} />
+    <p class="lead lb" data-reveal style="--rd:130ms">{body}</p>
+
+    <div class="acts" data-reveal style="--rd:200ms">
+      <a href="/contact" class="btn accentbtn">
+        Book a strategy session
+        <span class="well"><Arrow /></span>
+      </a>
+      <a href="/pricing" class="btn ghost">
+        See what it costs
+        <span class="well"><Arrow /></span>
+      </a>
+    </div>
+
+    <p class="fine xs" data-reveal style="--rd:260ms">
+      45 minutes · no obligation · you leave with a written brief either way
+    </p>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    padding-block: var(--band-vast);
+    overflow: clip;
+  }
+  .cta-in {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--s-4);
+    position: relative;
+  }
+
+  /* The mark, huge and faint behind the words — it separates as you scroll */
+  .glyph {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    inline-size: min(78vw, 38rem);
+    z-index: -1;
+    opacity: 0.055;
+  }
+  .glyph rect {
+    transform-box: fill-box;
+    transform-origin: center;
+    fill: var(--ink);
+  }
+  .glyph .g1 {
+    rotate: 45deg;
+    translate: 0 calc(var(--p, 0) * -22px);
+  }
+  .glyph .g2 {
+    rotate: 45deg;
+    translate: calc(var(--p, 0) * -26px) calc(var(--p, 0) * 12px);
+  }
+  .glyph .g3 {
+    rotate: 45deg;
+    fill: var(--emerald);
+    opacity: 0.9;
+    translate: calc(var(--p, 0) * 26px) calc(var(--p, 0) * 14px);
+  }
+
+  .ttl {
+    max-inline-size: 15ch;
+    margin-block-start: var(--s-2);
+  }
+  .lb {
+    max-inline-size: 48ch;
+    margin-block-start: var(--s-3);
+  }
+  .acts {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-block-start: var(--s-5);
+  }
+  .fine {
+    color: var(--ink-4);
+    margin-block-start: var(--s-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glyph rect {
+      translate: none;
+    }
+  }
+</style>

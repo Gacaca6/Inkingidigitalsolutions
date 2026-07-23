@@ -1,0 +1,284 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Cta from "../components/Cta.astro";
+import Arrow from "../components/Arrow.astro";
+import { insights } from "../data/site";
+const [lead, ...rest] = insights;
+---
+
+<Base
+  title="Insights"
+  description="Field notes on digital strategy, applied AI, automation and engineering for African businesses, from the Inkingi Digital Solutions team."
+>
+  <PageHead
+    idx="01"
+    label="Insights"
+    title='Field notes, not <span class="accent">thought leadership</span>.'
+    lede="What we are learning while building systems across East Africa. Written by the people doing the work, published when there is something worth saying."
+  />
+
+  <!-- Lead essay -->
+  <section class="lead-post">
+    <div class="page">
+      <a href="#" class="feat" data-reveal>
+        <div class="feat-say">
+          <p class="meta">
+            <span class="cat">{lead.category}</span>
+            <span class="num">{lead.dateLabel}</span>
+            <span class="num">{lead.read}</span>
+          </p>
+          <h2 class="d1">{lead.title}</h2>
+          <p class="body">{lead.excerpt}</p>
+          <span class="tlink">Read the essay<Arrow /></span>
+        </div>
+
+        <!-- A drawn figure, not a stock image: the decision this essay is about -->
+        <div class="fig" aria-hidden="true">
+          <svg viewBox="0 0 300 220" fill="none">
+            <path d="M150 26v40" class="fl" />
+            <path d="M150 66q0 14-14 14H60q-14 0-14 14v22" class="fl" />
+            <path d="M150 66q0 14 14 14h80q14 0 14 14v22" class="fl" />
+            <g class="fn">
+              <rect x="96" y="8" width="108" height="26" rx="7" />
+              <text x="150" y="25">“How much for a website?”</text>
+            </g>
+            <g class="fn dim">
+              <rect x="10" y="116" width="94" height="34" rx="7" />
+              <text x="57" y="132">Build a website</text>
+              <text x="57" y="144" class="sub">answers the question</text>
+            </g>
+            <g class="fn keep">
+              <rect x="196" y="116" width="94" height="34" rx="7" />
+              <text x="243" y="132">Fix the operation</text>
+              <text x="243" y="144" class="sub">answers the problem</text>
+            </g>
+            <path d="M243 150v28" class="fl on" />
+            <g class="fn out">
+              <rect x="176" y="178" width="134" height="26" rx="7" />
+              <text x="243" y="195">Customers stop leaving</text>
+            </g>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Index -->
+  <section class="idx-list">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">02</span> Archive</p>
+      <ul class="posts">
+        {
+          rest.map((p, i) => (
+            <li data-reveal style={`--rd:${i * 60}ms`}>
+              <a href="#">
+                <span class="p-meta">
+                  <span class="cat">{p.category}</span>
+                  <time class="num" datetime={p.date}>
+                    {p.dateLabel}
+                  </time>
+                </span>
+                <span class="p-body">
+                  <span class="p-t">{p.title}</span>
+                  <span class="p-x">{p.excerpt}</span>
+                </span>
+                <span class="p-read num">{p.read}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="soon xs">
+        New essays go to the letter first. Subscribe at the foot of the page.
+      </p>
+    </div>
+  </section>
+
+  <Cta
+    eyebrow="Beyond reading"
+    title="Bring us the problem behind the question."
+    body="Most of these essays started as something a client asked in a strategy session. Yours might be the next one."
+  />
+</Base>
+
+<style>
+  .lead-post {
+    padding-block: var(--band-tight) var(--band-tight);
+  }
+  .feat {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 6vw, 4.5rem);
+    align-items: center;
+    padding-block: var(--s-6);
+    border-block: 1px solid var(--hair);
+  }
+  .feat-say {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-4);
+  }
+  .cat {
+    color: var(--emerald-2);
+  }
+  .feat h2 {
+    max-inline-size: 20ch;
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .feat:hover h2 {
+    color: var(--emerald-2);
+  }
+  .feat .body {
+    max-inline-size: 50ch;
+  }
+  .feat:hover .tlink::after {
+    transform: scaleX(1);
+  }
+
+  /* drawn figure */
+  .fig {
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    background: color-mix(in srgb, var(--ink) 2.5%, transparent);
+    box-shadow: inset 0 0 0 1px var(--hair);
+  }
+  .fig svg {
+    inline-size: 100%;
+    block-size: auto;
+  }
+  .fl {
+    stroke: var(--hair-2);
+    stroke-width: 1.3;
+    fill: none;
+  }
+  .fl.on {
+    stroke: var(--emerald);
+  }
+  .fn rect {
+    fill: var(--paper);
+    stroke: var(--hair-2);
+    stroke-width: 1.2;
+  }
+  .fn text {
+    fill: var(--ink-2);
+    font-size: 8px;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+  .fn .sub {
+    fill: var(--ink-4);
+    font-size: 6.5px;
+    font-weight: 500;
+  }
+  .fn.dim rect {
+    stroke-dasharray: 3 3;
+  }
+  .fn.dim text {
+    fill: var(--ink-4);
+  }
+  .fn.keep rect,
+  .fn.out rect {
+    stroke: var(--emerald);
+    fill: color-mix(in srgb, var(--emerald) 8%, var(--paper));
+  }
+  .fn.out text {
+    fill: var(--emerald-2);
+  }
+
+  /* archive */
+  .idx-list {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .posts {
+    margin-block-start: var(--s-6);
+  }
+  .posts li {
+    border-block-start: 1px solid var(--hair);
+  }
+  .posts li:last-child {
+    border-block-end: 1px solid var(--hair);
+  }
+  .posts a {
+    display: grid;
+    grid-template-columns: 12rem 1fr 4rem;
+    gap: var(--s-5);
+    align-items: baseline;
+    padding-block: var(--s-5);
+    transition: padding-inline-start var(--d-slow) var(--e-swift);
+  }
+  .posts a:hover {
+    padding-inline-start: 0.75rem;
+  }
+  .p-meta {
+    display: grid;
+    gap: 0.35rem;
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-4);
+  }
+  .p-body {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .p-t {
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    line-height: 1.3;
+    max-inline-size: 30ch;
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .posts a:hover .p-t {
+    color: var(--emerald-2);
+  }
+  .p-x {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    max-inline-size: 60ch;
+  }
+  .p-read {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    color: var(--ink-4);
+    text-align: end;
+  }
+  .soon {
+    margin-block-start: var(--s-6);
+    color: var(--ink-4);
+  }
+
+  @media (max-width: 900px) {
+    .feat {
+      grid-template-columns: 1fr;
+    }
+    .fig {
+      order: -1;
+    }
+    .posts a {
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+    }
+    .p-meta {
+      display: flex;
+      gap: 0.9rem;
+    }
+    .p-read {
+      text-align: start;
+    }
+  }
+</style>

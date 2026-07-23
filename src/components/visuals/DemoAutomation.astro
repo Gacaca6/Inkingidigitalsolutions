@@ -1,0 +1,255 @@
+---
+/* A process, running. Nodes light in sequence; the exception routes to a human. */
+const steps = [
+  { t: "Invoice arrives", s: "email · 07:14" },
+  { t: "Fields extracted", s: "supplier, PO, total" },
+  { t: "Matched to order", s: "PO-30188 ✓" },
+  { t: "Posted to ledger", s: "no human touched it" },
+];
+---
+
+<div class="flow" aria-hidden="true">
+  <div class="tray">
+    <div class="plate">
+      <div class="head">
+        <b>Supplier invoice · accounts payable</b>
+        <span class="clock num">
+          <em>14 min</em> → <i>9 sec</i>
+        </span>
+      </div>
+
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step" style={`--sd:${400 + i * 900}ms`}>
+            <span class="node">
+              <svg viewBox="0 0 16 16" fill="none" class="chk">
+                <path d="m3.5 8.4 3 3 6-6.8" stroke="currentColor" stroke-width="2.1"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="txt">
+              <b>{s.t}</b>
+              <i>{s.s}</i>
+            </span>
+            {i < steps.length - 1 && <span class="wire"></span>}
+          </li>
+        ))}
+
+        <!-- the exception path: judgment stays human -->
+        <li class="branch" style="--sd:2700ms">
+          <span class="bwire"></span>
+          <span class="human">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"></circle>
+              <path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"></path>
+            </svg>
+            <span>
+              <b>Amount over RWF 2M</b>
+              <i>routed to Finance Lead — 1 of 47 today</i>
+            </span>
+          </span>
+        </li>
+      </ol>
+
+      <div class="foot">
+        <span class="tick"></span>
+        <i>47 invoices processed today · 46 without a human</i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .flow {
+    inline-size: 100%;
+  }
+  .plate {
+    padding: 1.15rem 1.3rem 1.2rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .head > b {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .clock {
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--ink-4);
+  }
+  .clock em {
+    font-style: normal;
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+  .clock i {
+    font-style: normal;
+    color: var(--emerald-2);
+  }
+
+  .steps {
+    display: grid;
+    gap: 0;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.7rem 1fr;
+    gap: 0.75rem;
+    padding-block-end: 1.05rem;
+    opacity: 0;
+    animation: stepIn 0.65s var(--e-out) forwards;
+    animation-delay: var(--sd);
+  }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(9px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .node {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: 1.7rem;
+    block-size: 1.7rem;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--on-accent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--emerald) 45%, transparent);
+    animation: ping 0.9s var(--e-out) forwards;
+    animation-delay: var(--sd);
+  }
+  @keyframes ping {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--emerald) 55%, transparent); }
+    100% { box-shadow: 0 0 0 11px transparent; }
+  }
+  .chk {
+    inline-size: 11px;
+    block-size: 11px;
+  }
+
+  /* connector between nodes — drawn, then travelled */
+  .wire {
+    position: absolute;
+    inset-block-start: 1.7rem;
+    inset-inline-start: calc(0.85rem - 1px);
+    inline-size: 2px;
+    block-size: 1.05rem;
+    background: var(--hair-2);
+    overflow: hidden;
+  }
+  .wire::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: 60%;
+    background: var(--emerald);
+    animation: travel 0.9s var(--e-io) forwards;
+    animation-delay: calc(var(--sd) + 200ms);
+    transform: translateY(-100%);
+  }
+  @keyframes travel {
+    to { transform: translateY(180%); }
+  }
+
+  .txt {
+    display: grid;
+    line-height: 1.4;
+    padding-block-start: 0.12rem;
+  }
+  .txt b {
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  .txt i {
+    font-size: 0.64rem;
+    font-style: normal;
+    color: var(--ink-4);
+  }
+
+  /* branch */
+  .branch {
+    position: relative;
+    padding-inline-start: 2.45rem;
+    opacity: 0;
+    animation: stepIn 0.7s var(--e-out) forwards;
+    animation-delay: var(--sd);
+  }
+  .bwire {
+    position: absolute;
+    inset-block-start: -1.15rem;
+    inset-inline-start: calc(0.85rem - 1px);
+    inline-size: 1.6rem;
+    block-size: 2.1rem;
+    border-inline-start: 2px dashed var(--hair-2);
+    border-block-end: 2px dashed var(--hair-2);
+    border-end-start-radius: 10px;
+  }
+  .human {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--r-2);
+    background: color-mix(in srgb, #e0803d 11%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #e0803d 32%, transparent);
+  }
+  .human svg {
+    inline-size: 15px;
+    block-size: 15px;
+    color: #d1762f;
+    flex: none;
+  }
+  .human span {
+    display: grid;
+    line-height: 1.35;
+  }
+  .human b {
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  .human i {
+    font-size: 0.62rem;
+    font-style: normal;
+    color: var(--ink-3);
+  }
+
+  .foot {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-block-start: 0.85rem;
+    border-block-start: 1px solid var(--hair);
+  }
+  .foot .tick {
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 2px;
+    rotate: 45deg;
+    background: var(--emerald);
+    flex: none;
+  }
+  .foot i {
+    font-size: 0.64rem;
+    font-style: normal;
+    color: var(--ink-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step, .branch { opacity: 1; animation: none; }
+    .node { animation: none; }
+    .wire::after { display: none; }
+  }
+</style>

@@ -1,0 +1,292 @@
+---
+/* An operation on one screen: live fleet board, figures that move, rows arriving. */
+const bars = [
+  { h: 34, d: 0 }, { h: 52, d: 90 }, { h: 41, d: 180 }, { h: 68, d: 270 },
+  { h: 57, d: 360 }, { h: 79, d: 450 }, { h: 63, d: 540 }, { h: 88, d: 630 },
+  { h: 72, d: 720 }, { h: 94, d: 810 },
+];
+const rows = [
+  { id: "RW-4471", route: "Kigali → Kampala", pct: 82, state: "moving" },
+  { id: "RW-2208", route: "Rusizi → Kigali", pct: 46, state: "moving" },
+  { id: "RW-9134", route: "Kigali → Gatuna", pct: 97, state: "arriving" },
+  { id: "RW-6620", route: "Musanze → Kigali", pct: 18, state: "loading" },
+];
+---
+
+<div class="board" aria-hidden="true">
+  <div class="tray">
+    <div class="plate">
+      <!-- header -->
+      <div class="top">
+        <div class="tt">
+          <b>Fleet operations</b>
+          <i>Live · 48 vehicles</i>
+        </div>
+        <span class="live"><em></em>Synced</span>
+      </div>
+
+      <!-- metrics -->
+      <div class="mets">
+        <div class="met">
+          <i>On road</i>
+          <b class="num" data-count="31">31</b>
+        </div>
+        <div class="met">
+          <i>Utilisation</i>
+          <b class="num" data-count="87">87<small>%</small></b>
+        </div>
+        <div class="met">
+          <i>Late</i>
+          <b class="num warn" data-count="2">2</b>
+        </div>
+      </div>
+
+      <!-- chart -->
+      <div class="chart">
+        <div class="cl">
+          <i>Deliveries completed</i>
+          <i class="num up">↑ 23% vs last week</i>
+        </div>
+        <div class="bars">
+          {bars.map((b) => (
+            <span class="bar" style={`--h:${b.h}%; --bd:${b.d}ms`}></span>
+          ))}
+        </div>
+      </div>
+
+      <!-- table -->
+      <ul class="rows">
+        {rows.map((r, i) => (
+          <li class="row" style={`--rw:${i * 160 + 400}ms`}>
+            <b class="num">{r.id}</b>
+            <i>{r.route}</i>
+            <span class="track">
+              <span class="fill" style={`--w:${r.pct}%; --bd:${i * 160 + 700}ms`}></span>
+            </span>
+            <em class:list={["st", r.state]}>{r.state}</em>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .board {
+    inline-size: 100%;
+  }
+  .plate {
+    padding: 1.1rem 1.2rem 1.2rem;
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .tt {
+    display: grid;
+    line-height: 1.35;
+  }
+  .tt b {
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .tt i {
+    font-size: 0.65rem;
+    font-style: normal;
+    color: var(--ink-4);
+  }
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.24rem 0.6rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald-wash);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--emerald-2);
+  }
+  .live em {
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 50%;
+    background: var(--emerald);
+    animation: beat 2.4s var(--e-io) infinite;
+  }
+  @keyframes beat {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.72); }
+  }
+
+  .mets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .met {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.6rem 0.7rem;
+    border-radius: var(--r-2);
+    background: color-mix(in srgb, var(--ink) 3%, transparent);
+  }
+  .met i {
+    font-size: 0.58rem;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-4);
+  }
+  .met b {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .met b small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .met b.warn {
+    color: #e0803d;
+  }
+
+  .chart {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .cl {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .cl i {
+    font-size: 0.62rem;
+    font-style: normal;
+    color: var(--ink-4);
+    font-weight: 500;
+  }
+  .cl .up {
+    color: var(--emerald-2);
+    font-weight: 700;
+  }
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    block-size: 3.6rem;
+  }
+  .bar {
+    flex: 1;
+    block-size: var(--h);
+    border-radius: 3px 3px 1px 1px;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--emerald) 26%, transparent),
+      var(--emerald)
+    );
+    transform-origin: bottom;
+    scale: 1 0;
+    animation: grow 0.95s var(--e-out) forwards;
+    animation-delay: var(--bd);
+  }
+  .bar:nth-last-child(-n + 3) {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--blue) 26%, transparent),
+      var(--blue)
+    );
+  }
+  @keyframes grow {
+    to { scale: 1 1; }
+  }
+
+  .rows {
+    display: grid;
+    gap: 1px;
+    border-block-start: 1px solid var(--hair);
+    padding-block-start: 0.65rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 4.6rem 1fr 3.4rem 3.7rem;
+    align-items: center;
+    gap: 0.55rem;
+    padding-block: 0.42rem;
+    opacity: 0;
+    transform: translateY(7px);
+    animation: rowIn 0.7s var(--e-out) forwards;
+    animation-delay: var(--rw);
+  }
+  @keyframes rowIn {
+    to { opacity: 1; transform: none; }
+  }
+  .row b {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .row i {
+    font-size: 0.62rem;
+    font-style: normal;
+    color: var(--ink-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .track {
+    block-size: 3px;
+    border-radius: 2px;
+    background: var(--hair);
+    overflow: hidden;
+  }
+  .fill {
+    display: block;
+    block-size: 100%;
+    inline-size: var(--w);
+    border-radius: 2px;
+    background: var(--emerald);
+    transform-origin: left;
+    scale: 0 1;
+    animation: grow 1s var(--e-out) forwards;
+    animation-delay: var(--bd);
+  }
+  .st {
+    font-size: 0.55rem;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: end;
+    color: var(--ink-4);
+  }
+  .st.arriving {
+    color: var(--emerald-2);
+  }
+  .st.loading {
+    color: #e0803d;
+  }
+
+  @media (max-width: 460px) {
+    .row {
+      grid-template-columns: 4.2rem 1fr 2.6rem;
+    }
+    .row .st {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar, .fill { scale: 1 1; animation: none; }
+    .row { opacity: 1; transform: none; animation: none; }
+    .live em { animation: none; }
+  }
+</style>

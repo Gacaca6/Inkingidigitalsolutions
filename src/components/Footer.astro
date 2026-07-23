@@ -1,0 +1,242 @@
+---
+import Mark from "./Mark.astro";
+import { site, nav } from "../data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="ft on-navy">
+  <div class="page">
+    <!-- Editorial statement -->
+    <div class="say">
+      <p class="hero-type" data-reveal>
+        Building<br />what comes<br /><span class="accent">next.</span>
+      </p>
+      <div class="say-side" data-reveal style="--rd:120ms">
+        <p class="body">
+          {site.name} is a technology partner in {site.city}, engineering the
+          digital foundations that African businesses run on.
+        </p>
+        <form class="sub" data-newsletter novalidate>
+          <div class="sub-row">
+            <label for="nl" class="sr">Email address</label>
+            <input
+              id="nl"
+              class="input"
+              type="email"
+              name="email"
+              required
+              placeholder="you@company.rw"
+              autocomplete="email"
+            />
+            <button class="sub-go" type="submit">
+              <span>Get the letter</span>
+            </button>
+          </div>
+          <p class="err" data-err>Enter a valid email address.</p>
+          <p class="xs sub-note">
+            One letter a month on building software in African markets.
+            Unsubscribe in a click.
+          </p>
+          <p class="done" data-done hidden>
+            <span class="tick" aria-hidden="true"></span>
+            You are on the list. The next letter goes out at month end.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Columns -->
+    <div class="cols">
+      <div>
+        <p class="ch">Company</p>
+        <ul class="cl">
+          {nav.slice(0, 3).map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="ch">Explore</p>
+        <ul class="cl">
+          {nav.slice(3).map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href="/what-we-build#ai">Applied AI</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="ch">Reach us</p>
+        <ul class="cl">
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a></li>
+          <li class="plain">{site.city}</li>
+          <li class="plain">{site.hours}</li>
+        </ul>
+      </div>
+      <div class="concept">
+        <Mark size={40} />
+        <p class="xs">
+          Three connected elements forming a strong foundation for growth,
+          innovation and the future. Simple. Solid. Forward.
+        </p>
+      </div>
+    </div>
+
+    <div class="base">
+      <p class="xs">© {year} {site.name} Ltd. All rights reserved.</p>
+      <p class="xs num">Engineered in Kigali · 1°56′S 30°03′E</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    position: relative;
+    padding-block: var(--band) var(--s-7);
+    overflow: hidden;
+  }
+
+  .say {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--s-8);
+    align-items: end;
+    padding-block-end: var(--s-9);
+    border-block-end: 1px solid var(--hair);
+  }
+  .say-side {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .sub-row {
+    display: flex;
+    gap: 0.5rem;
+    max-inline-size: 26rem;
+  }
+  .sub-row .input {
+    background: color-mix(in srgb, #fff 6%, transparent);
+    border-color: var(--hair-2);
+  }
+  .sub-go {
+    padding: 0 1.15rem;
+    border-radius: var(--r-2);
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background-color var(--d-mid) var(--e-swift),
+      transform 150ms var(--e-swift);
+  }
+  .sub-go:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .sub-go:active {
+    transform: scale(0.97);
+  }
+  .sub-note {
+    color: var(--ink-4);
+    max-inline-size: 34ch;
+  }
+  .done {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--t-sm);
+    color: var(--emerald);
+  }
+  .tick {
+    inline-size: 7px;
+    block-size: 7px;
+    border-radius: 2px;
+    rotate: 45deg;
+    background: var(--emerald);
+    flex: none;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-6);
+    padding-block: var(--s-8);
+  }
+  .ch {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tr-wide);
+    color: var(--ink-4);
+  }
+  .cl {
+    display: grid;
+    gap: 0.7rem;
+    margin-block-start: var(--s-4);
+    font-size: var(--t-sm);
+  }
+  .cl a {
+    color: var(--ink-2);
+    transition: color var(--d-fast) var(--e-swift);
+  }
+  .cl a:hover {
+    color: var(--emerald);
+  }
+  .cl .plain {
+    color: var(--ink-4);
+  }
+  .concept {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+  .concept p {
+    color: var(--ink-4);
+    max-inline-size: 30ch;
+  }
+
+  .base {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    padding-block-start: var(--s-5);
+    border-block-start: 1px solid var(--hair);
+    color: var(--ink-4);
+  }
+
+  @media (max-width: 900px) {
+    .say {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+    .cols {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-7) var(--s-5);
+    }
+  }
+  @media (max-width: 480px) {
+    .sub-row {
+      flex-direction: column;
+    }
+    .sub-go {
+      padding-block: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = form.querySelector<HTMLInputElement>("input[type=email]")!;
+    const err = form.querySelector<HTMLElement>("[data-err]")!;
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
+    input.setAttribute("aria-invalid", String(!ok));
+    err.classList.toggle("on", !ok);
+    if (!ok) {
+      input.focus();
+      return;
+    }
+    form.querySelector<HTMLElement>(".sub-row")!.hidden = true;
+    form.querySelector<HTMLElement>(".sub-note")!.hidden = true;
+    form.querySelector<HTMLElement>("[data-done]")!.hidden = false;
+  });
+</script>

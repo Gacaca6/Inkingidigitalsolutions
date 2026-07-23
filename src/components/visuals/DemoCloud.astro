@@ -1,0 +1,242 @@
+---
+/* Infrastructure, drawn as infrastructure. Traffic flows; a deploy rolls through. */
+---
+
+<div class="infra" aria-hidden="true">
+  <div class="tray">
+    <div class="plate">
+      <div class="head">
+        <b>Production · af-south-1</b>
+        <span class="ok"><em></em>All systems nominal</span>
+      </div>
+
+      <svg viewBox="0 0 400 232" class="topo">
+        <!-- edges -->
+        <g class="wires">
+          <path d="M200 34v26" class="w" style="--wd:300ms" />
+          <path d="M200 86v14q0 8-8 8h-84q-8 0-8 8v18" class="w" style="--wd:420ms" />
+          <path d="M200 86v42" class="w" style="--wd:480ms" />
+          <path d="M200 86v14q0 8 8 8h84q8 0 8 8v18" class="w" style="--wd:540ms" />
+          <path d="M108 172v10q0 8 8 8h76q8 0 8 8v6" class="w" style="--wd:700ms" />
+          <path d="M200 172v32" class="w" style="--wd:740ms" />
+          <path d="M292 172v10q0 8-8 8h-76q-8 0-8 8v6" class="w" style="--wd:780ms" />
+        </g>
+
+        <!-- traffic -->
+        <circle r="2.6" class="pkt">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.3s"
+            path="M200 34v26"></animateMotion>
+        </circle>
+        <circle r="2.6" class="pkt">
+          <animateMotion dur="3.1s" repeatCount="indefinite" begin="1.8s"
+            path="M200 86v14q0 8-8 8h-84q-8 0-8 8v18"></animateMotion>
+        </circle>
+        <circle r="2.6" class="pkt b">
+          <animateMotion dur="3.4s" repeatCount="indefinite" begin="2.4s"
+            path="M200 86v14q0 8 8 8h84q8 0 8 8v18"></animateMotion>
+        </circle>
+        <circle r="2.6" class="pkt">
+          <animateMotion dur="2.9s" repeatCount="indefinite" begin="2.9s"
+            path="M200 172v32"></animateMotion>
+        </circle>
+
+        <!-- nodes -->
+        <g class="n" style="--nd:120ms">
+          <rect x="152" y="10" width="96" height="24" rx="7" />
+          <text x="200" y="25">Edge / CDN</text>
+        </g>
+        <g class="n" style="--nd:260ms">
+          <rect x="152" y="62" width="96" height="24" rx="7" />
+          <text x="200" y="77">Load balancer</text>
+        </g>
+
+        <g class="n app" style="--nd:400ms">
+          <rect x="66" y="128" width="84" height="44" rx="9" />
+          <text x="108" y="147">api-1</text>
+          <text x="108" y="161" class="sub">healthy</text>
+        </g>
+        <g class="n app" style="--nd:470ms">
+          <rect x="158" y="128" width="84" height="44" rx="9" />
+          <text x="200" y="147">api-2</text>
+          <text x="200" y="161" class="sub">healthy</text>
+        </g>
+        <g class="n app deploying" style="--nd:540ms">
+          <rect x="250" y="128" width="84" height="44" rx="9" />
+          <text x="292" y="147">api-3</text>
+          <text x="292" y="161" class="sub">deploying</text>
+        </g>
+
+        <g class="n db" style="--nd:660ms">
+          <rect x="140" y="204" width="120" height="24" rx="7" />
+          <text x="200" y="219">PostgreSQL · primary</text>
+        </g>
+
+        <!-- health dots -->
+        <circle cx="76" cy="138" r="3" class="dot" style="--nd:820ms" />
+        <circle cx="168" cy="138" r="3" class="dot" style="--nd:880ms" />
+        <circle cx="260" cy="138" r="3" class="dot amber" style="--nd:940ms" />
+      </svg>
+
+      <div class="deploy">
+        <div class="dl">
+          <i>Rolling deploy · v2.14.0</i>
+          <i class="num">2 of 3</i>
+        </div>
+        <div class="dtrack"><span></span></div>
+        <i class="dnote num">4 min 12 s elapsed · zero downtime</i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .infra { inline-size: 100%; }
+  .plate {
+    padding: 1.15rem 1.3rem 1.2rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .head b {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--emerald-2);
+  }
+  .ok em {
+    inline-size: 5px; block-size: 5px;
+    border-radius: 50%;
+    background: var(--emerald);
+    animation: beat 2.6s var(--e-io) infinite;
+  }
+  @keyframes beat {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .topo { inline-size: 100%; block-size: auto; }
+
+  .w {
+    fill: none;
+    stroke: var(--hair-2);
+    stroke-width: 1.4;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: draw 1s var(--e-out) forwards;
+    animation-delay: var(--wd);
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  .n {
+    opacity: 0;
+    animation: nIn 0.6s var(--e-out) forwards;
+    animation-delay: var(--nd);
+  }
+  @keyframes nIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  .n rect {
+    fill: var(--paper);
+    stroke: var(--hair-2);
+    stroke-width: 1.2;
+  }
+  .n text {
+    fill: var(--ink-2);
+    font-size: 8px;
+    font-weight: 700;
+    text-anchor: middle;
+    letter-spacing: -0.01em;
+  }
+  .n .sub {
+    fill: var(--ink-4);
+    font-size: 6.5px;
+    font-weight: 500;
+  }
+  .n.app rect {
+    fill: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  }
+  .n.db rect {
+    fill: color-mix(in srgb, var(--emerald) 9%, var(--paper));
+    stroke: color-mix(in srgb, var(--emerald) 42%, transparent);
+  }
+  .n.deploying rect {
+    stroke: #e0a03d;
+    stroke-dasharray: 4 3;
+    animation: crawl 1.4s linear infinite;
+  }
+  @keyframes crawl { to { stroke-dashoffset: -14; } }
+  .n.deploying .sub { fill: #c88a2c; }
+
+  .dot {
+    fill: var(--emerald);
+    opacity: 0;
+    animation: nIn 0.5s var(--e-out) forwards;
+    animation-delay: var(--nd);
+  }
+  .dot.amber { fill: #e0a03d; }
+
+  .pkt {
+    fill: var(--emerald);
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--emerald) 65%, transparent));
+  }
+  .pkt.b { fill: var(--blue); }
+
+  .deploy {
+    display: grid;
+    gap: 0.4rem;
+    padding-block-start: 0.85rem;
+    border-block-start: 1px solid var(--hair);
+  }
+  .dl {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+  .dl i, .dnote {
+    font-size: 0.63rem;
+    font-style: normal;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .dnote { color: var(--ink-4); }
+  .dtrack {
+    block-size: 4px;
+    border-radius: 3px;
+    background: var(--hair);
+    overflow: hidden;
+  }
+  .dtrack span {
+    display: block;
+    block-size: 100%;
+    inline-size: 67%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--emerald), var(--blue));
+    transform-origin: left;
+    scale: 0 1;
+    animation: fillw 1.6s var(--e-out) 0.9s forwards;
+  }
+  @keyframes fillw { to { scale: 1 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .w { stroke-dashoffset: 0; animation: none; }
+    .n, .dot { opacity: 1; animation: none; }
+    .pkt { display: none; }
+    .n.deploying rect { animation: none; }
+    .dtrack span { scale: 1 1; animation: none; }
+    .ok em { animation: none; }
+  }
+</style>

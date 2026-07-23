@@ -1,0 +1,87 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Stories from "../components/home/Stories.astro";
+import Cta from "../components/Cta.astro";
+---
+
+<Base
+  title="Work"
+  description="Client stories from Inkingi Digital Solutions: logistics, financial services and agriculture. Challenge, solution, and the measured outcome."
+>
+  <PageHead
+    idx="01"
+    label="Work"
+    title='Judged on what <span class="accent">changed</span>.'
+    lede="Not a gallery of screens. Each engagement is presented the same way — the state of the business before, what we built, and the numbers twelve months later."
+  />
+
+  <!-- How we report -->
+  <section class="how">
+    <div class="page how-in">
+      {
+        [
+          {
+            k: "Measured before",
+            v: "We record baseline numbers during discovery — cycle times, error rates, hours spent — from the client's own systems.",
+          },
+          {
+            k: "Measured after",
+            v: "The same numbers, twelve months post-launch. Not a survey, not a testimonial. The same query against the same data.",
+          },
+          {
+            k: "Reported as-is",
+            v: "Including the engagements where a number moved less than we hoped. We will discuss those in a strategy session.",
+          },
+        ].map((x, i) => (
+          <div class="hcell" data-reveal style={`--rd:${i * 70}ms`}>
+            <p class="hk">{x.k}</p>
+            <p class="hv">{x.v}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <Stories />
+  <Cta
+    eyebrow="Your turn"
+    title="Let's write the next one together."
+    body="Bring the operational problem that keeps recurring. We will tell you whether software is the answer — and if it is not, we will say that too."
+  />
+</Base>
+
+<style>
+  .how {
+    padding-block: var(--band-tight) 0;
+  }
+  .how-in {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+  .hcell {
+    padding-block-start: var(--s-4);
+    border-block-start: 2px solid var(--emerald);
+  }
+  .hk {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+  }
+  .hv {
+    margin-block-start: 0.6rem;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.65;
+    max-inline-size: 36ch;
+  }
+  @media (max-width: 800px) {
+    .how-in {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+  }
+</style>

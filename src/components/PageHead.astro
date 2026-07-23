@@ -1,0 +1,59 @@
+---
+interface Props {
+  idx: string;
+  label: string;
+  title: string;
+  lede?: string;
+}
+const { idx, label, title, lede } = Astro.props;
+---
+
+<section class="ph">
+  <div class="page">
+    <p class="tag" data-reveal><span class="idx">{idx}</span> {label}</p>
+    <h1 class="ph-t" data-reveal style="--rd:70ms" set:html={title} />
+    {lede && <p class="lead ph-l" data-reveal style="--rd:140ms">{lede}</p>}
+  </div>
+  <!-- a measured seam, not a decorative grid -->
+  <div class="seam page" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</section>
+
+<style>
+  .ph {
+    padding-block: 11rem var(--s-8);
+  }
+  .ph-t {
+    margin-block-start: var(--s-5);
+    font-size: clamp(2.6rem, 6.6vw, 5.4rem);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: var(--tr-hero);
+    max-inline-size: 15ch;
+    text-wrap: balance;
+  }
+  .ph-l {
+    margin-block-start: var(--s-5);
+    max-inline-size: 52ch;
+  }
+  .seam {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-block-start: var(--s-8);
+    border-block-start: 1px solid var(--hair);
+  }
+  .seam span {
+    block-size: 9px;
+    border-inline-start: 1px solid var(--hair);
+  }
+  .seam span:first-child {
+    border-inline-start-color: var(--emerald);
+    border-inline-start-width: 2px;
+  }
+  @media (max-width: 640px) {
+    .ph {
+      padding-block: 8.5rem var(--s-6);
+    }
+  }
+</style>

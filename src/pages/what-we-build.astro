@@ -1,0 +1,127 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Build from "../components/home/Build.astro";
+import Cta from "../components/Cta.astro";
+
+const sectors = [
+  { t: "Financial services", b: "Core platforms, mobile and USSD channels, loan automation, regulator-grade audit trails." },
+  { t: "Logistics & trade", b: "Fleet visibility, digital manifests, cross-border documentation, offline-first field tools." },
+  { t: "Agriculture", b: "Supply chain platforms, yield forecasting, cooperative management, farmer-facing mobile." },
+  { t: "Healthcare", b: "Patient records, clinic operations, telehealth foundations, privacy engineered in from the schema up." },
+  { t: "Government & institutions", b: "Citizen services, records digitisation, procurement systems, institutional reporting." },
+  { t: "Hospitality & retail", b: "Booking engines, point of sale, e-commerce, loyalty, and the operations behind them." },
+];
+---
+
+<Base
+  title="What we build"
+  description="Websites, business software, automation, cloud infrastructure and applied AI — engineered as one digital foundation for African businesses."
+>
+  <PageHead
+    idx="01"
+    label="What we build"
+    title='Software, and the <span class="accent">systems</span> around it.'
+    lede="Five capabilities that combine into one foundation. Below, each is running — not described."
+  />
+
+  <Build />
+
+  <!-- Sectors -->
+  <section class="sec">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">03</span> Where we work</p>
+      <h2 class="d1" data-reveal style="--rd:60ms">
+        Context is half<br />the engineering.
+      </h2>
+      <p class="body sl" data-reveal style="--rd:120ms">
+        A loan platform for a SACCO is not a generic app in different colours.
+        We work deep in a handful of sectors so the systems fit the realities
+        of each — including the ones that only show up in the field.
+      </p>
+
+      <ul class="sgrid">
+        {
+          sectors.map((s, i) => (
+            <li data-reveal style={`--rd:${i * 55}ms`}>
+              <span class="sn num">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{s.t}</h3>
+              <p>{s.b}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="xs snote">
+        Operating somewhere not listed? The engineering transfers. Discovery is
+        where we learn your context — that is what it is for.
+      </p>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .sec {
+    padding-block: var(--band);
+  }
+  .sec h2 {
+    margin-block-start: var(--s-4);
+  }
+  .sl {
+    margin-block-start: var(--s-5);
+    max-inline-size: 56ch;
+  }
+  .sgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-6) clamp(1.5rem, 4vw, 3rem);
+    margin-block-start: var(--s-8);
+  }
+  .sgrid li {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    transition: border-color var(--d-mid) var(--e-swift);
+  }
+  .sgrid li:hover {
+    border-color: var(--emerald);
+  }
+  .sn {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--emerald-2);
+  }
+  .sgrid h3 {
+    font-size: 1.14rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+  }
+  .sgrid p {
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.6;
+    max-inline-size: 34ch;
+  }
+  .snote {
+    margin-block-start: var(--s-7);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    color: var(--ink-4);
+  }
+
+  @media (max-width: 900px) {
+    .sgrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .sgrid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

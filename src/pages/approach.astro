@@ -1,0 +1,212 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Journey from "../components/home/Journey.astro";
+import Cta from "../components/Cta.astro";
+import { principles } from "../data/site";
+
+const refusals = [
+  {
+    t: "We will not build what you do not need",
+    b: "Roughly one in four discovery engagements ends with us recommending less than the client asked for — or a product they can buy for a fraction of what we would charge to build it.",
+  },
+  {
+    t: "We will not hold your system hostage",
+    b: "You own the code, the data, and the infrastructure accounts. Everything is documented well enough that another firm could take over. Partnership should be a choice you keep making.",
+  },
+  {
+    t: "We will not disappear at launch",
+    b: "Launch is the middle of the work, not the end. Our revenue is weighted towards clients in year two and beyond, which aligns us with systems that keep working.",
+  },
+  {
+    t: "We will not quote what we cannot deliver",
+    b: "If a timeline is not achievable we say so during the pitch, not during the build. We have lost work to firms who promised faster. Those clients have called us later.",
+  },
+];
+---
+
+<Base
+  title="Approach"
+  description="How Inkingi Digital Solutions works: a five-stage engagement from discovery to long-term partnership, and the four things we refuse to do."
+>
+  <PageHead
+    idx="01"
+    label="Approach"
+    title='Quiet confidence, <span class="accent">earned</span> in the work.'
+    lede="We are technology architects, not an agency. Our product is business transformation; software is the instrument. This is how the work actually runs."
+  />
+
+  <!-- The premise -->
+  <section class="premise">
+    <div class="page prem-in">
+      <div>
+        <p class="rule d3" data-reveal>
+          The failure mode of technology projects is not bad code. It is
+          building the wrong thing beautifully.
+        </p>
+      </div>
+      <div class="prem-body">
+        <p class="body" data-reveal style="--rd:80ms">
+          Almost every rescued project we inherit was competently engineered. The
+          screens worked. The tests passed. It failed because nobody spent two
+          weeks understanding how the business actually operated before deciding
+          what to build — so the software described a company that did not exist.
+        </p>
+        <p class="body" data-reveal style="--rd:140ms">
+          That is why our first stage produces a written diagnosis rather than a
+          proposal, and why it is the stage we refuse to shorten. Everything
+          downstream — the estimate, the architecture, the interface — is only as
+          good as what we learned in the first fortnight.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Journey />
+
+  <!-- Refusals — the trust section -->
+  <section class="ref">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">04</span> What we refuse</p>
+      <h2 class="d1" data-reveal style="--rd:60ms">
+        Trust is mostly<br />a list of noes.
+      </h2>
+      <div class="rgrid">
+        {
+          refusals.map((r, i) => (
+            <div class="rcell" data-reveal style={`--rd:${i * 70}ms`}>
+              <span class="rn num">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{r.t}</h3>
+              <p>{r.b}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles restated compactly -->
+  <section class="pcs on-navy">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">05</span> Our character</p>
+      <ul class="plist">
+        {
+          principles.map((p, i) => (
+            <li data-reveal style={`--rd:${i * 60}ms`}>
+              <span class="pn num">{p.n}</span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .premise {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .prem-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .prem-in .d3 {
+    max-inline-size: 22ch;
+    font-size: var(--t-d2);
+    line-height: 1.22;
+  }
+  .prem-body {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  /* refusals — asymmetric 2-up, offset second column */
+  .ref {
+    padding-block: var(--band);
+  }
+  .ref h2 {
+    margin-block-start: var(--s-4);
+  }
+  .rgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-7) clamp(2rem, 6vw, 5rem);
+    margin-block-start: var(--s-8);
+  }
+  .rgrid > :nth-child(even) {
+    margin-block-start: var(--s-7);
+  }
+  .rcell {
+    display: grid;
+    gap: 0.7rem;
+    padding-block-start: var(--s-5);
+    border-block-start: 1px solid var(--hair);
+  }
+  .rn {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--emerald-2);
+  }
+  .rcell h3 {
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    max-inline-size: 22ch;
+  }
+  .rcell p {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    max-inline-size: 48ch;
+  }
+
+  /* character */
+  .pcs {
+    padding-block: var(--band);
+  }
+  .plist {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--s-6);
+    margin-block-start: var(--s-7);
+  }
+  .plist li {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .pn {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--emerald);
+  }
+  .plist h3 {
+    font-size: 1.06rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+  }
+  .plist p {
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 880px) {
+    .prem-in,
+    .rgrid {
+      grid-template-columns: 1fr;
+    }
+    .rgrid > :nth-child(even) {
+      margin-block-start: 0;
+    }
+  }
+</style>

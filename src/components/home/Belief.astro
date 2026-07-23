@@ -1,0 +1,103 @@
+---
+import Arrow from "../Arrow.astro";
+---
+
+<section class="belief" data-track>
+  <div class="page">
+    <p class="tag" data-reveal><span class="idx">01</span> Why foundations</p>
+
+    <!-- The thesis, at scale. Type is the image here. -->
+    <p class="thesis d1 lines">
+      <span><span style="--ld:0ms"><b>Inkingi</b> is Kinyarwanda for</span></span>
+      <span><span style="--ld:90ms"><em>pillar</em>. A pillar is not</span></span>
+      <span><span style="--ld:180ms">decoration. It is the thing</span></span>
+      <span><span style="--ld:270ms">everything else rests on.</span></span>
+    </p>
+
+    <div class="two">
+      <div data-reveal>
+        <p class="rule body">
+          Most technology sold on this continent is disposable. A template
+          rebranded as a platform. A project abandoned the week after launch.
+          A vendor who stops answering once the invoice clears. The real cost
+          is not the money — it is the three years a business spends operating
+          on something that cannot carry it.
+        </p>
+      </div>
+      <div data-reveal style="--rd:120ms">
+        <p class="rule body">
+          A digital foundation behaves differently. It automates the work that
+          drains your people. It shows you the operation as it actually is,
+          today, not at month end. And it holds weight when you double in size,
+          because it was engineered to.
+        </p>
+        <a href="/approach" class="tlink more">
+          How we work
+          <Arrow />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .belief {
+    padding-block: var(--band-vast) var(--band);
+  }
+
+  .thesis {
+    margin-block: var(--s-6) var(--s-9);
+    max-inline-size: 22ch;
+    font-weight: 900;
+    letter-spacing: var(--tr-hero);
+    line-height: 1.04;
+  }
+  .thesis b {
+    font-weight: 900;
+    color: var(--emerald-2);
+  }
+  .thesis em {
+    font-style: normal;
+    font-weight: 900;
+    /* the word itself is annotated, like a term being defined */
+    position: relative;
+    white-space: nowrap;
+  }
+  .thesis em::after {
+    content: "";
+    position: absolute;
+    inset-inline: -0.06em;
+    inset-block-end: 0.1em;
+    block-size: 0.075em;
+    background: var(--emerald);
+    /* draws in as the section is scrolled through */
+    transform: scaleX(clamp(0, calc((var(--p, 0) - 0.28) * 3.6), 1));
+    transform-origin: left;
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-7);
+    max-inline-size: 62rem;
+    margin-inline-start: auto;
+  }
+  .two .body {
+    max-inline-size: 44ch;
+  }
+  .more {
+    margin-block-start: var(--s-5);
+  }
+
+  @media (max-width: 860px) {
+    .two {
+      grid-template-columns: 1fr;
+      gap: var(--s-6);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .thesis em::after {
+      transform: scaleX(1);
+    }
+  }
+</style>

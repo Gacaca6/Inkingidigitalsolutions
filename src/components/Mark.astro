@@ -1,0 +1,76 @@
+---
+/**
+ * The Inkingi mark — three rounded diamonds forming a foundation.
+ * Rebuilt as geometry so it can assemble, connect, and breathe.
+ */
+interface Props {
+  size?: number;
+  assemble?: boolean;
+  class?: string;
+}
+const { size = 34, assemble = false, class: cls = "" } = Astro.props;
+---
+
+<svg
+  class:list={["mark", cls, { assemble }]}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="d d1"><rect x="33" y="7" width="34" height="34" rx="9" /></g>
+  <g class="d d2"><rect x="12" y="35" width="34" height="34" rx="9" /></g>
+  <g class="d d3"><rect x="47" y="41" width="34" height="34" rx="9" /></g>
+</svg>
+
+<style>
+  .mark .d {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .mark .d rect {
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 45deg;
+  }
+  .d1 rect,
+  .d2 rect {
+    fill: var(--ink);
+  }
+  .d3 rect {
+    fill: var(--emerald);
+  }
+
+  /* Assembly: the three elements arrive and lock into the foundation */
+  .assemble .d {
+    animation: settle 1s var(--e-out) backwards;
+  }
+  .assemble .d1 {
+    animation-delay: 0.05s;
+  }
+  .assemble .d2 {
+    animation-delay: 0.19s;
+  }
+  .assemble .d3 {
+    animation-delay: 0.33s;
+  }
+
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.55);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assemble .d {
+      animation: none;
+    }
+  }
+</style>

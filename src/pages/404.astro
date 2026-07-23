@@ -1,0 +1,108 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { nav } from "../data/site";
+---
+
+<Base
+  title="Page not found"
+  description="This page could not be found. Return to Inkingi Digital Solutions."
+>
+  <section class="nf">
+    <div class="page nf-in">
+      <svg viewBox="0 0 120 120" class="glyph" aria-hidden="true">
+        <rect x="42" y="8" width="34" height="34" rx="9" class="g n" />
+        <rect x="18" y="44" width="34" height="34" rx="9" class="g n loose" />
+        <rect x="60" y="52" width="34" height="34" rx="9" class="g e" />
+      </svg>
+
+      <p class="tag" data-reveal>Error · 404</p>
+      <h1 class="hero-type ttl" data-reveal style="--rd:60ms">
+        A missing<br /><span class="accent">pillar.</span>
+      </h1>
+      <p class="lead" data-reveal style="--rd:120ms">
+        The page you were looking for is not here — moved, renamed, or never
+        built. The foundation is still standing; let us point you back to it.
+      </p>
+
+      <div class="acts" data-reveal style="--rd:180ms">
+        <a href="/" class="btn">
+          Back to home
+          <span class="well"><Arrow /></span>
+        </a>
+      </div>
+
+      <nav class="quick" aria-label="Site sections" data-reveal style="--rd:240ms">
+        {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-block-size: 82vh;
+    display: grid;
+    align-content: center;
+    padding-block: 10rem var(--band);
+  }
+  .nf-in {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+  }
+  .glyph {
+    inline-size: 5rem;
+    margin-block-end: var(--s-3);
+  }
+  .glyph .g {
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 45deg;
+  }
+  .glyph .n {
+    fill: var(--ink);
+  }
+  .glyph .e {
+    fill: var(--emerald);
+  }
+  /* one diamond drifts loose — the missing piece */
+  .glyph .loose {
+    animation: drift 5s var(--e-io) infinite;
+  }
+  @keyframes drift {
+    0%, 100% { translate: 0 0; rotate: 45deg; }
+    50% { translate: -6px 5px; rotate: 38deg; }
+  }
+  .ttl {
+    max-inline-size: 12ch;
+  }
+  .lead {
+    max-inline-size: 46ch;
+  }
+  .acts {
+    margin-block-start: var(--s-4);
+  }
+  .quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-block-start: var(--s-6);
+    padding-block-start: var(--s-5);
+    border-block-start: 1px solid var(--hair);
+    inline-size: 100%;
+    max-inline-size: 42rem;
+  }
+  .quick a {
+    font-size: var(--t-sm);
+    font-weight: 500;
+    color: var(--ink-3);
+    transition: color var(--d-fast) var(--e-swift);
+  }
+  .quick a:hover {
+    color: var(--emerald-2);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glyph .loose { animation: none; }
+  }
+</style>
