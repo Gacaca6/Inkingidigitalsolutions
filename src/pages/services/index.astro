@@ -1,0 +1,170 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Cta from "../../components/Cta.astro";
+import Arrow from "../../components/Arrow.astro";
+import { services } from "../../data/site";
+---
+
+<Base
+  title="Services"
+  description="Website design, web hosting, graphic design, and digital marketing — everything a Rwandan business needs to be found, trusted, and chosen online."
+>
+  <PageHead
+    idx="01"
+    label="Services"
+    title='Everything you need to <span class="accent">be chosen</span> online.'
+    lede="Four services, one team, one standard. Be found, look the part, and turn attention into customers — all handled under one roof in Kigali."
+  />
+
+  <section class="list">
+    <div class="page">
+      {
+        services.map((s, i) => (
+          <a
+            href={`/services/${s.slug}`}
+            class="row"
+            data-reveal
+            style={`--rd:${i * 60}ms`}
+          >
+            <span class="r-idx num">{s.idx}</span>
+            <span class="r-main">
+              <span class="r-name">{s.name}</span>
+              <span class="r-tag">{s.tagline}</span>
+            </span>
+            <span class="r-sum">{s.summary}</span>
+            <span class="r-feats">
+              {s.includes.slice(0, 3).map((f) => (
+                <span class="rf">
+                  <i />
+                  {f}
+                </span>
+              ))}
+            </span>
+            <span class="r-go">
+              <span class="rg-txt">View & pricing</span>
+              <Arrow />
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <Cta
+    eyebrow="Not sure which you need?"
+    title="Tell us the problem — we'll tell you the fix."
+    body="Most businesses come to us for a website and leave with a plan that also sorts their hosting, brand, and how they get found. One conversation is enough to map it."
+  />
+</Base>
+
+<style>
+  .list {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 2.5rem 1.1fr 1.4fr auto;
+    grid-template-areas: "idx main sum go" "idx feats feats go";
+    gap: var(--s-3) var(--s-6);
+    align-items: start;
+    padding-block: var(--s-6);
+    border-block-start: 1px solid var(--hair);
+    transition: padding-inline-start var(--d-slow) var(--e-swift);
+  }
+  .row:last-child {
+    border-block-end: 1px solid var(--hair);
+  }
+  .row:hover {
+    padding-inline-start: 0.75rem;
+  }
+  .r-idx {
+    grid-area: idx;
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--emerald-2);
+    padding-block-start: 0.4rem;
+  }
+  .r-main {
+    grid-area: main;
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+  }
+  .r-name {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 900;
+    letter-spacing: var(--tr-tight);
+    line-height: 1.05;
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .row:hover .r-name {
+    color: var(--emerald-2);
+  }
+  .r-tag {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+  .r-sum {
+    grid-area: sum;
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+    line-height: 1.6;
+    max-inline-size: 48ch;
+    padding-block-start: 0.3rem;
+  }
+  .r-feats {
+    grid-area: feats;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+    padding-block-start: var(--s-2);
+  }
+  .rf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+  }
+  .rf i {
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    background: var(--emerald);
+  }
+  .r-go {
+    grid-area: go;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: center;
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--emerald-2);
+    white-space: nowrap;
+  }
+  .r-go :global(svg) {
+    inline-size: 12px;
+    block-size: 12px;
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .row:hover .r-go :global(svg) {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 2rem 1fr;
+      grid-template-areas: "idx main" "idx sum" "idx feats" "idx go";
+      gap: var(--s-3) var(--s-4);
+    }
+    .r-go {
+      justify-self: start;
+    }
+    .rg-txt {
+      display: none;
+    }
+  }
+</style>

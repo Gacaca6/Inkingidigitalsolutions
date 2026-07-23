@@ -1,0 +1,193 @@
+---
+/* Graphic design shown as an identity board: mark, palette, type, card. */
+const swatches = ["#0e0c0b", "#c0562e", "#c99a3e", "#f6f2ea"];
+---
+
+<div class="brand" aria-hidden="true">
+  <div class="tray">
+    <div class="plate">
+      <div class="head">
+        <b>Identity system</b>
+        <span class="chip">v3 · approved</span>
+      </div>
+
+      <div class="grid">
+        <!-- the mark, assembling -->
+        <div class="cell mark-cell">
+          <svg viewBox="0 0 100 100" class="bm">
+            <rect x="33" y="9" width="30" height="30" rx="8" class="d n" style="--dd:200ms" />
+            <rect x="14" y="37" width="30" height="30" rx="8" class="d n" style="--dd:340ms" />
+            <rect x="47" y="43" width="30" height="30" rx="8" class="d e" style="--dd:480ms" />
+          </svg>
+        </div>
+
+        <!-- palette -->
+        <div class="cell pal-cell">
+          <span class="cl">Palette</span>
+          <div class="pal">
+            {swatches.map((c, i) => (
+              <span class="sw" style={`--c:${c}; --sd:${600 + i * 110}ms`} />
+            ))}
+          </div>
+        </div>
+
+        <!-- type specimen -->
+        <div class="cell type-cell">
+          <span class="cl">Typeface</span>
+          <p class="spec">Aa</p>
+          <p class="specn">Satoshi · Black / Bold / Regular</p>
+        </div>
+
+        <!-- business card -->
+        <div class="cell card-cell">
+          <div class="card">
+            <svg viewBox="0 0 100 100" class="cm">
+              <rect x="30" y="14" width="26" height="26" rx="7" fill="var(--ink)" transform="rotate(45 43 27)" />
+              <rect x="14" y="40" width="26" height="26" rx="7" fill="var(--ink)" transform="rotate(45 27 53)" />
+              <rect x="46" y="46" width="26" height="26" rx="7" fill="var(--emerald)" transform="rotate(45 59 59)" />
+            </svg>
+            <span class="cn"></span>
+            <span class="cr"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .brand { inline-size: 100%; }
+  .plate {
+    padding: 1.1rem 1.2rem 1.2rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .head b {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .chip {
+    padding: 0.22rem 0.6rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald-wash);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--emerald-2);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .cell {
+    border-radius: var(--r-2);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    padding: 0.85rem;
+    min-block-size: 6.2rem;
+    display: grid;
+  }
+  .cl {
+    font-size: 0.56rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+
+  .mark-cell {
+    place-items: center;
+    background: color-mix(in srgb, var(--ink) 3%, transparent);
+  }
+  .bm { inline-size: 3.4rem; }
+  .d {
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 45deg;
+    opacity: 0;
+    animation: pop 0.7s var(--e-out) forwards;
+    animation-delay: var(--dd);
+  }
+  .d.n { fill: var(--ink); }
+  .d.e { fill: var(--emerald); }
+  @keyframes pop {
+    from { opacity: 0; translate: 0 -10px; scale: 0.5; }
+    to { opacity: 1; translate: 0 0; scale: 1; }
+  }
+
+  .pal-cell { align-content: space-between; }
+  .pal {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+  }
+  .sw {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: var(--c);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    opacity: 0;
+    scale: 0.6;
+    animation: sw 0.5s var(--e-out) forwards;
+    animation-delay: var(--sd);
+  }
+  @keyframes sw { to { opacity: 1; scale: 1; } }
+
+  .type-cell { align-content: space-between; }
+  .spec {
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .specn {
+    font-size: 0.58rem;
+    color: var(--ink-4);
+  }
+
+  .card-cell {
+    place-items: center;
+    background: color-mix(in srgb, var(--emerald) 8%, transparent);
+  }
+  .card {
+    inline-size: 100%;
+    max-inline-size: 8.5rem;
+    aspect-ratio: 1.6;
+    border-radius: 8px;
+    background: var(--paper-2);
+    box-shadow: var(--lift-2);
+    padding: 0.6rem;
+    display: grid;
+    align-content: space-between;
+    animation: rise 0.8s var(--e-out) 0.5s backwards;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px) rotate(-2deg); }
+    to { opacity: 1; transform: none; }
+  }
+  .cm { inline-size: 1.4rem; }
+  .cn {
+    inline-size: 60%;
+    block-size: 5px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--ink) 26%, transparent);
+  }
+  .cr {
+    inline-size: 40%;
+    block-size: 4px;
+    border-radius: 2px;
+    background: var(--hair-2);
+    margin-block-start: -3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .d, .sw, .card { opacity: 1; scale: 1; animation: none; }
+  }
+</style>

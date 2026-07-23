@@ -42,9 +42,14 @@ drawn in SVG/CSS.
 
 ## Pages
 
-`/` home · `/approach` · `/what-we-build` · `/work` · `/pricing`
-(transparent RWF pricing + estimator on `/contact`) · `/insights` ·
-`/careers` · `/contact` · `404`
+`/` home · `/about` · `/services` (+ `/services/website-design`,
+`/web-hosting`, `/graphic-design`, `/digital-marketing`) · `/pricing`
+(transparent RWF pricing + estimator on `/contact`) · `/clients` ·
+`/insights` · `/careers` · `/contact` · `404`
+
+Nav is two-tier — a contact strip (phone / WhatsApp / email) over the main
+nav, which carries a Services dropdown. Services, packages, and all pricing
+live in `src/data/site.ts`.
 
 ## Commands
 

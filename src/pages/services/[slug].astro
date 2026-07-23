@@ -1,0 +1,226 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Cta from "../../components/Cta.astro";
+import PackageCards from "../../components/PackageCards.astro";
+import ServiceTiers from "../../components/ServiceTiers.astro";
+import Arrow from "../../components/Arrow.astro";
+import DemoSite from "../../components/visuals/DemoSite.astro";
+import DemoCloud from "../../components/visuals/DemoCloud.astro";
+import DemoBrand from "../../components/visuals/DemoBrand.astro";
+import DemoMarketing from "../../components/visuals/DemoMarketing.astro";
+import { services } from "../../data/site";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const demos = {
+  site: DemoSite,
+  cloud: DemoCloud,
+  brand: DemoBrand,
+  marketing: DemoMarketing,
+};
+const Demo = demos[service.demo];
+const others = services.filter((s) => s.slug !== service.slug);
+---
+
+<Base title={service.name} description={service.summary}>
+  <PageHead
+    idx={service.idx}
+    label="Service"
+    title={service.tagline}
+    lede={service.summary}
+  />
+
+  <!-- Intro + live demo -->
+  <section class="intro">
+    <div class="page intro-in">
+      <div class="intro-say">
+        <div class="rule" data-reveal>
+          <p class="body">{service.intro}</p>
+        </div>
+        <ul class="inc" data-reveal style="--rd:120ms">
+          {
+            service.includes.map((x) => (
+              <li>
+                <span class="di" />
+                {x}
+              </li>
+            ))
+          }
+        </ul>
+        <div data-reveal style="--rd:200ms">
+          <a href="/contact" class="btn">
+            Start this service
+            <span class="well"><Arrow /></span>
+          </a>
+        </div>
+      </div>
+      <div class="intro-demo" data-reveal="scale" style="--rd:120ms">
+        <Demo />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing on-navy">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">$</span> Pricing</p>
+      <h2 class="d1" data-reveal style="--rd:60ms">
+        {service.pricing === "packages" ? "Website packages." : "Simple, honest pricing."}
+      </h2>
+      <div class="pricing-body" data-reveal style="--rd:120ms">
+        {
+          service.pricing === "packages" ? (
+            <PackageCards />
+          ) : (
+            <ServiceTiers lede={service.pricing.lede} tiers={service.pricing.tiers} />
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="others">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">→</span> Also from Inkingi</p>
+      <div class="ogrid">
+        {
+          others.map((s, i) => (
+            <a href={`/services/${s.slug}`} class="ocell" data-reveal style={`--rd:${i * 60}ms`}>
+              <span class="o-idx num">{s.idx}</span>
+              <span class="o-name">{s.name}</span>
+              <span class="o-tag">{s.tagline}</span>
+              <span class="o-go" aria-hidden="true">→</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .intro-in {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .intro-say {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+  .inc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem var(--s-5);
+  }
+  .inc li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+  }
+  .di {
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    background: var(--emerald);
+    flex: none;
+    translate: 0 -1px;
+  }
+
+  .pricing {
+    padding-block: var(--band);
+  }
+  .pricing h2 {
+    margin-block-start: var(--s-4);
+  }
+  .pricing-body {
+    margin-block-start: var(--s-7);
+  }
+
+  .others {
+    padding-block: var(--band);
+  }
+  .ogrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-4);
+    margin-block-start: var(--s-6);
+  }
+  .ocell {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "idx go" "name name" "tag tag";
+    gap: 0.4rem 0.5rem;
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    transition: transform var(--d-mid) var(--e-swift),
+      box-shadow var(--d-mid) var(--e-swift);
+  }
+  .ocell:hover {
+    transform: translateY(-3px);
+    box-shadow: inset 0 0 0 1px var(--emerald);
+  }
+  .o-idx {
+    grid-area: idx;
+    font-size: var(--t-micro);
+    font-weight: 700;
+    color: var(--emerald-2);
+  }
+  .o-go {
+    grid-area: go;
+    justify-self: end;
+    color: var(--emerald-2);
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .ocell:hover .o-go {
+    transform: translateX(4px);
+  }
+  .o-name {
+    grid-area: name;
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+  }
+  .o-tag {
+    grid-area: tag;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 900px) {
+    .intro-in {
+      grid-template-columns: 1fr;
+      gap: var(--s-7);
+    }
+    .intro-demo {
+      order: -1;
+    }
+    .ogrid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 460px) {
+    .inc {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

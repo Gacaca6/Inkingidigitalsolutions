@@ -1,6 +1,6 @@
 ---
 import Mark from "./Mark.astro";
-import { site, nav } from "../data/site";
+import { site, services } from "../data/site";
 const year = new Date().getFullYear();
 ---
 
@@ -48,17 +48,22 @@ const year = new Date().getFullYear();
     <!-- Columns -->
     <div class="cols">
       <div>
-        <p class="ch">Company</p>
+        <p class="ch">Services</p>
         <ul class="cl">
-          {nav.slice(0, 3).map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-          <li><a href="/contact">Contact</a></li>
+          {services.map((s) => (
+            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+          ))}
+          <li><a href="/pricing">Pricing</a></li>
         </ul>
       </div>
       <div>
-        <p class="ch">Explore</p>
+        <p class="ch">Company</p>
         <ul class="cl">
-          {nav.slice(3).map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-          <li><a href="/what-we-build#ai">Applied AI</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/clients">Our Clients</a></li>
+          <li><a href="/insights">Insights</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
       <div>

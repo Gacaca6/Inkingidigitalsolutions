@@ -1,0 +1,215 @@
+---
+import Arrow from "./Arrow.astro";
+import { webPackages } from "../data/site";
+---
+
+<div class="packs">
+  {
+    webPackages.map((p, i) => (
+      <article
+        class:list={["pack", { hero: p.featured }]}
+        data-reveal
+        style={`--rd:${i * 70}ms`}
+      >
+        {p.featured && <span class="flag">Most popular</span>}
+
+        <h3 class="pk-name">{p.name} Package</h3>
+        <p class="pk-blurb">{p.blurb}</p>
+
+        <ul class="pk-feats">
+          {p.features.map((f) => (
+            <li>
+              <span class="tick">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="m3 8.3 3.2 3.2L13 4.6"
+                    stroke="currentColor"
+                    stroke-width="2.1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              {f}
+            </li>
+          ))}
+        </ul>
+
+        <div class="pk-price">
+          <div class="pp setup">
+            <span class="pv num">{p.setup}</span>
+            <span class="pu">RWF</span>
+            <span class="pl">One-time setup fee</span>
+          </div>
+          <div class="pp monthly">
+            <span class="pv num">{p.monthly}</span>
+            <span class="pu">RWF</span>
+            <span class="pl">/month</span>
+          </div>
+        </div>
+
+        <a
+          href={`/contact?package=${p.id}`}
+          class:list={["btn pk-cta", p.featured ? "accentbtn" : "ghost"]}
+        >
+          {p.cta}
+          <span class="well"><Arrow /></span>
+        </a>
+      </article>
+    ))
+  }
+</div>
+
+<p class="packs-note xs">
+  The monthly fee covers hosting, security updates, backups, and priority
+  support. No lock-in — you can move on after the first year, and the site is
+  yours. Prices exclude VAT.
+</p>
+
+<style>
+  .packs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-4);
+    align-items: stretch;
+  }
+
+  .pack {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--s-5) var(--s-5);
+    border-radius: var(--r-4);
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-1);
+    transition: transform var(--d-slow) var(--e-swift),
+      box-shadow var(--d-slow) var(--e-swift);
+  }
+  .pack:hover {
+    transform: translateY(-5px);
+    box-shadow: inset 0 0 0 1px var(--hair-2), var(--lift-3);
+  }
+  .pack.hero {
+    box-shadow: inset 0 0 0 1.5px var(--emerald), var(--lift-2);
+  }
+  .pack.hero:hover {
+    box-shadow: inset 0 0 0 1.5px var(--emerald), var(--lift-3);
+  }
+
+  .flag {
+    position: absolute;
+    inset-block-start: -0.7rem;
+    inset-inline-start: var(--s-5);
+    padding: 0.24rem 0.75rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .pk-name {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: var(--tr-tight);
+  }
+  .pk-blurb {
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.55;
+    margin-block-start: -0.4rem;
+  }
+
+  .pk-feats {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    padding-block: var(--s-4);
+    border-block: 1px solid var(--hair);
+  }
+  .pk-feats li {
+    display: grid;
+    grid-template-columns: 1.15rem 1fr;
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--t-xs);
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .tick {
+    display: grid;
+    place-items: center;
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    border-radius: 50%;
+    background: var(--emerald-wash);
+    margin-block-start: 0.05rem;
+  }
+  .tick svg {
+    inline-size: 10px;
+    block-size: 10px;
+    color: var(--emerald-2);
+  }
+
+  .pk-price {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+  }
+  .pp {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 0.3rem 0.35rem;
+  }
+  .pv {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+  .setup .pv {
+    color: var(--emerald-2);
+  }
+  .pu {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .pl {
+    grid-column: 1 / -1;
+    font-size: var(--t-micro);
+    color: var(--ink-4);
+  }
+
+  .pk-cta {
+    justify-content: space-between;
+    margin-block-start: var(--s-2);
+  }
+
+  .packs-note {
+    margin-block-start: var(--s-6);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    color: var(--ink-4);
+    max-inline-size: 74ch;
+  }
+
+  @media (max-width: 980px) {
+    .packs {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+      max-inline-size: 30rem;
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 380px) {
+    .pk-price {
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+    }
+  }
+</style>

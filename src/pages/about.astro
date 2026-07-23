@@ -7,33 +7,33 @@ import { principles } from "../data/site";
 
 const refusals = [
   {
-    t: "We will not build what you do not need",
-    b: "Roughly one in four discovery engagements ends with us recommending less than the client asked for — or a product they can buy for a fraction of what we would charge to build it.",
+    t: "We won't sell you what you don't need",
+    b: "Plenty of businesses come asking for an expensive site when a sharp landing page and better marketing would serve them far better. When that's true, we say so — and quote the smaller job.",
   },
   {
-    t: "We will not hold your system hostage",
-    b: "You own the code, the data, and the infrastructure accounts. Everything is documented well enough that another firm could take over. Partnership should be a choice you keep making.",
+    t: "We won't hold your business hostage",
+    b: "You own your domain, your files, your accounts. Everything is set up so another firm could take over tomorrow. Staying with us should be a choice you keep making, not a trap.",
   },
   {
-    t: "We will not disappear at launch",
-    b: "Launch is the middle of the work, not the end. Our revenue is weighted towards clients in year two and beyond, which aligns us with systems that keep working.",
+    t: "We won't disappear after launch",
+    b: "Launch is the middle of the work, not the end. Most of our business is clients we launched long ago and still look after — which keeps us honest about building things that last.",
   },
   {
-    t: "We will not quote what we cannot deliver",
-    b: "If a timeline is not achievable we say so during the pitch, not during the build. We have lost work to firms who promised faster. Those clients have called us later.",
+    t: "We won't promise what we can't deliver",
+    b: "If a deadline isn't realistic, we say so during the pitch, not during the build. We've lost jobs to firms who promised faster. Those clients have often come back.",
   },
 ];
 ---
 
 <Base
-  title="Approach"
-  description="How Inkingi Digital Solutions works: a five-stage engagement from discovery to long-term partnership, and the four things we refuse to do."
+  title="About"
+  description="Inkingi Digital Solutions is a digital studio in Kigali — website design, hosting, branding, and marketing — held to the standard of the world's best."
 >
   <PageHead
     idx="01"
-    label="Approach"
+    label="About"
     title='Quiet confidence, <span class="accent">earned</span> in the work.'
-    lede="We are technology architects, not an agency. Our product is business transformation; software is the instrument. This is how the work actually runs."
+    lede="We're a digital studio in Kigali. We design websites, host and look after them, build brands, and help Rwandan businesses get found — at a standard we're proud to sign."
   />
 
   <!-- The premise -->
@@ -41,22 +41,22 @@ const refusals = [
     <div class="page prem-in">
       <div>
         <p class="rule d3" data-reveal>
-          The failure mode of technology projects is not bad code. It is
-          building the wrong thing beautifully.
+          The failure mode of a website project isn't bad code. It's building
+          the wrong thing beautifully.
         </p>
       </div>
       <div class="prem-body">
         <p class="body" data-reveal style="--rd:80ms">
-          Almost every rescued project we inherit was competently engineered. The
-          screens worked. The tests passed. It failed because nobody spent two
-          weeks understanding how the business actually operated before deciding
-          what to build — so the software described a company that did not exist.
+          Most disappointing sites we're asked to rescue were competently made.
+          The pages loaded, the design was fine. They failed because nobody
+          asked what the business actually needed before deciding what to build
+          — so the site spoke to customers who weren't there.
         </p>
         <p class="body" data-reveal style="--rd:140ms">
-          That is why our first stage produces a written diagnosis rather than a
-          proposal, and why it is the stage we refuse to shorten. Everything
-          downstream — the estimate, the architecture, the interface — is only as
-          good as what we learned in the first fortnight.
+          That's why we start every job with a real conversation, not a
+          template. What you sell, who you sell to, and what's getting in the
+          way. Everything after — the design, the words, the price — is only as
+          good as what we learn there.
         </p>
       </div>
     </div>
@@ -85,10 +85,10 @@ const refusals = [
     </div>
   </section>
 
-  <!-- Principles restated compactly -->
+  <!-- Principles -->
   <section class="pcs on-navy">
     <div class="page">
-      <p class="tag" data-reveal><span class="idx">05</span> Our character</p>
+      <p class="tag" data-reveal><span class="idx">05</span> What we hold to</p>
       <ul class="plist">
         {
           principles.map((p, i) => (
@@ -126,7 +126,6 @@ const refusals = [
     gap: var(--s-5);
   }
 
-  /* refusals — asymmetric 2-up, offset second column */
   .ref {
     padding-block: var(--band);
   }
@@ -166,7 +165,6 @@ const refusals = [
     max-inline-size: 48ch;
   }
 
-  /* character */
   .pcs {
     padding-block: var(--band);
   }

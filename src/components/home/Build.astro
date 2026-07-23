@@ -1,56 +1,54 @@
 ---
-import { capabilities } from "../../data/site";
+import { services } from "../../data/site";
 import DemoSite from "../visuals/DemoSite.astro";
-import DemoDashboard from "../visuals/DemoDashboard.astro";
-import DemoAutomation from "../visuals/DemoAutomation.astro";
 import DemoCloud from "../visuals/DemoCloud.astro";
-import DemoAI from "../visuals/DemoAI.astro";
+import DemoBrand from "../visuals/DemoBrand.astro";
+import DemoMarketing from "../visuals/DemoMarketing.astro";
 import Arrow from "../Arrow.astro";
 
 const demos = {
   site: DemoSite,
-  dashboard: DemoDashboard,
-  automation: DemoAutomation,
   cloud: DemoCloud,
-  ai: DemoAI,
+  brand: DemoBrand,
+  marketing: DemoMarketing,
 };
 ---
 
-<section id="what-we-build" class="build">
-  <!-- Section opener -->
+<section id="services" class="build">
   <div class="page opener">
-    <p class="tag" data-reveal><span class="idx">02</span> What we build</p>
+    <p class="tag" data-reveal><span class="idx">02</span> What we do</p>
     <div class="opener-grid">
       <h2 class="d1" data-reveal style="--rd:60ms">
-        Five things. Shown, not listed.
+        Four services. Shown, not listed.
       </h2>
       <p class="body" data-reveal style="--rd:140ms">
-        Every capability below is running on this page. Watch what it does —
-        it will tell you more than a paragraph of adjectives.
+        Everything a Rwandan business needs to be found, trusted, and chosen
+        online — designed, built, and looked after under one roof. Each one
+        below is running live on this page.
       </p>
     </div>
   </div>
 
   {
-    capabilities.map((c, i) => {
-      const Demo = demos[c.demo];
+    services.map((s, i) => {
+      const Demo = demos[s.demo];
       const dark = i % 2 === 1;
       const flip = i % 2 === 1;
       return (
-        <article id={c.id} class:list={["cap", { "on-navy": dark, flip }]}>
+        <article id={s.slug} class:list={["cap", { "on-navy": dark, flip }]}>
           <div class="page cap-in">
             <div class="cap-say">
               <p class="tag" data-reveal>
-                <span class="idx">{c.idx}</span> {c.kicker}
+                <span class="idx">{s.idx}</span> {s.name}
               </p>
               <h3 class="d2" data-reveal style="--rd:60ms">
-                {c.title}
+                {s.tagline}
               </h3>
               <p class="body" data-reveal style="--rd:120ms">
-                {c.body}
+                {s.summary}
               </p>
               <ul class="pts" data-reveal style="--rd:180ms">
-                {c.points.map((p) => (
+                {s.includes.slice(0, 4).map((p) => (
                   <li>
                     <span class="di" />
                     {p}
@@ -58,9 +56,8 @@ const demos = {
                 ))}
               </ul>
               <div class="cap-foot" data-reveal style="--rd:240ms">
-                <span class="proof num">{c.proof}</span>
-                <a href="/contact" class="tlink">
-                  Talk about this
+                <a href={`/services/${s.slug}`} class="tlink">
+                  {s.name} & pricing
                   <Arrow />
                 </a>
               </div>
@@ -94,7 +91,6 @@ const demos = {
   .cap {
     padding-block: var(--band-tight);
   }
-  /* Navy islands get extra air and a soft top/bottom seam */
   .cap.on-navy {
     padding-block: var(--band);
   }
@@ -153,11 +149,6 @@ const demos = {
     padding-block-start: var(--s-4);
     border-block-start: 1px solid var(--hair);
     inline-size: 100%;
-  }
-  .proof {
-    font-size: var(--t-xs);
-    font-weight: 700;
-    color: var(--ink-4);
   }
 
   .cap-demo {
