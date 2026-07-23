@@ -1,0 +1,115 @@
+---
+const points = [
+  {
+    n: "01",
+    t: "One team, start to finish",
+    b: "Design, build, hosting, and marketing under one roof. No juggling three vendors who blame each other.",
+  },
+  {
+    n: "02",
+    t: "Prices on the website",
+    b: "Real starting figures, right here. You get a fixed quote before we start — no surprise invoices, ever.",
+  },
+  {
+    n: "03",
+    t: "We host it and look after it",
+    b: "We don't vanish at launch. Your site stays fast, secure, and backed up, with a human to call.",
+  },
+  {
+    n: "04",
+    t: "Built here, to a world standard",
+    b: "Made in Kigali, for mobile money and real connections — held to the bar of the best studios anywhere.",
+  },
+];
+---
+
+<section class="promise on-navy">
+  <div class="page">
+    <div class="p-head">
+      <p class="tag" data-reveal><span class="idx">02</span> Why Inkingi</p>
+      <h2 class="d1" data-reveal style="--rd:60ms">
+        New studio.<br /><span class="accent">Serious</span> standards.
+      </h2>
+      <p class="body" data-reveal style="--rd:120ms">
+        We are just beginning — and that is exactly why we obsess over every
+        project. Our name is on each one. Here is what you can count on.
+      </p>
+    </div>
+
+    <ul class="p-grid">
+      {
+        points.map((p, i) => (
+          <li data-reveal style={`--rd:${140 + i * 70}ms`}>
+            <span class="pn num">{p.n}</span>
+            <h3>{p.t}</h3>
+            <p>{p.b}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .promise {
+    padding-block: var(--band-vast);
+  }
+  .p-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-6) var(--s-8);
+    align-items: end;
+  }
+  .p-head h2 {
+    margin-block-start: var(--s-4);
+  }
+  .p-head .body {
+    max-inline-size: 46ch;
+  }
+
+  .p-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-6) var(--s-5);
+    margin-block-start: var(--s-9);
+  }
+  .p-grid li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .pn {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--emerald);
+  }
+  .p-grid h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+  }
+  .p-grid p {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .p-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+    .p-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6) var(--s-5);
+    }
+  }
+  @media (max-width: 520px) {
+    .p-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

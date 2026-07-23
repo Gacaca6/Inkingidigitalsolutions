@@ -119,13 +119,13 @@ const interests = [
           </span>
           <h2 class="d2">Received.</h2>
           <p class="body">
-            We reply within one business day with two or three times that suit
-            us. If it is urgent, call {site.phone} and ask for the studio.
+            We reply within one business day with a couple of times that suit
+            us. If it is urgent, call or WhatsApp {site.phones[0]}.
           </p>
           <ol class="next">
-            <li><span class="num">01</span> We confirm a time — 45 minutes, video or in Kigali.</li>
-            <li><span class="num">02</span> We talk about the business, not the software.</li>
-            <li><span class="num">03</span> You receive a one-page technology brief. Yours to keep.</li>
+            <li><span class="num">01</span> We confirm a time — 30 minutes, on a call or in Kigali.</li>
+            <li><span class="num">02</span> We talk about your business, not jargon.</li>
+            <li><span class="num">03</span> You leave with a clear plan and a fixed price.</li>
           </ol>
         </div>
       </div>
@@ -135,9 +135,13 @@ const interests = [
         <div class="scell" data-reveal style="--rd:80ms">
           <p class="sk">Direct</p>
           <ul class="sl">
-            <li><a href={`mailto:${site.email}`}>{site.email}</a><i>new work</i></li>
-            <li><a href={`mailto:${site.careersEmail}`}>{site.careersEmail}</a><i>joining us</i></li>
-            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a><i>studio line</i></li>
+            <li><a href={`mailto:${site.email}`}>{site.email}</a><i>email us anytime</i></li>
+            {site.phones.map((p, idx) => (
+              <li>
+                <a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a>
+                <i>{idx === 0 ? "call or WhatsApp" : "call us"}</i>
+              </li>
+            ))}
           </ul>
         </div>
 

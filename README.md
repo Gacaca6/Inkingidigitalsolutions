@@ -42,14 +42,16 @@ drawn in SVG/CSS.
 
 ## Pages
 
-`/` home · `/about` · `/services` (+ `/services/website-design`,
-`/web-hosting`, `/graphic-design`, `/digital-marketing`) · `/pricing`
-(transparent RWF pricing + estimator on `/contact`) · `/clients` ·
-`/insights` · `/careers` · `/contact` · `404`
+`/` home (lean overview only) · `/about` · `/services` (+ the four service
+pages `/services/website-design`, `/web-hosting`, `/graphic-design`,
+`/digital-marketing`) · `/work` (portfolio) · `/pricing` · `/contact`
+(+ estimator) · `/insights` · `/careers` · `404`
 
-Nav is two-tier — a contact strip (phone / WhatsApp / email) over the main
-nav, which carries a Services dropdown. Services, packages, and all pricing
-live in `src/data/site.ts`.
+Each page owns its purpose — the home page routes; the depth (demos, pricing,
+process, portfolio) lives on the dedicated pages. Nav is two-tier: a contact
+strip (two phones / WhatsApp / email) over the main nav, which carries a
+Services dropdown and a Pricing link. All services, packages, pricing, and
+the portfolio live in `src/data/site.ts` — add real projects to `portfolio`.
 
 ## Commands
 

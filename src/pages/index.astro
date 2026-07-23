@@ -1,23 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import Hero from "../components/home/Hero.astro";
+import WhatWeDo from "../components/home/WhatWeDo.astro";
 import Belief from "../components/home/Belief.astro";
-import Build from "../components/home/Build.astro";
-import Journey from "../components/home/Journey.astro";
-import Stories from "../components/home/Stories.astro";
-import Principles from "../components/home/Principles.astro";
+import Promise from "../components/home/Promise.astro";
+import WorkTeaser from "../components/home/WorkTeaser.astro";
 import Cta from "../components/Cta.astro";
 ---
 
 <Base
   title="home"
-  description="Inkingi Digital Solutions engineers the software, automation, cloud infrastructure and applied AI that African businesses run on. A technology partner in Kigali, Rwanda."
+  description="Inkingi Digital Solutions is a Kigali studio building websites, hosting, branding, and digital marketing for Rwandan businesses. Clear prices, real proof, one team."
 >
   <Hero />
+  <WhatWeDo />
   <Belief />
-  <Build />
-  <Journey />
-  <Stories />
-  <Principles />
+  <Promise />
+  <WorkTeaser />
   <Cta />
 </Base>

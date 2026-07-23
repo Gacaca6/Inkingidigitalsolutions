@@ -70,7 +70,9 @@ const year = new Date().getFullYear();
         <p class="ch">Reach us</p>
         <ul class="cl">
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          <li><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a></li>
+          {site.phones.map((p) => (
+            <li><a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a></li>
+          ))}
           <li class="plain">{site.city}</li>
           <li class="plain">{site.hours}</li>
         </ul>

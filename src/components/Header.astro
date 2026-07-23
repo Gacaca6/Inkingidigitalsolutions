@@ -16,16 +16,24 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
         {site.city} · {site.hours}
       </p>
       <div class="util-right">
-        <a href={`tel:${site.phone.replace(/\s/g, "")}`} class="u-item">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M6.5 4h-2A1.5 1.5 0 0 0 3 5.6C3 13 11 21 18.4 21A1.5 1.5 0 0 0 20 19.5v-2a1.3 1.3 0 0 0-1-1.3l-2.7-.6a1.3 1.3 0 0 0-1.3.5l-.6.8a11 11 0 0 1-4.5-4.5l.8-.6a1.3 1.3 0 0 0 .5-1.3l-.6-2.7A1.3 1.3 0 0 0 6.5 4Z"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linejoin="round"></path>
-          </svg>
-          <span>{site.phone}</span>
-        </a>
+        {
+          site.phones.map((p, i) => (
+            <a
+              href={`tel:${p.replace(/\s/g, "")}`}
+              class:list={["u-item", { "u-phone2": i === 1 }]}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M6.5 4h-2A1.5 1.5 0 0 0 3 5.6C3 13 11 21 18.4 21A1.5 1.5 0 0 0 20 19.5v-2a1.3 1.3 0 0 0-1-1.3l-2.7-.6a1.3 1.3 0 0 0-1.3.5l-.6.8a11 11 0 0 1-4.5-4.5l.8-.6a1.3 1.3 0 0 0 .5-1.3l-.6-2.7A1.3 1.3 0 0 0 6.5 4Z"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>{p}</span>
+            </a>
+          ))
+        }
         <a
           href={`https://wa.me/${waNumber}`}
           class="u-item"
@@ -196,7 +204,11 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
     }
   </nav>
   <div class="sheet-foot">
-    <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+    {
+      site.phones.map((p) => (
+        <a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a>
+      ))
+    }
     <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener">WhatsApp</a>
     <a href={`mailto:${site.email}`}>{site.email}</a>
   </div>
@@ -643,8 +655,13 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
     color: var(--emerald-2);
   }
 
-  @media (max-width: 1120px) {
+  @media (max-width: 1260px) {
     .u-email {
+      display: none;
+    }
+  }
+  @media (max-width: 1080px) {
+    .u-phone2 {
       display: none;
     }
   }

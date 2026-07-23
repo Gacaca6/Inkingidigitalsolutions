@@ -9,20 +9,19 @@ import Arrow from "../Arrow.astro";
       <p class="tag" data-reveal>Kigali, Rwanda · est. 2024</p>
 
       <h1 class="hero-type lines">
-        <span><span style="--ld:80ms">The digital</span></span>
-        <span><span style="--ld:180ms">foundation</span></span>
-        <span><span style="--ld:280ms">African business</span></span>
-        <span><span style="--ld:380ms" class="accent">runs on.</span></span>
+        <span><span style="--ld:80ms">Websites that</span></span>
+        <span><span style="--ld:180ms">win you</span></span>
+        <span><span style="--ld:280ms" class="accent">customers.</span></span>
       </h1>
 
-      <p class="lead" data-reveal style="--rd:620ms">
-        We engineer the software, automation and infrastructure that let a
-        business modernise once — and keep building on it for a decade.
+      <p class="lead" data-reveal style="--rd:560ms">
+        A Kigali studio building the websites, hosting, branding, and marketing
+        that Rwandan businesses need to be found, trusted, and chosen online.
       </p>
 
-      <div class="acts" data-reveal style="--rd:740ms">
+      <div class="acts" data-reveal style="--rd:680ms">
         <a href="/contact" class="btn">
-          Book a strategy session
+          Get a free quote
           <span class="well"><Arrow /></span>
         </a>
         <a href="/services" class="btn ghost">
@@ -31,20 +30,12 @@ import Arrow from "../Arrow.astro";
         </a>
       </div>
 
-      <dl class="facts" data-reveal style="--rd:880ms">
-        <div>
-          <dt>Systems live in</dt>
-          <dd class="num">3 countries</dd>
-        </div>
-        <div>
-          <dt>People using them daily</dt>
-          <dd class="num">54,000+</dd>
-        </div>
-        <div>
-          <dt>Clients still with us after year one</dt>
-          <dd class="num">100%</dd>
-        </div>
-      </dl>
+      <ul class="chips" data-reveal style="--rd:820ms">
+        <li>Website Design</li>
+        <li>Web Hosting</li>
+        <li>Graphic Design</li>
+        <li>Digital Marketing</li>
+      </ul>
     </div>
 
     <!-- Right: the foundation assembles -->
@@ -203,29 +194,34 @@ import Arrow from "../Arrow.astro";
     margin-block-start: var(--s-3);
   }
 
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--s-5);
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-block-start: var(--s-6);
     padding-block-start: var(--s-5);
     border-block-start: 1px solid var(--hair);
     inline-size: 100%;
-    max-inline-size: 36rem;
+    max-inline-size: 34rem;
   }
-  .facts dt {
-    font-size: var(--t-micro);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink-4);
-    font-weight: 700;
-    max-inline-size: 16ch;
+  .chips li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--hair-2);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--ink-2);
   }
-  .facts dd {
-    margin-block-start: 0.35rem;
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: var(--tr-tight);
+  .chips li::before {
+    content: "";
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    background: var(--emerald);
   }
 
   /* ---- the structural drawing ---- */

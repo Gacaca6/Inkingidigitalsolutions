@@ -1,0 +1,181 @@
+---
+import Arrow from "../Arrow.astro";
+---
+
+<section class="wt">
+  <div class="page wt-in">
+    <div class="wt-say" data-reveal>
+      <p class="tag"><span class="idx">03</span> Our work</p>
+      <h2 class="d1">
+        The proof is the page<br />you're <span class="accent">reading now.</span>
+      </h2>
+      <p class="body">
+        This whole site — the design, the speed, the little animations, the
+        hosting it runs on — was built by us, for us. Before you trust us with
+        your business, look closely at how we treat our own.
+      </p>
+      <a href="/work" class="btn">
+        See our work
+        <span class="well"><Arrow /></span>
+      </a>
+    </div>
+
+    <div class="wt-vis" data-reveal="scale" style="--rd:120ms" aria-hidden="true">
+      <div class="frame">
+        <span class="bar">
+          <i></i><i></i><i></i>
+          <em>inkingi.rw</em>
+        </span>
+        <div class="body-vis">
+          <span class="h1"></span>
+          <span class="h2"></span>
+          <span class="p"></span>
+          <span class="row">
+            <span class="btn1"></span><span class="btn2"></span>
+          </span>
+          <div class="diamas">
+            <span class="dm n"></span><span class="dm n"></span><span class="dm e"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wt {
+    padding-block: var(--band-vast);
+  }
+  .wt-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .wt-say {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+  .wt-say h2 {
+    margin-block-start: var(--s-2);
+  }
+  .wt-say .body {
+    max-inline-size: 46ch;
+  }
+
+  .frame {
+    border-radius: var(--r-4);
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-3);
+    overflow: hidden;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0.7rem 0.9rem;
+    border-block-end: 1px solid var(--hair);
+    background: color-mix(in srgb, var(--ink) 2.5%, var(--paper-2));
+  }
+  .bar i {
+    inline-size: 7px;
+    block-size: 7px;
+    border-radius: 50%;
+    background: var(--hair-2);
+  }
+  .bar em {
+    margin-inline-start: 0.6rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--r-pill);
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    font-size: 0.62rem;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+  .body-vis {
+    position: relative;
+    padding: 2rem 1.6rem 2.4rem;
+    display: grid;
+    gap: 0.7rem;
+    min-block-size: 12rem;
+  }
+  .h1 {
+    inline-size: 70%;
+    block-size: 15px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+  .h2 {
+    inline-size: 52%;
+    block-size: 15px;
+    border-radius: 4px;
+    background: var(--emerald);
+  }
+  .p {
+    inline-size: 60%;
+    block-size: 6px;
+    border-radius: 3px;
+    background: var(--hair-2);
+    margin-block-start: 0.3rem;
+  }
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-block-start: 0.5rem;
+  }
+  .btn1,
+  .btn2 {
+    block-size: 22px;
+    border-radius: var(--r-pill);
+  }
+  .btn1 {
+    inline-size: 84px;
+    background: var(--ink);
+  }
+  .btn2 {
+    inline-size: 66px;
+    box-shadow: inset 0 0 0 1px var(--hair-2);
+  }
+  .diamas {
+    position: absolute;
+    inset-inline-end: 1.6rem;
+    inset-block-start: 1.8rem;
+    inline-size: 74px;
+    block-size: 74px;
+  }
+  .dm {
+    position: absolute;
+    inline-size: 30px;
+    block-size: 30px;
+    border-radius: 8px;
+    rotate: 45deg;
+  }
+  .dm.n {
+    background: var(--ink);
+  }
+  .dm.e {
+    background: var(--emerald);
+  }
+  .dm:nth-child(1) {
+    inset-inline-start: 22px;
+    inset-block-start: 0;
+  }
+  .dm:nth-child(2) {
+    inset-inline-start: 0;
+    inset-block-start: 26px;
+  }
+  .dm:nth-child(3) {
+    inset-inline-start: 34px;
+    inset-block-start: 30px;
+  }
+
+  @media (max-width: 900px) {
+    .wt-in {
+      grid-template-columns: 1fr;
+      gap: var(--s-7);
+    }
+  }
+</style>

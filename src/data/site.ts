@@ -3,10 +3,10 @@ export const site = {
   short: "Inkingi",
   tagline: "Building what comes next.",
   url: "https://inkingi.rw",
-  email: "hello@inkingi.rw",
-  careersEmail: "careers@inkingi.rw",
-  phone: "+250 788 421 706", // TODO: replace with the studio's real line
-  whatsapp: "+250 788 421 706",
+  email: "inkingidigitalsolutions@gmail.com",
+  careersEmail: "inkingidigitalsolutions@gmail.com",
+  phones: ["+250 791 631 361", "+250 794 875 957"],
+  whatsapp: "+250 791 631 361",
   city: "Kigali, Rwanda",
   hours: "Mon–Fri · 08:00–18:00 CAT",
 };
@@ -33,7 +33,8 @@ export const nav: NavItem[] = [
       { href: "/services/digital-marketing", label: "Digital Marketing" },
     ],
   },
-  { href: "/clients", label: "Our Clients" },
+  { href: "/work", label: "Our Work" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -356,79 +357,34 @@ export const webPackages: WebPackage[] = [
 ];
 
 /* ------------------------------------------------------------------
-   CLIENT STORIES — challenge / solution / outcome.
-   Clients anonymised by sector at their request.
+   PORTFOLIO — real work only. We're a new studio; we show what we
+   have genuinely built, starting with this website.
+   Add new projects here as { ... } — set `live` to a real URL.
 ------------------------------------------------------------------ */
-export type Story = {
+export type Project = {
   id: string;
-  sector: string;
-  scale: string;
-  title: string;
-  challenge: string;
-  solution: string;
-  outcome: string;
-  metrics: { value: string; label: string }[];
-  quote: string;
-  attribution: string;
+  name: string;
+  kind: string;
+  year: string;
+  blurb: string;
+  live?: string; // real URL only — leave undefined if not deployed
+  tags: string[];
+  visual: "site" | "brand" | "marketing" | "cloud";
+  self?: boolean; // our own site
 };
 
-export const stories: Story[] = [
+export const portfolio: Project[] = [
   {
-    id: "retail",
-    sector: "Retail & e-commerce",
-    scale: "1 shop → nationwide delivery",
-    title: "A Kigali boutique that was invisible the moment the shop closed",
-    challenge:
-      "All sales happened in-store. Customers who found the shop on Instagram had no way to buy, and the owner spent evenings answering the same price questions in DMs.",
-    solution:
-      "A custom online store with a product catalog, mobile-money checkout, and delivery setup — plus a social presence that points followers straight to the cart instead of the inbox.",
-    outcome:
-      "Orders now arrive overnight and from outside Kigali. The owner answers fewer DMs and ships more boxes.",
-    metrics: [
-      { value: "3.4×", label: "monthly orders within a quarter" },
-      { value: "41%", label: "of sales now outside Kigali" },
-      { value: "7 days", label: "from brief to live store" },
-    ],
-    quote: "The shop finally works while I sleep.",
-    attribution: "Owner · fashion & retail",
-  },
-  {
-    id: "clinic",
-    sector: "Healthcare",
-    scale: "3 branches · 40 staff",
-    title: "A clinic group losing bookings to a phone line nobody answered",
-    challenge:
-      "Appointments ran through a single busy phone line. Patients who couldn't get through simply went elsewhere, and the brand looked different on every flyer and sign.",
-    solution:
-      "A professional website with online booking, a coherent visual identity across print and digital, and a Google presence so the clinics actually show up when someone searches nearby.",
-    outcome:
-      "Patients book themselves, at any hour. The three branches finally look like one trusted brand.",
-    metrics: [
-      { value: "58%", label: "of bookings now self-service" },
-      { value: "2.2×", label: "search visibility in 90 days" },
-      { value: "1 identity", label: "across all three branches" },
-    ],
-    quote: "We look like the serious clinic we always were.",
-    attribution: "Director · healthcare group",
-  },
-  {
-    id: "cooperative",
-    sector: "Agriculture & trade",
-    scale: "1,200 members",
-    title: "A cooperative with a great product and no way to be found",
-    challenge:
-      "Buyers could not find the cooperative online, and had no confidence in an operation with no website, no email on its own domain, and no consistent brand.",
-    solution:
-      "A credible website, hosting with proper business email, a clean brand identity, and a digital-marketing push to reach buyers beyond the district.",
-    outcome:
-      "Enquiries now come from buyers the cooperative never used to reach — including two outside the country.",
-    metrics: [
-      { value: "6", label: "new wholesale buyers in a season" },
-      { value: "100%", label: "of staff on branded email" },
-      { value: "+28%", label: "average selling price" },
-    ],
-    quote: "Now buyers take one look and trust us.",
-    attribution: "Chairperson · farming cooperative",
+    id: "inkingi-site",
+    name: "Inkingi Digital Solutions",
+    kind: "Website · Brand · Hosting",
+    year: "2026",
+    blurb:
+      "The site you are reading right now — designed, built, branded, hosted, and maintained entirely in-house. Custom-built, no template, and engineered to load in well under a second. It is the clearest proof of the standard we hold.",
+    live: "https://inkingi.rw",
+    tags: ["Custom design", "Sub-second load", "Self-hosted fonts", "Dark mode"],
+    visual: "site",
+    self: true,
   },
 ];
 
@@ -468,7 +424,7 @@ export const journey = [
     idx: "05",
     title: "Grow",
     lead: "We stay, and keep it working.",
-    body: "Maintenance, security updates, hosting, and marketing — month after month. Most of our work is with clients we launched long ago.",
+    body: "Maintenance, security updates, hosting, and marketing — month after month. When we take on a project, we're signing up for the long term, not just the launch.",
     output: "A partnership measured in years.",
   },
 ];
@@ -536,7 +492,7 @@ export const insights = [
     read: "5 min",
     title: "If your marketing can't show you numbers, it isn't marketing",
     excerpt:
-      "The three figures we report to every client every month — reach, leads, and cost per lead — and why a pretty feed with none of them is just decoration.",
+      "The three figures every campaign should report each month — reach, leads, and cost per lead — and why a pretty feed with none of them is just decoration.",
   },
   {
     id: "brand-before-ads",
@@ -570,7 +526,7 @@ export const roles = [
     title: "Digital Marketing Lead",
     location: "Kigali · hybrid",
     type: "Full-time",
-    body: "Run social, ads, and SEO for a portfolio of Rwandan businesses — and report the numbers that prove it worked.",
+    body: "Run social, ads, and SEO for the Rwandan businesses we take on — and report the numbers that prove it worked.",
   },
   {
     title: "Cloud & Support Engineer",
