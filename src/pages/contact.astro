@@ -123,7 +123,7 @@ const interests = [
           <p class="form-err" data-form-err hidden>
             Something went wrong sending your message. Please email us directly
             at <a href="mailto:inkingidigitalsolutions@gmail.com">inkingidigitalsolutions@gmail.com</a>
-            or WhatsApp {site.phones[0]}.
+            or WhatsApp {site.whatsapp}.
           </p>
         </form>
 
@@ -138,7 +138,7 @@ const interests = [
           <h2 class="d2">Received.</h2>
           <p class="body">
             We reply within one business day with a couple of times that suit
-            us. If it is urgent, call or WhatsApp {site.phones[0]}.
+            us. If it is urgent, call or WhatsApp {site.whatsapp}.
           </p>
           <ol class="next">
             <li><span class="num">01</span> We confirm a time — 30 minutes, on a call or in Kigali.</li>
@@ -154,10 +154,10 @@ const interests = [
           <p class="sk">Direct</p>
           <ul class="sl">
             <li><a href={`mailto:${site.email}`}>{site.email}</a><i>email us anytime</i></li>
-            {site.phones.map((p, idx) => (
+            {site.phones.map((p) => (
               <li>
                 <a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a>
-                <i>{idx === 0 ? "call or WhatsApp" : "call us"}</i>
+                <i>{p === site.whatsapp ? "call or WhatsApp" : "call us"}</i>
               </li>
             ))}
           </ul>
@@ -655,7 +655,13 @@ const interests = [
     send!.querySelector(".lbl")!.textContent = "Sending…";
 
     try {
-      const res = await fetch(form.action, {
+      // Use FormSubmit's AJAX endpoint (returns JSON); the form `action` keeps
+      // the standard endpoint as a no-JS fallback.
+      const endpoint = form.action.replace(
+        "formsubmit.co/",
+        "formsubmit.co/ajax/"
+      );
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { Accept: "application/json" },
         body: new FormData(form),
