@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://inkingi.rw/sitemap-index.xml
+Sitemap: https://inkingidigitalsolutions.vercel.app/sitemap-index.xml

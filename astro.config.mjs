@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://inkingi.rw",
+  site: "https://inkingidigitalsolutions.vercel.app",
   integrations: [sitemap()],
   build: { inlineStylesheets: "auto" },
 });

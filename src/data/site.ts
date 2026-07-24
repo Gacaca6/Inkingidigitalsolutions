@@ -2,7 +2,7 @@ export const site = {
   name: "Inkingi Digital Solutions",
   short: "Inkingi",
   tagline: "Building what comes next.",
-  url: "https://inkingi.rw",
+  url: "https://inkingidigitalsolutions.vercel.app",
   email: "inkingidigitalsolutions@gmail.com",
   careersEmail: "inkingidigitalsolutions@gmail.com",
   phones: ["+250 791 631 361", "+250 794 875 957"],
