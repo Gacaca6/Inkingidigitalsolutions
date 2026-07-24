@@ -1,134 +1,125 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import Base from "../layouts/Base.astro";
 import PageHead from "../components/PageHead.astro";
 import Cta from "../components/Cta.astro";
 import Arrow from "../components/Arrow.astro";
 import { portfolio } from "../data/site";
 
+// Astro optimises these at build (resize + webp). id matches filename.
+const shots = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/work/*.png",
+  { eager: true }
+);
+const shotFor = (id: string) => shots[`../assets/work/${id}.png`]?.default;
+const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
 const [feature, ...rest] = portfolio;
+const featShot = shotFor(feature.id);
 ---
 
 <Base
   title="Our Work"
-  description="The work of Inkingi Digital Solutions — a new Kigali studio. Starting with this very website, designed, built, and hosted entirely in-house."
+  description="Real, live projects built by Inkingi Digital Solutions — Savanna, Ongera Ubeho, Learn4Africa, AkaziConnect, HanoBus, Kina Wige, and MusiMe. Every one a working link."
 >
   <PageHead
     idx="01"
     label="Our Work"
-    title='Our name on <span class="accent">every pixel.</span>'
-    lede="We're a young studio, and we'd rather show you one thing we're genuinely proud of than a wall of logos. So start with the site you're on — we made it."
+    title='Real products. <span class="accent">Live links.</span>'
+    lede="We're a young studio — but not an empty one. Everything below was designed and built by us, and every one is a working link. Don't take our word for it; click through."
   />
 
-  <!-- Featured project: this very site -->
-  <section class="feat">
-    <div class="page feat-in">
-      <div class="feat-say" data-reveal>
-        {feature.self && <span class="live-tag">You're looking at it</span>}
-        <p class="f-kind">{feature.kind} · {feature.year}</p>
-        <h2 class="d1">{feature.name}</h2>
-        <p class="body">{feature.blurb}</p>
-        <ul class="f-tags">
-          {feature.tags.map((t) => <li>{t}</li>)}
-        </ul>
-        {
-          feature.live && (
-            <a href={feature.live} class="btn" target="_blank" rel="noopener">
-              Visit the live site
-              <span class="well"><Arrow /></span>
-            </a>
-          )
-        }
-      </div>
-
-      <!-- a large, self-referential browser frame -->
-      <div class="feat-vis" data-reveal="scale" style="--rd:120ms" aria-hidden="true">
-        <div class="frame">
-          <span class="bar">
-            <i></i><i></i><i></i>
-            <em>inkingi.rw</em>
-          </span>
-          <div class="shot">
-            <div class="shot-nav">
-              <span class="mk">
-                <b class="dm n"></b><b class="dm n"></b><b class="dm e"></b>
-              </span>
-              <span class="nl"></span><span class="nl"></span><span class="nl"></span>
-              <span class="np"></span>
-            </div>
-            <div class="shot-hero">
-              <span class="hl"></span>
-              <span class="hl short accent-bg"></span>
-              <span class="hp"></span>
-              <span class="hrow"><span class="hb1"></span><span class="hb2"></span></span>
-            </div>
-            <div class="shot-cards">
-              <span class="sc"></span><span class="sc"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Honest "more coming" + capability -->
-  <section class="more">
+  <section class="gallery">
     <div class="page">
-      <div class="more-grid">
-        <div class="more-say" data-reveal>
-          <p class="tag"><span class="idx">02</span> Just getting started</p>
-          <h2 class="d2">This page grows with every project.</h2>
-          <p class="body">
-            We're at the beginning of our journey — building openly, and adding
-            each real project here as it ships. No stock photos, no borrowed
-            case studies, no invented numbers. When we say we built something,
-            we'll link you to it.
-          </p>
-          <a href="/services" class="tlink">See what we can build for you<Arrow /></a>
-        </div>
+      <!-- Featured project -->
+      <article class="feat" data-reveal>
+        <a
+          href={feature.live}
+          class="shot feat-shot"
+          target="_blank"
+          rel="noopener"
+          aria-label={`Visit ${feature.name}`}
+        >
+          <span class="chrome">
+            <i></i><i></i><i></i>
+            <em>{domain(feature.live)}</em>
+          </span>
+          {featShot && (
+            <Image
+              src={featShot}
+              alt={`${feature.name} — screenshot`}
+              widths={[480, 960, 1440]}
+              sizes="(max-width: 900px) 100vw, 58vw"
+              loading="eager"
+            />
+          )}
+          <span class="visit-badge">Visit live<Arrow /></span>
+        </a>
 
+        <div class="feat-info">
+          <p class="f-kind">{feature.kind} · {feature.year}</p>
+          <h2 class="d2">{feature.name}</h2>
+          <p class="body">{feature.blurb}</p>
+          <ul class="tags">
+            {feature.tags.map((t) => <li>{t}</li>)}
+          </ul>
+          <a href={feature.live} class="tlink" target="_blank" rel="noopener">
+            Open {domain(feature.live)}<Arrow />
+          </a>
+        </div>
+      </article>
+
+      <!-- Grid of the rest -->
+      <div class="grid">
         {
-          rest.length === 0 && (
-            <div class="slot" data-reveal style="--rd:120ms">
-              <span class="slot-mk" aria-hidden="true">
-                <b></b><b></b><b></b>
-              </span>
-              <p class="slot-t">Your project could be next.</p>
-              <p class="slot-b">
-                A website, a brand, a store — built to the standard you see
-                here. Let's talk about yours.
-              </p>
-              <a href="/contact" class="tlink">Start a project<Arrow /></a>
-            </div>
-          )
+          rest.map((p, i) => {
+            const shot = shotFor(p.id);
+            return (
+              <a
+                href={p.live}
+                class="tile"
+                target="_blank"
+                rel="noopener"
+                data-reveal
+                style={`--rd:${i * 70}ms`}
+              >
+                <span class="shot">
+                  <span class="chrome">
+                    <i></i><i></i><i></i>
+                    <em>{domain(p.live)}</em>
+                  </span>
+                  {shot && (
+                    <Image
+                      src={shot}
+                      alt={`${p.name} — screenshot`}
+                      widths={[360, 720]}
+                      sizes="(max-width: 640px) 100vw, 30vw"
+                      loading="lazy"
+                    />
+                  )}
+                  <span class="visit-badge">Visit live<Arrow /></span>
+                </span>
+                <div class="tile-info">
+                  <div class="ti-top">
+                    <h3>{p.name}</h3>
+                    <span class="ti-kind">{p.kind}</span>
+                  </div>
+                  <p class="ti-blurb">{p.blurb}</p>
+                  <div class="ti-tags">
+                    {p.tags.map((t) => <span>{t}</span>)}
+                  </div>
+                </div>
+              </a>
+            );
+          })
         }
       </div>
 
-      {
-        rest.length > 0 && (
-          <div class="grid">
-            {rest.map((p, i) => (
-              <article class="pcard" data-reveal style={`--rd:${i * 70}ms`}>
-                <div class="pc-head">
-                  <span class="pc-idx num">{String(i + 2).padStart(2, "0")}</span>
-                  <span class="pc-kind">{p.kind} · {p.year}</span>
-                </div>
-                <h3 class="pc-name">{p.name}</h3>
-                <p class="pc-blurb">{p.blurb}</p>
-                <div class="pc-foot">
-                  <div class="pc-tags">
-                    {p.tags.slice(0, 3).map((t) => <span>{t}</span>)}
-                  </div>
-                  {p.live && (
-                    <a href={p.live} class="tlink" target="_blank" rel="noopener">
-                      Visit<Arrow />
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        )
-      }
+      <p class="note xs" data-reveal>
+        A growing portfolio — we add each new project here as it ships. Built by
+        us, no templates, no borrowed case studies.
+      </p>
     </div>
   </section>
 
@@ -140,39 +131,106 @@ const [feature, ...rest] = portfolio;
 </Base>
 
 <style>
-  .feat {
+  .gallery {
     padding-block: var(--band-tight) var(--band);
   }
-  .feat-in {
-    display: grid;
-    grid-template-columns: 0.92fr 1.08fr;
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: center;
+
+  /* shared browser-framed screenshot */
+  .shot {
+    position: relative;
+    display: block;
+    border-radius: var(--r-3);
+    overflow: hidden;
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-1);
+    transition: transform var(--d-slow) var(--e-swift),
+      box-shadow var(--d-slow) var(--e-swift);
   }
-  .feat-say {
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0.55rem 0.8rem;
+    border-block-end: 1px solid var(--hair);
+    background: color-mix(in srgb, var(--ink) 3%, var(--paper-2));
+    position: relative;
+    z-index: 2;
+  }
+  .chrome i {
+    inline-size: 7px;
+    block-size: 7px;
+    border-radius: 50%;
+    background: var(--hair-2);
+  }
+  .chrome em {
+    margin-inline-start: 0.5rem;
+    font-size: 0.62rem;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--ink-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .shot :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 900ms var(--e-swift);
+  }
+  .visit-badge {
+    position: absolute;
+    inset-block-end: 0.9rem;
+    inset-inline-end: 0.9rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--r-pill);
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--d-mid) var(--e-swift),
+      transform var(--d-mid) var(--e-swift);
+    box-shadow: var(--lift-2);
+  }
+  .visit-badge :global(svg) {
+    inline-size: 11px;
+    block-size: 11px;
+  }
+
+  /* ---- featured ---- */
+  .feat {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    margin-block-end: var(--s-9);
+  }
+  .feat-shot {
+    aspect-ratio: 16 / 10.5;
+  }
+  .feat-shot:hover {
+    transform: translateY(-4px);
+    box-shadow: inset 0 0 0 1px var(--emerald), var(--lift-3);
+  }
+  .feat-shot:hover :global(img) {
+    transform: scale(1.03);
+  }
+  .feat-shot:hover .visit-badge {
+    opacity: 1;
+    transform: none;
+  }
+  .feat-info {
     display: grid;
     gap: var(--s-4);
     justify-items: start;
-  }
-  .live-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: var(--r-pill);
-    background: var(--emerald-wash);
-    color: var(--emerald-2);
-    font-size: var(--t-micro);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-  }
-  .live-tag::before {
-    content: "";
-    inline-size: 6px;
-    block-size: 6px;
-    border-radius: 50%;
-    background: var(--emerald);
   }
   .f-kind {
     font-size: var(--t-micro);
@@ -181,18 +239,15 @@ const [feature, ...rest] = portfolio;
     letter-spacing: 0.18em;
     color: var(--ink-4);
   }
-  .feat-say h2 {
-    max-inline-size: 16ch;
+  .feat-info .body {
+    max-inline-size: 46ch;
   }
-  .feat-say .body {
-    max-inline-size: 50ch;
-  }
-  .f-tags {
+  .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
   }
-  .f-tags li {
+  .tags li {
     padding: 0.35rem 0.75rem;
     border-radius: var(--r-pill);
     box-shadow: inset 0 0 0 1px var(--hair-2);
@@ -201,277 +256,101 @@ const [feature, ...rest] = portfolio;
     color: var(--ink-2);
   }
 
-  /* browser frame */
-  .frame {
-    border-radius: var(--r-4);
-    background: var(--paper-2);
-    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-3);
-    overflow: hidden;
-  }
-  .bar {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0.7rem 0.9rem;
-    border-block-end: 1px solid var(--hair);
-    background: color-mix(in srgb, var(--ink) 2.5%, var(--paper-2));
-  }
-  .bar i {
-    inline-size: 7px;
-    block-size: 7px;
-    border-radius: 50%;
-    background: var(--hair-2);
-  }
-  .bar em {
-    margin-inline-start: 0.6rem;
-    padding: 0.2rem 0.7rem;
-    border-radius: var(--r-pill);
-    background: var(--paper);
-    box-shadow: inset 0 0 0 1px var(--hair);
-    font-size: 0.62rem;
-    font-style: normal;
-    font-weight: 600;
-    color: var(--ink-3);
-  }
-  .shot {
-    padding: 1.1rem 1.3rem 1.6rem;
+  /* ---- grid ---- */
+  .grid {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--s-5) var(--s-4);
   }
-  .shot-nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .mk {
-    position: relative;
-    inline-size: 22px;
-    block-size: 18px;
-    flex: none;
-  }
-  .dm {
-    position: absolute;
-    inline-size: 9px;
-    block-size: 9px;
-    border-radius: 2.5px;
-    rotate: 45deg;
-  }
-  .dm.n {
-    background: var(--ink);
-  }
-  .dm.e {
-    background: var(--emerald);
-  }
-  .mk .dm:nth-child(1) {
-    inset-inline-start: 7px;
-    inset-block-start: 0;
-  }
-  .mk .dm:nth-child(2) {
-    inset-inline-start: 0;
-    inset-block-start: 8px;
-  }
-  .mk .dm:nth-child(3) {
-    inset-inline-start: 11px;
-    inset-block-start: 9px;
-  }
-  .nl {
-    inline-size: 26px;
-    block-size: 5px;
-    border-radius: 2px;
-    background: var(--hair-2);
-  }
-  .np {
-    margin-inline-start: auto;
-    inline-size: 44px;
-    block-size: 16px;
-    border-radius: var(--r-pill);
-    background: var(--emerald);
-  }
-  .shot-hero {
+  .tile {
     display: grid;
-    gap: 0.6rem;
-    padding-block: 1.2rem;
-  }
-  .hl {
-    inline-size: 68%;
-    block-size: 17px;
-    border-radius: 4px;
-    background: color-mix(in srgb, var(--ink) 30%, transparent);
-  }
-  .hl.short {
-    inline-size: 40%;
-  }
-  .accent-bg {
-    background: var(--emerald) !important;
-  }
-  .hp {
-    inline-size: 56%;
-    block-size: 6px;
-    border-radius: 3px;
-    background: var(--hair-2);
-    margin-block-start: 0.2rem;
-  }
-  .hrow {
-    display: flex;
-    gap: 8px;
-    margin-block-start: 0.5rem;
-  }
-  .hb1,
-  .hb2 {
-    block-size: 22px;
-    border-radius: var(--r-pill);
-  }
-  .hb1 {
-    inline-size: 88px;
-    background: var(--ink);
-  }
-  .hb2 {
-    inline-size: 68px;
-    box-shadow: inset 0 0 0 1px var(--hair-2);
-  }
-  .shot-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .sc {
-    block-size: 46px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 0 1px var(--hair);
-    background: color-mix(in srgb, var(--ink) 2%, transparent);
-  }
-
-  /* more section */
-  .more {
-    padding-block: var(--band);
-  }
-  .more-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: center;
-  }
-  .more-say {
-    display: grid;
+    grid-template-rows: auto 1fr;
     gap: var(--s-4);
-    justify-items: start;
   }
-  .more-say h2 {
-    max-inline-size: 16ch;
+  .tile .shot {
+    aspect-ratio: 16 / 10;
   }
-  .more-say .body {
-    max-inline-size: 50ch;
+  .tile:hover .shot {
+    transform: translateY(-4px);
+    box-shadow: inset 0 0 0 1px var(--emerald), var(--lift-2);
   }
-  .slot {
+  .tile:hover .shot :global(img) {
+    transform: scale(1.04);
+  }
+  .tile:hover .visit-badge {
+    opacity: 1;
+    transform: none;
+  }
+  .tile-info {
     display: grid;
-    gap: var(--s-3);
-    justify-items: start;
-    padding: var(--s-7) var(--s-6);
-    border-radius: var(--r-4);
-    box-shadow: inset 0 0 0 1.5px var(--hair);
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 12px,
-      color-mix(in srgb, var(--ink) 2%, transparent) 12px,
-      color-mix(in srgb, var(--ink) 2%, transparent) 13px
-    );
+    gap: 0.55rem;
+    align-content: start;
   }
-  .slot-mk {
+  .ti-top {
     display: flex;
-    gap: 5px;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4);
   }
-  .slot-mk b {
-    inline-size: 14px;
-    block-size: 14px;
-    border-radius: 4px;
-    rotate: 45deg;
-    background: var(--hair-2);
-  }
-  .slot-mk b:last-child {
-    background: var(--emerald);
-  }
-  .slot-t {
+  .ti-top h3 {
     font-size: var(--t-d3);
     font-weight: 700;
     letter-spacing: var(--tr-tight);
+    transition: color var(--d-mid) var(--e-swift);
   }
-  .slot-b {
-    font-size: var(--t-sm);
-    color: var(--ink-3);
-    max-inline-size: 34ch;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
-    gap: var(--s-4);
-    margin-block-start: var(--s-8);
-  }
-  .pcard {
-    display: grid;
-    gap: var(--s-3);
-    padding: var(--s-6);
-    border-radius: var(--r-3);
-    box-shadow: inset 0 0 0 1px var(--hair);
-    transition: transform var(--d-mid) var(--e-swift),
-      box-shadow var(--d-mid) var(--e-swift);
-  }
-  .pcard:hover {
-    transform: translateY(-3px);
-    box-shadow: inset 0 0 0 1px var(--emerald);
-  }
-  .pc-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .pc-idx {
-    font-size: var(--t-micro);
-    font-weight: 700;
+  .tile:hover .ti-top h3 {
     color: var(--emerald-2);
   }
-  .pc-kind {
+  .ti-kind {
     font-size: var(--t-micro);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--ink-4);
+    white-space: nowrap;
   }
-  .pc-name {
-    font-size: var(--t-d3);
-    font-weight: 700;
-    letter-spacing: var(--tr-tight);
-  }
-  .pc-blurb {
+  .ti-blurb {
     font-size: var(--t-sm);
     color: var(--ink-3);
     line-height: 1.6;
   }
-  .pc-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-4);
-    margin-block-start: var(--s-2);
-    padding-block-start: var(--s-4);
-    border-block-start: 1px solid var(--hair);
-  }
-  .pc-tags {
+  .ti-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
+    margin-block-start: 0.2rem;
   }
-  .pc-tags span {
+  .ti-tags span {
     font-size: var(--t-micro);
     color: var(--ink-4);
   }
 
+  .note {
+    margin-block-start: var(--s-8);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    color: var(--ink-4);
+    max-inline-size: 60ch;
+  }
+
   @media (max-width: 900px) {
-    .feat-in,
-    .more-grid {
+    .feat {
       grid-template-columns: 1fr;
-      gap: var(--s-7);
+      gap: var(--s-6);
+    }
+    .feat-info {
+      order: 2;
+    }
+  }
+  @media (max-width: 560px) {
+    .ti-top {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    /* touch: show the visit badge without hover */
+    .visit-badge {
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

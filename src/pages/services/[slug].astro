@@ -89,11 +89,11 @@ const others = services.filter((s) => s.slug !== service.slug);
   <!-- Other services -->
   <section class="others">
     <div class="page">
-      <p class="tag" data-reveal><span class="idx">→</span> Also from Inkingi</p>
+      <p class="tag" data-reveal><span class="idx">→</span> Other services</p>
       <div class="ogrid">
         {
           others.map((s, i) => (
-            <a href={`/services/${s.slug}`} class="ocell" data-reveal style={`--rd:${i * 60}ms`}>
+            <a href={`/services/${s.slug}`} class="ocell" data-reveal style={`--rd:${i * 60}ms`} aria-label={`${s.name} service`}>
               <span class="o-idx num">{s.idx}</span>
               <span class="o-name">{s.name}</span>
               <span class="o-tag">{s.tagline}</span>

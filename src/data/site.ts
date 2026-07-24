@@ -6,7 +6,7 @@ export const site = {
   email: "inkingidigitalsolutions@gmail.com",
   careersEmail: "inkingidigitalsolutions@gmail.com",
   phones: ["+250 791 631 361", "+250 794 875 957"],
-  whatsapp: "+250 791 631 361",
+  whatsapp: "+250 794 875 957",
   city: "Kigali, Rwanda",
   hours: "Mon–Fri · 08:00–18:00 CAT",
 };
@@ -357,9 +357,9 @@ export const webPackages: WebPackage[] = [
 ];
 
 /* ------------------------------------------------------------------
-   PORTFOLIO — real work only. We're a new studio; we show what we
-   have genuinely built, starting with this website.
-   Add new projects here as { ... } — set `live` to a real URL.
+   PORTFOLIO — real, live work only. Each `id` matches a screenshot
+   in src/assets/work/<id>.png. Add projects by dropping a screenshot
+   there and adding an entry with the same id.
 ------------------------------------------------------------------ */
 export type Project = {
   id: string;
@@ -367,24 +367,80 @@ export type Project = {
   kind: string;
   year: string;
   blurb: string;
-  live?: string; // real URL only — leave undefined if not deployed
+  live: string; // real, deployed URL
   tags: string[];
-  visual: "site" | "brand" | "marketing" | "cloud";
-  self?: boolean; // our own site
 };
 
 export const portfolio: Project[] = [
   {
-    id: "inkingi-site",
-    name: "Inkingi Digital Solutions",
-    kind: "Website · Brand · Hosting",
+    id: "savanna",
+    name: "Savanna",
+    kind: "Web app · Marketplace",
     year: "2026",
     blurb:
-      "The site you are reading right now — designed, built, branded, hosted, and maintained entirely in-house. Custom-built, no template, and engineered to load in well under a second. It is the clearest proof of the standard we hold.",
-    live: "https://inkingi.rw",
-    tags: ["Custom design", "Sub-second load", "Self-hosted fonts", "Dark mode"],
-    visual: "site",
-    self: true,
+      "A digital bookstore and publishing platform for African authors — browse and buy books in African languages, pay with mobile money, and publish your own work in minutes.",
+    live: "https://savannabooks.vercel.app",
+    tags: ["Marketplace", "Mobile money", "Publishing"],
+  },
+  {
+    id: "ongeraubeho",
+    name: "Ongera Ubeho",
+    kind: "Web app · Social impact",
+    year: "2026",
+    blurb:
+      "A youth & family mentorship hub connecting struggling youth, street children, and parents with trained Kinyarwanda-speaking mentors — through a safe space and a platform that works on any phone.",
+    live: "https://ongera-ubeho.vercel.app",
+    tags: ["Mentorship", "Rwanda", "Any phone"],
+  },
+  {
+    id: "learn4africa",
+    name: "Learn4Africa",
+    kind: "Web app · EdTech",
+    year: "2026",
+    blurb:
+      "A free AI learning platform where an African tutor builds a complete course from any topic — reading, flashcards, quizzes, and podcasts — all rooted in African context.",
+    live: "https://learn4africa.vercel.app",
+    tags: ["AI", "EdTech", "Africa"],
+  },
+  {
+    id: "akaziconnect",
+    name: "AkaziConnect",
+    kind: "Web app · Marketplace",
+    year: "2026",
+    blurb:
+      "A mobile-first job marketplace connecting rural Rwandan youth with work and gigs near them.",
+    live: "https://akaziconnect.vercel.app",
+    tags: ["Jobs", "Marketplace", "Rwanda"],
+  },
+  {
+    id: "hanobus",
+    name: "HanoBus",
+    kind: "Web app · Transport",
+    year: "2026",
+    blurb:
+      "Real-time bus tracking for commuters in Kigali — see where your bus is and when it will reach your stop, on any phone.",
+    live: "https://hanobusapp.vercel.app",
+    tags: ["Real-time", "Transport", "Kigali"],
+  },
+  {
+    id: "kina-wige",
+    name: "Kina Wige",
+    kind: "Web app · Education",
+    year: "2026",
+    blurb:
+      "A playful learning game that teaches young children to read and count in Kinyarwanda.",
+    live: "https://kina-wige.vercel.app",
+    tags: ["Kids", "Education", "Kinyarwanda"],
+  },
+  {
+    id: "musime",
+    name: "MusiMe",
+    kind: "Web app · PWA",
+    year: "2026",
+    blurb:
+      "An iPhone-friendly progressive web app for saving and playing your music offline, with playlists and cloud sync.",
+    live: "https://musi-me.vercel.app",
+    tags: ["PWA", "Music", "Offline"],
   },
 ];
 
