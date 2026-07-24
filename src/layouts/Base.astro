@@ -45,6 +45,11 @@ const ld = {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#0E0C0B" />
 
+    {/* Google Search Console ownership (URL-prefix property, HTML tag method) */}
+    {site.googleVerification && (
+      <meta name="google-site-verification" content={site.googleVerification} />
+    )}
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={ogTitle ?? full} />

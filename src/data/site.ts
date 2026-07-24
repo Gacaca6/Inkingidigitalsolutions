@@ -9,6 +9,9 @@ export const site = {
   whatsapp: "+250 794 875 957",
   city: "Kigali, Rwanda",
   hours: "Mon–Fri · 08:00–18:00 CAT",
+  /* Google Search Console — the token from the "HTML tag" method of a
+     URL-prefix property. Paste only the content value, not the whole tag. */
+  googleVerification: "lLhiyYO-V3ly1kvqHxbXtwd0ljK-v4jpf7Rs9XIWyFU",
 };
 
 /* ------------------------------------------------------------------
