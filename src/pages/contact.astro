@@ -46,7 +46,20 @@ const interests = [
     <div class="page main-in">
       <!-- form -->
       <div class="fwrap" data-reveal>
-        <form class="form" data-form novalidate>
+        <form
+          class="form"
+          data-form
+          novalidate
+          action="https://formsubmit.co/inkingidigitalsolutions@gmail.com"
+          method="POST"
+        >
+          <!-- FormSubmit config + spam trap -->
+          <input type="hidden" name="_subject" value="New enquiry — inkingidigitalsolutions.rw" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="interests" data-interests />
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
           <div class="frow">
             <div class="field">
               <label for="name">Your name</label>
@@ -106,6 +119,11 @@ const interests = [
           <p class="fine xs">
             We reply within one business day. Your details are never shared or
             sold.
+          </p>
+          <p class="form-err" data-form-err hidden>
+            Something went wrong sending your message. Please email us directly
+            at <a href="mailto:inkingidigitalsolutions@gmail.com">inkingidigitalsolutions@gmail.com</a>
+            or WhatsApp {site.phones[0]}.
           </p>
         </form>
 
@@ -300,6 +318,27 @@ const interests = [
   }
   .fine {
     color: var(--ink-4);
+  }
+  /* spam honeypot — hidden from humans, tempting to bots */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .form-err {
+    padding: 0.85rem 1rem;
+    border-radius: var(--r-2);
+    background: color-mix(in srgb, #e0483d 10%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #e0483d 32%, transparent);
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+  }
+  .form-err a {
+    color: var(--emerald-2);
+    font-weight: 700;
   }
 
   /* success */
@@ -583,7 +622,9 @@ const interests = [
     err?.classList.toggle("on", on);
   };
 
-  form?.addEventListener("submit", (e) => {
+  const formErr = document.querySelector<HTMLElement>("[data-form-err]");
+
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("name") as HTMLInputElement;
     const email = document.getElementById("email") as HTMLInputElement;
@@ -602,14 +643,36 @@ const interests = [
       return;
     }
 
-    // Optimistic: acknowledge immediately, then swap in confirmation.
+    // Roll the selected topic chips into the hidden `interests` field
+    const interestsField = form.querySelector<HTMLInputElement>("[data-interests]");
+    const chosen = [
+      ...document.querySelectorAll<HTMLButtonElement>('[data-chip][aria-pressed="true"]'),
+    ].map((c) => c.textContent?.trim() || "");
+    if (interestsField) interestsField.value = chosen.join(", ") || "Not specified";
+
+    formErr && (formErr.hidden = true);
     send?.setAttribute("aria-busy", "true");
     send!.querySelector(".lbl")!.textContent = "Sending…";
-    setTimeout(() => {
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const json = await res.json().catch(() => ({}));
+      const ok = res.ok && (json.success === "true" || json.success === true);
+      if (!ok) throw new Error("submit failed");
+
       form.hidden = true;
       if (sent) sent.hidden = false;
       sent?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 620);
+    } catch {
+      // Let the visitor retry, and show a fallback contact route.
+      send?.setAttribute("aria-busy", "false");
+      send!.querySelector(".lbl")!.textContent = "Request the session";
+      if (formErr) formErr.hidden = false;
+    }
   });
 
   ["name", "email", "msg"].forEach((id) => {
