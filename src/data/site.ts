@@ -360,9 +360,9 @@ export const webPackages: WebPackage[] = [
 ];
 
 /* ------------------------------------------------------------------
-   PORTFOLIO — real, live work only. Each `id` matches a screenshot
-   in src/assets/work/<id>.png. Add projects by dropping a screenshot
-   there and adding an entry with the same id.
+   PORTFOLIO — real, live work only. Each `id` matches a preview in
+   src/assets/work/<id>.jpg, built from live captures by previews/
+   (see previews/README.md). The first entry is the featured project.
 ------------------------------------------------------------------ */
 export type Project = {
   id: string;
@@ -376,24 +376,44 @@ export type Project = {
 
 export const portfolio: Project[] = [
   {
-    id: "savanna",
-    name: "Savanna",
+    id: "iduka",
+    name: "IDUKA",
+    kind: "Web app · Retail",
+    year: "2026",
+    blurb:
+      "Shop management for Rwandan shops, pharmacies and supermarkets — sell at the counter, keep stock and the credit book, and see what the business actually kept. In Kinyarwanda, English or French.",
+    live: "https://app.idukarw.workers.dev",
+    tags: ["Retail", "Stock & credit", "3 languages"],
+  },
+  {
+    id: "somabooks",
+    name: "Somabooks",
     kind: "Web app · Marketplace",
     year: "2026",
     blurb:
-      "A digital bookstore and publishing platform for African authors — browse and buy books in African languages, pay with mobile money, and publish your own work in minutes.",
-    live: "https://savannabooks.vercel.app",
+      "An African book marketplace, formerly Savanna. Readers buy African books with the mobile money, wallet or bank they already use, paying authors directly — and authors publish for free.",
+    live: "https://www.somabooks.workers.dev",
     tags: ["Marketplace", "Mobile money", "Publishing"],
+  },
+  {
+    id: "korautware",
+    name: "Kora Utware",
+    kind: "PWA · Education",
+    year: "2026",
+    blurb:
+      "Practice for Rwanda's provisional driving theory test: timed twenty-question exams from a 398-question bank with 145 road signs, in Kinyarwanda, English and French — unlocked with MoMo.",
+    live: "https://kora-utsinde.vercel.app",
+    tags: ["Offline", "MoMo", "3 languages"],
   },
   {
     id: "ongeraubeho",
     name: "Ongera Ubeho",
-    kind: "Web app · Social impact",
+    kind: "Website · Social impact",
     year: "2026",
     blurb:
-      "A youth & family mentorship hub connecting struggling youth, street children, and parents with trained Kinyarwanda-speaking mentors — through a safe space and a platform that works on any phone.",
-    live: "https://ongera-ubeho.vercel.app",
-    tags: ["Mentorship", "Rwanda", "Any phone"],
+      "A youth & family mentorship hub connecting struggling youth, street children, and parents with trained Kinyarwanda-speaking mentors — now on its own domain, with a publishing system the team uses to post field reports themselves.",
+    live: "https://ongeraubeho.rw",
+    tags: ["Mentorship", "Rwanda", "Self-publishing"],
   },
   {
     id: "learn4africa",

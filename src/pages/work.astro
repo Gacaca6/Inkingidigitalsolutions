@@ -8,11 +8,13 @@ import Arrow from "../components/Arrow.astro";
 import { portfolio } from "../data/site";
 
 // Astro optimises these at build (resize + webp). id matches filename.
+// Previews are phone-framed captures of each live product, built by previews/.
 const shots = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/work/*.png",
+  "../assets/work/*.{jpg,png}",
   { eager: true }
 );
-const shotFor = (id: string) => shots[`../assets/work/${id}.png`]?.default;
+const shotFor = (id: string) =>
+  (shots[`../assets/work/${id}.jpg`] ?? shots[`../assets/work/${id}.png`])?.default;
 const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 const [feature, ...rest] = portfolio;
@@ -21,7 +23,7 @@ const featShot = shotFor(feature.id);
 
 <Base
   title="Our Work"
-  description="Real, live projects built by Inkingi Digital Solutions — Savanna, Ongera Ubeho, Learn4Africa, AkaziConnect, HanoBus, Kina Wige, and MusiMe. Every one a working link."
+  description="Real, live projects built by Inkingi Digital Solutions — IDUKA, Somabooks, Kora Utware, Ongera Ubeho, Learn4Africa, AkaziConnect, HanoBus, Kina Wige, and MusiMe. Every one a working link."
 >
   <PageHead
     idx="01"
@@ -41,14 +43,11 @@ const featShot = shotFor(feature.id);
           rel="noopener"
           aria-label={`Visit ${feature.name}`}
         >
-          <span class="chrome">
-            <i></i><i></i><i></i>
-            <em>{domain(feature.live)}</em>
-          </span>
+          <span class="url">{domain(feature.live)}</span>
           {featShot && (
             <Image
               src={featShot}
-              alt={`${feature.name} — screenshot`}
+              alt={`${feature.name} running on two phones`}
               widths={[480, 960, 1440]}
               sizes="(max-width: 900px) 100vw, 58vw"
               loading="eager"
@@ -85,14 +84,11 @@ const featShot = shotFor(feature.id);
                 style={`--rd:${i * 70}ms`}
               >
                 <span class="shot">
-                  <span class="chrome">
-                    <i></i><i></i><i></i>
-                    <em>{domain(p.live)}</em>
-                  </span>
+                  <span class="url">{domain(p.live)}</span>
                   {shot && (
                     <Image
                       src={shot}
-                      alt={`${p.name} — screenshot`}
+                      alt={`${p.name} running on two phones`}
                       widths={[360, 720]}
                       sizes="(max-width: 640px) 100vw, 30vw"
                       loading="lazy"
@@ -135,7 +131,7 @@ const featShot = shotFor(feature.id);
     padding-block: var(--band-tight) var(--band);
   }
 
-  /* shared browser-framed screenshot */
+  /* shared phone-framed preview (built by previews/ from live captures) */
   .shot {
     position: relative;
     display: block;
@@ -146,28 +142,22 @@ const featShot = shotFor(feature.id);
     transition: transform var(--d-slow) var(--e-swift),
       box-shadow var(--d-slow) var(--e-swift);
   }
-  .chrome {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0.55rem 0.8rem;
-    border-block-end: 1px solid var(--hair);
-    background: color-mix(in srgb, var(--ink) 3%, var(--paper-2));
-    position: relative;
+  /* The live address, so every preview still says where it runs. */
+  .url {
+    position: absolute;
+    inset-block-start: 0.9rem;
+    inset-inline-end: 0.9rem;
     z-index: 2;
-  }
-  .chrome i {
-    inline-size: 7px;
-    block-size: 7px;
-    border-radius: 50%;
-    background: var(--hair-2);
-  }
-  .chrome em {
-    margin-inline-start: 0.5rem;
-    font-size: 0.62rem;
-    font-style: normal;
+    max-inline-size: calc(100% - 1.8rem);
+    padding: 0.38rem 0.75rem;
+    border-radius: var(--r-pill);
+    background: rgba(20, 16, 14, 0.62);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 0 1px rgba(237, 231, 222, 0.16);
+    color: #ede7de;
+    font-size: 0.66rem;
     font-weight: 600;
-    color: var(--ink-3);
+    letter-spacing: 0.02em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

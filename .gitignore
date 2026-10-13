@@ -22,3 +22,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Preview tooling (previews/) — builds src/assets/work/*.jpg. Never part of the
+# Astro build or the deployed site.
+previews/node_modules/
+# Live captures are large and re-made by `npm run capture`. The two IDUKA in-app
+# screens come from an authorised demo shop and are kept rather than re-captured
+# by signing in again.
+previews/raw/*
+!previews/raw/iduka-stock.png
+!previews/raw/iduka-till.png

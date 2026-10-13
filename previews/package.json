@@ -1,0 +1,14 @@
+{
+  "name": "inkingi-digital-previews",
+  "private": true,
+  "type": "module",
+  "description": "Builds the framed project previews in src/assets/work/. Tooling only — never part of the Astro build or the deployed site.",
+  "scripts": {
+    "capture": "node capture.mjs",
+    "compose": "node compose.mjs",
+    "build": "node capture.mjs && node compose.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.0"
+  }
+}
