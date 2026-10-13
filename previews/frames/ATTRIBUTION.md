@@ -17,4 +17,4 @@ Geometry, from Goldie's `src/frame.ts` (in the image's own pixels):
 | Screen cutout | x 59, y 60, 1280 × 2856 |
 | Screen corner radius | 178 |
 
-The framed previews in `assets/img/shots/` credit this on the work page.
+Used for the phone previews in `src/assets/work/`, built by `previews/compose.mjs`.
