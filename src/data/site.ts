@@ -4,7 +4,6 @@ export const site = {
   tagline: "Building what comes next.",
   url: "https://inkingidigitalsolutions.rw",
   email: "inkingidigitalsolutions@gmail.com",
-  careersEmail: "inkingidigitalsolutions@gmail.com",
   phones: ["+250 791 631 361", "+250 794 875 957"],
   whatsapp: "+250 794 875 957",
   city: "Kigali, Rwanda",
@@ -582,36 +581,6 @@ export const insights = [
     title: "Fix the brand before you spend on ads",
     excerpt:
       "Paying to send traffic to a business that looks unfinished is paying to confirm a bad first impression. Where identity work pays for itself before a single ad runs.",
-  },
-];
-
-/* ------------------------------------------------------------------
-   CAREERS
------------------------------------------------------------------- */
-export const roles = [
-  {
-    title: "Senior Full-Stack Engineer",
-    location: "Kigali · hybrid",
-    type: "Full-time",
-    body: "Own websites and systems end to end — design through deployment — for clients whose business depends on what you ship.",
-  },
-  {
-    title: "Product & Brand Designer",
-    location: "Kigali",
-    type: "Full-time",
-    body: "Design websites and identities at the standard of the world's best studios, for clients those studios overlook.",
-  },
-  {
-    title: "Digital Marketing Lead",
-    location: "Kigali · hybrid",
-    type: "Full-time",
-    body: "Run social, ads, and SEO for the Rwandan businesses we take on — and report the numbers that prove it worked.",
-  },
-  {
-    title: "Cloud & Support Engineer",
-    location: "Remote (CAT ±3)",
-    type: "Full-time",
-    body: "Keep client sites fast, backed up, and online — and be the human on the other end when something needs a person.",
   },
 ];
 
