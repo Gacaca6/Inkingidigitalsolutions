@@ -1,4 +1,8 @@
 ---
+import { langOf } from "../../i18n";
+const rw = langOf(Astro.url) === "rw";
+/** Plain-language labels follow the page; technical ones (api-1, PostgreSQL) stay as on a real screen. */
+const v = (en: string, kin: string) => (rw ? kin : en);
 /* Infrastructure, drawn as infrastructure. Traffic flows; a deploy rolls through. */
 ---
 
@@ -7,7 +11,7 @@
     <div class="plate">
       <div class="head">
         <b>Production · af-south-1</b>
-        <span class="ok"><em></em>All systems nominal</span>
+        <span class="ok"><em></em>{v("All systems nominal", "Byose bikora neza")}</span>
       </div>
 
       <svg viewBox="0 0 400 232" class="topo">
@@ -80,10 +84,10 @@
       <div class="deploy">
         <div class="dl">
           <i>Rolling deploy · v2.14.0</i>
-          <i class="num">2 of 3</i>
+          <i class="num">{v("2 of 3", "2 kuri 3")}</i>
         </div>
         <div class="dtrack"><span></span></div>
-        <i class="dnote num">4 min 12 s elapsed · zero downtime</i>
+        <i class="dnote num">{v("4 min 12 s elapsed · zero downtime", "Iminota 4 n'amasegonda 12 · nta guhagarara")}</i>
       </div>
     </div>
   </div>

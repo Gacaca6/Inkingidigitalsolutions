@@ -1,0 +1,185 @@
+---
+/** The pricing page, in either language. Served at /pricing and /rw/pricing. */
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Cta from "../components/Cta.astro";
+import PackageCards from "../components/PackageCards.astro";
+import ServiceTiers from "../components/ServiceTiers.astro";
+import { langOf } from "../i18n";
+import { t } from "../i18n/strings";
+import { dataFor } from "../i18n/data";
+
+const lang = langOf(Astro.url);
+const p = t(lang).pricingPage;
+const { services } = dataFor(lang);
+
+// the three services that carry their own tier pricing
+const tiered = services.filter((s) => s.pricing !== "packages");
+const faqs = p.faqs;
+---
+
+<Base title={p.title} description={p.description}>
+  <PageHead idx="01" label={p.label} title={p.h1} lede={p.lede} />
+
+  <!-- Website packages -->
+  <section class="web">
+    <div class="page">
+      <div class="sec-head" data-reveal>
+        <h2 class="d2">{p.webH2}</h2>
+        <p class="sm">{p.webSm}</p>
+      </div>
+      <div class="sec-body">
+        <PackageCards />
+      </div>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  {
+    tiered.map((s, i) => (
+      <section class:list={["svc", { alt: i % 2 === 0 }]}>
+        <div class="page">
+          <div class="sec-head" data-reveal>
+            <p class="tag"><span class="idx">{s.idx}</span> {s.name}</p>
+            <h2 class="d2">{s.tagline}</h2>
+          </div>
+          <div class="sec-body">
+            {s.pricing !== "packages" && (
+              <ServiceTiers lede={s.pricing.lede} tiers={s.pricing.tiers} />
+            )}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- FAQ -->
+  <section class="faq on-navy">
+    <div class="page">
+      <p class="tag" data-reveal><span class="idx">?</span> {p.faqTag}</p>
+      <h2 class="d1" data-reveal style="--rd:60ms">{p.faqH2}</h2>
+      <div class="qa">
+        {
+          faqs.map((x, i) => (
+            <details class="q" data-reveal style={`--rd:${i * 50}ms`}>
+              <summary>
+                <span>{x.q}</span>
+                <i aria-hidden="true" />
+              </summary>
+              <p>{x.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Cta eyebrow={p.ctaEyebrow} title={p.ctaTitle} body={p.ctaBody} />
+</Base>
+
+<style>
+  .web {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .svc {
+    padding-block: var(--band);
+  }
+  .svc.alt {
+    background: var(--paper-2);
+    border-block: 1px solid var(--hair);
+  }
+  .sec-head {
+    display: grid;
+    gap: var(--s-3);
+    margin-block-end: var(--s-7);
+  }
+  .sec-head .tag {
+    margin-block-end: 0.2rem;
+  }
+
+  /* FAQ */
+  .faq {
+    padding-block: var(--band);
+  }
+  .faq h2 {
+    margin-block-start: var(--s-4);
+  }
+  .qa {
+    margin-block-start: var(--s-6);
+    max-inline-size: 62rem;
+  }
+  .q {
+    border-block-start: 1px solid var(--hair);
+  }
+  .q:last-of-type {
+    border-block-end: 1px solid var(--hair);
+  }
+  .q summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding-block: var(--s-5);
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--t-d3);
+    font-weight: 700;
+    letter-spacing: var(--tr-tight);
+    transition: color var(--d-mid) var(--e-swift);
+  }
+  .q summary::-webkit-details-marker {
+    display: none;
+  }
+  .q summary:hover {
+    color: var(--emerald-2);
+  }
+  .q summary i {
+    position: relative;
+    inline-size: 13px;
+    block-size: 13px;
+    flex: none;
+  }
+  .q summary i::before,
+  .q summary i::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 13px;
+    block-size: 1.6px;
+    background: currentColor;
+    transition: transform var(--d-mid) var(--e-swift);
+  }
+  .q summary i::after {
+    rotate: 90deg;
+  }
+  .q[open] summary i::after {
+    transform: scaleX(0);
+  }
+  .q p {
+    padding-block-end: var(--s-5);
+    color: var(--ink-2);
+    max-inline-size: 68ch;
+    animation: qIn 0.45s var(--e-out);
+  }
+  @keyframes qIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .q summary {
+      font-size: 1.1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .q p {
+      animation: none;
+    }
+  }
+</style>

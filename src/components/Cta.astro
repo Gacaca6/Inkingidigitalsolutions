@@ -1,15 +1,17 @@
 ---
 import Arrow from "./Arrow.astro";
+import { langOf, href } from "../i18n";
+import { t } from "../i18n/strings";
 interface Props {
   eyebrow?: string;
   title?: string;
   body?: string;
 }
-const {
-  eyebrow = "Next step",
-  title = "Let's build your digital foundation.",
-  body = "One conversation is enough to know whether we are the right partner. No deck, no pressure — a straight look at what your business actually needs, and what it would take.",
-} = Astro.props;
+const lang = langOf(Astro.url);
+const c = t(lang).cta;
+const to = (p: string) => href(p, lang);
+// Titles may carry <span class="accent"> markup (the default does).
+const { eyebrow = c.eyebrow, title = c.title, body = c.body } = Astro.props;
 ---
 
 <section class="cta" data-track>
@@ -22,25 +24,22 @@ const {
     </svg>
 
     <p class="tag" data-reveal>{eyebrow}</p>
-    <h2 class="hero-type ttl" data-reveal style="--rd:60ms" set:html={title.replace(
-      /foundation\./,
-      '<span class="accent">foundation.</span>'
-    )} />
+    <h2 class="hero-type ttl" data-reveal style="--rd:60ms" set:html={title} />
     <p class="lead lb" data-reveal style="--rd:130ms">{body}</p>
 
     <div class="acts" data-reveal style="--rd:200ms">
-      <a href="/contact" class="btn accentbtn">
-        Book a strategy session
+      <a href={to("/contact")} class="btn accentbtn">
+        {c.book}
         <span class="well"><Arrow /></span>
       </a>
-      <a href="/pricing" class="btn ghost">
-        See what it costs
+      <a href={to("/pricing")} class="btn ghost">
+        {c.cost}
         <span class="well"><Arrow /></span>
       </a>
     </div>
 
     <p class="fine xs" data-reveal style="--rd:260ms">
-      30 minutes · no obligation · you leave with a clear plan either way
+      {c.fine}
     </p>
   </div>
 </section>

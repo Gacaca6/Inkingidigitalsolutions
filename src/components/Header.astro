@@ -1,10 +1,19 @@
 ---
 import Mark from "./Mark.astro";
-import { nav, site, services } from "../data/site";
-const path = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === "/" ? path === "/" : path.startsWith(href);
+import { site } from "../data/site";
+import { langOf, href, enPathOf, counterpart, RW_PUBLIC } from "../i18n";
+import { t } from "../i18n/strings";
+import { dataFor } from "../i18n/data";
+
+const lang = langOf(Astro.url);
+const s = t(lang).header;
+const { nav, services, city, hours } = dataFor(lang);
+const to = (p: string) => href(p, lang);
+// Active state compares English paths, so /rw/pricing lights up "Pricing".
+const path = enPathOf(Astro.url.pathname);
+const isActive = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
 const waNumber = site.whatsapp.replace(/[^\d]/g, "");
+const other = lang === "rw" ? "en" : "rw";
 ---
 
 <header class="hdr" data-hdr>
@@ -13,7 +22,7 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
     <div class="util-in">
       <p class="util-left">
         <span class="dot" aria-hidden="true"></span>
-        {site.city} · {site.hours}
+        {city} · {hours}
       </p>
       <div class="util-right">
         {
@@ -80,7 +89,7 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
   <!-- Tier 2 — main nav -->
   <div class="bar">
     <div class="bar-in">
-      <a href="/" class="brand" aria-label="Inkingi Digital Solutions — home">
+      <a href={to("/")} class="brand" aria-label={s.homeAria}>
         <Mark size={32} />
         <span class="brand-txt">
           <span class="brand-name">inkingi</span>
@@ -88,7 +97,7 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
         </span>
       </a>
 
-      <nav class="links" aria-label="Primary">
+      <nav class="links" aria-label={s.primaryNav}>
         {
           nav.map((l) =>
             l.children ? (
@@ -111,19 +120,19 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
                 </button>
                 <div class="menu" data-dd-panel>
                   <div class="menu-in">
-                    {services.map((s) => (
-                      <a href={`/services/${s.slug}`} class="mi">
-                        <span class="mi-idx num">{s.idx}</span>
+                    {services.map((sv) => (
+                      <a href={to(`/services/${sv.slug}`)} class="mi">
+                        <span class="mi-idx num">{sv.idx}</span>
                         <span class="mi-txt">
-                          <span class="mi-name">{s.name}</span>
-                          <span class="mi-tag">{s.tagline}</span>
+                          <span class="mi-name">{sv.name}</span>
+                          <span class="mi-tag">{sv.tagline}</span>
                         </span>
                         <span class="mi-go" aria-hidden="true">→</span>
                       </a>
                     ))}
-                    <a href="/services" class="mi mi-all">
+                    <a href={to("/services")} class="mi mi-all">
                       <span class="mi-txt">
-                        <span class="mi-name">All services & pricing</span>
+                        <span class="mi-name">{s.allServices}</span>
                       </span>
                       <span class="mi-go" aria-hidden="true">→</span>
                     </a>
@@ -131,7 +140,7 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
                 </div>
               </div>
             ) : (
-              <a href={l.href} class:list={["link", { on: isActive(l.href) }]}>
+              <a href={to(l.href)} class:list={["link", { on: isActive(l.href) }]}>
                 {l.label}
               </a>
             )
@@ -140,7 +149,18 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
       </nav>
 
       <div class="acts">
-        <button class="icn" data-theme-toggle aria-label="Switch colour theme">
+        {RW_PUBLIC && (
+          <a
+            class="lng"
+            href={counterpart(Astro.url.pathname, other)}
+            hreflang={other}
+            lang={other}
+            aria-label={`${s.langLabel}: ${other === "rw" ? "Kinyarwanda" : "English"}`}
+          >
+            {other === "rw" ? "RW" : "EN"}
+          </a>
+        )}
+        <button class="icn" data-theme-toggle aria-label={s.themeToggle}>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="i-sun">
             <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"></circle>
             <path
@@ -158,12 +178,14 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
           </svg>
         </button>
 
-        <a href="/contact" class="cta">Get a quote</a>
+        <a href={to("/contact")} class="cta">{s.getQuote}</a>
 
         <button
           class="burger"
           data-menu-toggle
-          aria-label="Open menu"
+          aria-label={s.openMenu}
+          data-label-open={s.openMenu}
+          data-label-close={s.closeMenu}
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
@@ -176,7 +198,7 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
 
 <!-- Mobile sheet -->
 <div class="sheet" id="mobile-menu" data-menu hidden>
-  <nav class="sheet-nav" aria-label="Mobile">
+  <nav class="sheet-nav" aria-label={s.mobileNav}>
     {
       nav.map((l, i) =>
         l.children ? (
@@ -188,14 +210,14 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
               </summary>
               <div class="sheet-sub">
                 {l.children.map((c) => (
-                  <a href={c.href}>{c.label}</a>
+                  <a href={to(c.href)}>{c.label}</a>
                 ))}
-                <a href="/services" class="sub-all">All services & pricing</a>
+                <a href={to("/services")} class="sub-all">{s.allServices}</a>
               </div>
             </details>
           </div>
         ) : (
-          <a href={l.href} class="sheet-link" style={`--i:${i}`}>
+          <a href={to(l.href)} class="sheet-link" style={`--i:${i}`}>
             <span>{l.label}</span>
             <i aria-hidden="true"></i>
           </a>
@@ -215,6 +237,26 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
 </div>
 
 <style>
+  .lng {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: 2.6rem;
+    block-size: 2.6rem;
+    padding-inline: 0.6rem;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--hair-2);
+    color: var(--ink-2);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: color var(--d-mid) var(--e-swift), box-shadow var(--d-mid) var(--e-swift);
+  }
+  .lng:hover,
+  .lng:focus-visible {
+    color: var(--emerald-2);
+    box-shadow: inset 0 0 0 1px var(--emerald);
+  }
   .hdr {
     position: fixed;
     inset-block-start: 0;
@@ -673,6 +715,20 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
       display: grid;
     }
   }
+  /* Kinyarwanda menu labels run longer ("Ibikorwa byacu", "Abo turi bo"), so
+     they never wrap, and the bar hands over to the mobile menu a little earlier
+     — measured: the full Kinyarwanda bar needs ~1,045px. English is unaffected. */
+  :global(html[lang="rw"]) .link {
+    white-space: nowrap;
+  }
+  @media (max-width: 1100px) {
+    :global(html[lang="rw"]) .links {
+      display: none;
+    }
+    :global(html[lang="rw"]) .burger {
+      display: grid;
+    }
+  }
   @media (max-width: 700px) {
     .util-left {
       display: none;
@@ -745,7 +801,10 @@ const waNumber = site.whatsapp.replace(/[^\d]/g, "");
   const setMenu = (open: boolean) => {
     if (!burger || !sheet) return;
     burger.setAttribute("aria-expanded", String(open));
-    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    burger.setAttribute(
+      "aria-label",
+      (open ? burger.dataset.labelClose : burger.dataset.labelOpen) ?? ""
+    );
     document.documentElement.style.overflow = open ? "hidden" : "";
     if (open) {
       sheet.hidden = false;

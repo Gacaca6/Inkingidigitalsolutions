@@ -1,34 +1,39 @@
 ---
 import Arrow from "./Arrow.astro";
 import type { ServiceTier } from "../data/site";
+import { langOf, href } from "../i18n";
+import { t } from "../i18n/strings";
+
 interface Props {
   lede: string;
   tiers: ServiceTier[];
 }
 const { lede, tiers } = Astro.props;
+const lang = langOf(Astro.url);
+const st = t(lang).tiers;
 ---
 
 <div class="st-wrap">
   <p class="st-lede body" data-reveal>{lede}</p>
   <div class="tiers">
     {
-      tiers.map((t, i) => (
+      tiers.map((tr, i) => (
         <article
-          class:list={["tier", { hero: t.featured }]}
+          class:list={["tier", { hero: tr.featured }]}
           data-reveal
           style={`--rd:${i * 70}ms`}
         >
-          {t.featured && <span class="flag">Most popular</span>}
+          {tr.featured && <span class="flag">{st.popular}</span>}
           <header class="t-head">
-            <h3>{t.name}</h3>
-            <p class="t-note">{t.note}</p>
+            <h3>{tr.name}</h3>
+            <p class="t-note">{tr.note}</p>
           </header>
           <p class="t-price">
-            <span class="tv num">{t.price}</span>
-            <span class="tu">{t.unit}</span>
+            <span class="tv num">{tr.price}</span>
+            <span class="tu">{tr.unit}</span>
           </p>
           <ul class="t-feats">
-            {t.features.map((f) => (
+            {tr.features.map((f) => (
               <li>
                 <span class="tick">
                   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -46,10 +51,10 @@ const { lede, tiers } = Astro.props;
             ))}
           </ul>
           <a
-            href="/contact"
-            class:list={["btn t-cta", t.featured ? "accentbtn" : "ghost"]}
+            href={href("/contact", lang)}
+            class:list={["btn t-cta", tr.featured ? "accentbtn" : "ghost"]}
           >
-            Get started
+            {st.start}
             <span class="well"><Arrow /></span>
           </a>
         </article>

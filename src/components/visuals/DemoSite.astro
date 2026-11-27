@@ -1,4 +1,8 @@
 ---
+import { langOf } from "../../i18n";
+const rw = langOf(Astro.url) === "rw";
+/** Plain-language labels follow the page; technical ones (api-1, PostgreSQL) stay as on a real screen. */
+const v = (en: string, kin: string) => (rw ? kin : en);
 /* A site, shown as a site: browser frame, page scrolling itself, load budget met. */
 ---
 
@@ -23,7 +27,7 @@
             <div class="nav">
               <b></b><i></i><i></i><i></i><u></u>
             </div>
-            <h4>Grown at 1,900 m.<br />Roasted in Kigali.</h4>
+            <h4 set:html={v("Grown at 1,900 m.<br />Roasted in Kigali.", "Yahinzwe ku butumburuke bwa m 1,900.<br />Ikarangirwa i Kigali.")} />
             <p></p><p class="short"></p>
             <div class="btns"><span class="b1"></span><span class="b2"></span></div>
           </section>
@@ -62,8 +66,8 @@
       <b class="num">100</b>
     </span>
     <span class="badge-t">
-      <b>Performance</b>
-      <i class="num">0.4 s to first paint · 3G</i>
+      <b>{v("Performance", "Umuvuduko")}</b>
+      <i class="num">{v("0.4 s to first paint · 3G", "s 0.4 kugira ngo igaragare · 3G")}</i>
     </span>
   </div>
 </div>

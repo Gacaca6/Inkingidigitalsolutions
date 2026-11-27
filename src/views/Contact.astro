@@ -1,0 +1,938 @@
+---
+/**
+ * The contact page, in either language. Served at /contact and /rw/contact.
+ * Visible text comes from src/i18n/strings.ts; the page's script reads its
+ * strings from data-i18n on the form, so it speaks the page's language too.
+ */
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Arrow from "../components/Arrow.astro";
+import { site } from "../data/site";
+import { langOf } from "../i18n";
+import { t } from "../i18n/strings";
+import { dataFor } from "../i18n/data";
+
+const lang = langOf(Astro.url);
+const c = t(lang).contact;
+const { webPackages, city, hours } = dataFor(lang);
+
+const kinds = [
+  { id: "site", lo: 780000, hi: 1600000, w: [3, 5] },
+  { id: "platform", lo: 2650000, hi: 5200000, w: [8, 14] },
+  { id: "mobile", lo: 3400000, hi: 6800000, w: [10, 16] },
+  { id: "automation", lo: 1900000, hi: 4400000, w: [6, 12] },
+  { id: "ai", lo: 2800000, hi: 6200000, w: [7, 14] },
+  { id: "enterprise", lo: 12000000, hi: 30000000, w: [20, 36] },
+] as const;
+
+const scales = [
+  { id: "one", mult: 1 },
+  { id: "dept", mult: 1.7 },
+  { id: "org", mult: 2.6 },
+] as const;
+
+const interestIds = ["custom", "platform", "automation", "ai", "cloud", "mobile", "website", "unsure"] as const;
+const interests = interestIds.map((id) => ({ id, label: c.interests[id] }));
+
+// What the estimator kind ticks on the form's topic chips (matched by id, not
+// by label, so it works in every language).
+const topicOf: Record<string, string> = {
+  site: "website",
+  platform: "platform",
+  mobile: "mobile",
+  automation: "automation",
+  ai: "ai",
+  enterprise: "custom",
+};
+
+const subjectBase = `New enquiry — inkingidigitalsolutions.rw${c.subjectNote}`;
+
+// Strings the page script needs; {t}, {n}, {s}, {m} are filled in the browser.
+const js = {
+  send: c.send,
+  sendQuote: c.sendQuote,
+  sending: c.sending,
+  weeks: c.weeks,
+  unitFirst: lang === "rw", // "ibyumweru 3 – 5", not "3 – 5 ibyumweru"
+  tier: c.tierWord("{t}"),
+  quotePrefix: c.quotePrefix,
+  estimateAttached: c.estimateAttached,
+  packageAttached: c.packageAttached,
+  packageLine: c.packageLine("{n}"),
+  packageSummary: c.packageSummary("{n}", "{s}", "{m}"),
+  subjectQuote: `Quote request — inkingidigitalsolutions.rw${c.subjectNote}`,
+  subjectPackage: `Package request — inkingidigitalsolutions.rw${c.subjectNote}`,
+};
+const packages = Object.fromEntries(
+  webPackages.map((p) => [p.id, { name: p.name, setup: p.setup, monthly: p.monthly }])
+);
+---
+
+<Base title={c.title} description={c.description}>
+  <PageHead idx="01" label={c.label} title={c.h1} lede={c.lede} />
+
+  <section class="main">
+    <div class="page main-in">
+      <!-- form -->
+      <div class="fwrap" id="request" data-reveal>
+        <form
+          class="form"
+          data-form
+          novalidate
+          action="https://formsubmit.co/inkingidigitalsolutions@gmail.com"
+          method="POST"
+          data-i18n={JSON.stringify(js)}
+          data-packages={JSON.stringify(packages)}
+        >
+          <!-- FormSubmit config + spam trap -->
+          <input type="hidden" name="_subject" value={subjectBase} />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="interests" data-interests />
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div class="attached" data-attached hidden>
+            <div>
+              <p class="ak" data-attached-title>{c.estimateAttached}</p>
+              <p class="av" data-attached-text></p>
+            </div>
+            <button type="button" class="ax" data-attached-clear>{c.remove}</button>
+          </div>
+
+          <div class="frow">
+            <div class="field">
+              <label for="name">{c.nameLabel}</label>
+              <input class="input" id="name" name="name" required autocomplete="name" placeholder={c.namePh} />
+              <p class="err" data-err-for="name">{c.nameErr}</p>
+            </div>
+            <div class="field">
+              <label for="email">{c.emailLabel}</label>
+              <input class="input" id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.rw" />
+              <p class="err" data-err-for="email">{c.emailErr}</p>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="field">
+              <label for="company">{c.companyLabel}</label>
+              <input class="input" id="company" name="company" autocomplete="organization" placeholder={c.companyPh} />
+              <p class="hint">{c.optional}</p>
+            </div>
+            <div class="field">
+              <label for="phone">{c.phoneLabel}</label>
+              <input class="input" id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+250 …" />
+              <p class="hint">{c.phoneHint}</p>
+            </div>
+          </div>
+
+          <fieldset class="fs">
+            <legend>{c.topic}</legend>
+            <div class="chips">
+              {
+                interests.map((it) => (
+                  <button type="button" class="chip" aria-pressed="false" data-chip data-topic={it.id}>
+                    {it.label}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="msg">{c.msgLabel}</label>
+            <textarea
+              class="input"
+              id="msg"
+              name="message"
+              rows="5"
+              required
+              placeholder={c.msgPh}
+            ></textarea>
+            <p class="err" data-err-for="msg">{c.msgErr}</p>
+          </div>
+
+          <button class="btn send" type="submit" data-send>
+            <span class="lbl">{c.send}</span>
+            <span class="well"><Arrow /></span>
+          </button>
+          <p class="fine xs">{c.fine}</p>
+          <p class="form-err" data-form-err hidden>
+            {c.errBefore}
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+            {c.errOr} {site.whatsapp}.
+          </p>
+        </form>
+
+        <!-- success -->
+        <div class="sent" data-sent hidden>
+          <span class="s-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="m9 16.5 4.8 4.8L23 11.5" stroke="currentColor" stroke-width="2.6"
+                stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <h2 class="d2">{c.received}</h2>
+          <p class="body">{c.receivedBody} {site.whatsapp}.</p>
+          <ol class="next">
+            {c.steps.map((st, i) => (
+              <li><span class="num">{String(i + 1).padStart(2, "0")}</span> {st}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <!-- aside -->
+      <aside class="side">
+        {site.bookingUrl && (
+          <div class="scell" data-reveal style="--rd:40ms">
+            <p class="sk">{c.bookTitle}</p>
+            <p class="sm">{c.bookBody}</p>
+            <a class="btn accentbtn book" href={site.bookingUrl} target="_blank" rel="noopener">
+              {c.bookBtn}
+              <span class="well"><Arrow /></span>
+            </a>
+          </div>
+        )}
+        <div class="scell" data-reveal style="--rd:80ms">
+          <p class="sk">{c.direct}</p>
+          <ul class="sl">
+            <li><a href={`mailto:${site.email}`}>{site.email}</a><i>{c.emailAny}</i></li>
+            {site.phones.map((p) => (
+              <li>
+                <a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a>
+                <i>{p === site.whatsapp ? c.callWa : c.call}</i>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="scell" data-reveal style="--rd:140ms">
+          <p class="sk">{c.studio}</p>
+          <p class="sv">{city}</p>
+          <p class="sm">{hours}</p>
+        </div>
+
+        <div class="scell" data-reveal style="--rd:200ms">
+          <p class="sk">{c.ask}</p>
+          <ul class="ask">
+            {c.asks.map((q) => <li>{q}</li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- estimator -->
+  <section class="est on-navy" id="estimator">
+    <div class="page">
+      <div class="est-head">
+        <div>
+          <p class="tag" data-reveal><span class="idx">02</span> {c.estTag}</p>
+          <h2 class="d1" data-reveal style="--rd:60ms">{c.estH2}</h2>
+        </div>
+        <p class="body" data-reveal style="--rd:120ms">{c.estBody}</p>
+      </div>
+
+      <div class="est-body" data-reveal style="--rd:160ms">
+        <div class="est-pick">
+          <fieldset class="fs">
+            <legend><span class="num">1</span> {c.q1}</legend>
+            <div class="chips" data-group="kind">
+              {
+                kinds.map((k, i) => (
+                  <button
+                    type="button"
+                    class="chip"
+                    aria-pressed={i === 0 ? "true" : "false"}
+                    data-kind={k.id}
+                    data-lo={k.lo}
+                    data-hi={k.hi}
+                    data-w={k.w.join(",")}
+                    data-topic={topicOf[k.id]}
+                  >
+                    {c.kinds[k.id]}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend><span class="num">2</span> {c.q2}</legend>
+            <div class="scales" data-group="scale">
+              {
+                scales.map((s, i) => (
+                  <button
+                    type="button"
+                    class="scale"
+                    aria-pressed={i === 0 ? "true" : "false"}
+                    data-mult={s.mult}
+                  >
+                    <b>{c.scales[s.id].label}</b>
+                    <i>{c.scales[s.id].hint}</i>
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="est-out">
+          <div class="eo">
+            <p class="eok">{c.outMoney}</p>
+            <p class="eov num" data-out-money>RWF 780,000 – 1,600,000</p>
+          </div>
+          <div class="eo">
+            <p class="eok">{c.outTime}</p>
+            <p class="eov num" data-out-time>{lang === "rw" ? `${c.weeks} 3 – 5` : `3 – 5 ${c.weeks}`}</p>
+          </div>
+          <div class="eo">
+            <p class="eok">{c.outTier}</p>
+            <p class="eov" data-out-tier>Starter</p>
+          </div>
+          <p class="eon xs">{c.estNote}</p>
+          <a href="#request" class="btn accentbtn eob" data-to-quote>
+            {c.estBtn}
+            <span class="well"><Arrow /></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .main {
+    padding-block: var(--band-tight) var(--band);
+  }
+  .book {
+    margin-block-start: var(--s-4);
+  }
+  /* Land below the sticky header, not under it. */
+  #request {
+    scroll-margin-top: 6.5rem;
+  }
+  .attached {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 0.9rem 1rem;
+    border-radius: var(--r-2, 12px);
+    background: var(--emerald-wash);
+    box-shadow: inset 3px 0 0 var(--emerald);
+  }
+  .attached[hidden] {
+    display: none;
+  }
+  .ak {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--emerald-2);
+  }
+  .av {
+    margin-block-start: 0.3rem;
+    font-size: var(--t-sm);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ax {
+    flex: none;
+    min-block-size: 44px;
+    padding-inline: 0.6rem;
+    border: 0;
+    background: none;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .main-in {
+    display: grid;
+    grid-template-columns: 1.5fr 0.85fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .form {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .frow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+  }
+  .fs {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .fs legend {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    margin-block-end: var(--s-3);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  textarea.input {
+    resize: vertical;
+    min-block-size: 7rem;
+    line-height: 1.6;
+  }
+  .send {
+    justify-self: start;
+    margin-block-start: var(--s-2);
+  }
+  .send[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.72;
+  }
+  .fine {
+    color: var(--ink-4);
+  }
+  /* spam honeypot — hidden from humans, tempting to bots */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .form-err {
+    padding: 0.85rem 1rem;
+    border-radius: var(--r-2);
+    background: color-mix(in srgb, #e0483d 10%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #e0483d 32%, transparent);
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+  }
+  .form-err a {
+    color: var(--emerald-2);
+    font-weight: 700;
+  }
+
+  /* success */
+  .sent {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+    padding: var(--s-7) var(--s-6);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--emerald) 40%, transparent);
+    background: var(--emerald-wash);
+    animation: sIn 0.6s var(--e-out);
+  }
+  @keyframes sIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  .s-mark {
+    display: grid;
+    place-items: center;
+    inline-size: 2.6rem;
+    block-size: 2.6rem;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--on-accent);
+  }
+  .s-mark svg {
+    inline-size: 17px;
+    block-size: 17px;
+  }
+  .next {
+    display: grid;
+    gap: 0.7rem;
+    margin-block-start: var(--s-3);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+    inline-size: 100%;
+  }
+  .next li {
+    display: flex;
+    gap: 0.85rem;
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+  }
+  .next .num {
+    font-weight: 700;
+    color: var(--emerald-2);
+    flex: none;
+  }
+
+  /* aside */
+  .side {
+    display: grid;
+    gap: var(--s-6);
+    position: sticky;
+    inset-block-start: 6.5rem;
+  }
+  .scell {
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .sk {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-4);
+  }
+  .sl {
+    display: grid;
+    gap: 0.75rem;
+    margin-block-start: var(--s-4);
+  }
+  .sl li {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .sl a {
+    font-size: var(--t-sm);
+    font-weight: 700;
+    transition: color var(--d-fast) var(--e-swift);
+  }
+  .sl a:hover {
+    color: var(--emerald-2);
+  }
+  .sl i {
+    font-size: var(--t-micro);
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-4);
+  }
+  .sv {
+    margin-block-start: var(--s-3);
+    font-size: var(--t-sm);
+    font-weight: 700;
+  }
+  .sm {
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+  }
+  .ask {
+    display: grid;
+    gap: 0.6rem;
+    margin-block-start: var(--s-4);
+  }
+  .ask li {
+    position: relative;
+    padding-inline-start: 1rem;
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+  .ask li::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.5em;
+    inset-inline-start: 0;
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: 1.5px;
+    rotate: 45deg;
+    background: var(--emerald);
+  }
+
+  /* estimator */
+  .est {
+    padding-block: var(--band);
+  }
+  .est-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-6);
+    align-items: end;
+  }
+  .est-head h2 {
+    margin-block-start: var(--s-4);
+  }
+  .est-body {
+    display: grid;
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    margin-block-start: var(--s-8);
+    align-items: start;
+  }
+  .est-pick {
+    display: grid;
+    gap: var(--s-6);
+  }
+  .est .fs legend {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--t-xs);
+    margin-block-end: var(--s-4);
+  }
+  .est .fs legend .num {
+    display: grid;
+    place-items: center;
+    inline-size: 1.3rem;
+    block-size: 1.3rem;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--on-accent);
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+
+  .scales {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .scale {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: var(--r-2);
+    text-align: start;
+    box-shadow: inset 0 0 0 1px var(--hair-2);
+    transition: box-shadow var(--d-mid) var(--e-swift),
+      background-color var(--d-mid) var(--e-swift);
+  }
+  .scale:hover {
+    box-shadow: inset 0 0 0 1px var(--hair-2), var(--lift-1);
+  }
+  .scale[aria-pressed="true"] {
+    background: var(--emerald-wash);
+    box-shadow: inset 0 0 0 1.5px var(--emerald);
+  }
+  .scale b {
+    font-size: var(--t-xs);
+    font-weight: 700;
+  }
+  .scale i {
+    font-size: var(--t-micro);
+    font-style: normal;
+    color: var(--ink-4);
+    line-height: 1.45;
+  }
+  .scale:active {
+    transform: scale(0.985);
+  }
+
+  .est-out {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--s-5);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    background: color-mix(in srgb, #fff 3%, transparent);
+  }
+  .eok {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-4);
+  }
+  .eov {
+    margin-block-start: 0.3rem;
+    font-size: 1.28rem;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+  .eo + .eo {
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .eon {
+    color: var(--ink-4);
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--hair);
+  }
+  .eob {
+    justify-self: start;
+  }
+
+  @media (max-width: 980px) {
+    .main-in,
+    .est-body,
+    .est-head {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+    }
+  }
+  @media (max-width: 600px) {
+    .frow,
+    .scales {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sent { animation: none; }
+  }
+</style>
+
+<script>
+  /* Strings in the page's language, from data-i18n (see the frontmatter). */
+  const L: Record<string, string> = JSON.parse(
+    document.querySelector<HTMLElement>("[data-form]")?.dataset.i18n ?? "{}"
+  );
+
+  /* ---- multi-select chips on the contact form ---- */
+  document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((c) => {
+    c.addEventListener("click", () =>
+      c.setAttribute(
+        "aria-pressed",
+        c.getAttribute("aria-pressed") === "true" ? "false" : "true"
+      )
+    );
+  });
+
+  /* ---- form: inline validation, busy state, success ---- */
+  const form = document.querySelector<HTMLFormElement>("[data-form]");
+  const sent = document.querySelector<HTMLElement>("[data-sent]");
+  const send = document.querySelector<HTMLButtonElement>("[data-send]");
+
+  const showErr = (id: string, on: boolean) => {
+    const field = document.getElementById(id);
+    const err = document.querySelector(`[data-err-for="${id}"]`);
+    field?.setAttribute("aria-invalid", String(on));
+    err?.classList.toggle("on", on);
+  };
+
+  const formErr = document.querySelector<HTMLElement>("[data-form-err]");
+  // The send button reads "Request the session", or "Request my quote" once an
+  // estimate is attached — failure handling restores whichever is current.
+  let idleLabel = L.send;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name") as HTMLInputElement;
+    const email = document.getElementById("email") as HTMLInputElement;
+    const msg = document.getElementById("msg") as HTMLTextAreaElement;
+
+    const bad = [
+      ["name", name.value.trim().length < 2],
+      ["email", !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())],
+      ["msg", msg.value.trim().length < 10],
+    ] as [string, boolean][];
+
+    bad.forEach(([id, isBad]) => showErr(id, isBad));
+    const first = bad.find(([, isBad]) => isBad);
+    if (first) {
+      document.getElementById(first[0])?.focus();
+      return;
+    }
+
+    // Roll the selected topic chips into the hidden `interests` field
+    const interestsField = form.querySelector<HTMLInputElement>("[data-interests]");
+    const chosen = [
+      ...document.querySelectorAll<HTMLButtonElement>('[data-chip][aria-pressed="true"]'),
+    ].map((c) => c.textContent?.trim() || "");
+    if (interestsField) interestsField.value = chosen.join(", ") || "Not specified";
+
+    formErr && (formErr.hidden = true);
+    send?.setAttribute("aria-busy", "true");
+    send!.querySelector(".lbl")!.textContent = L.sending;
+
+    try {
+      // Use FormSubmit's AJAX endpoint (returns JSON); the form `action` keeps
+      // the standard endpoint as a no-JS fallback.
+      const endpoint = form.action.replace(
+        "formsubmit.co/",
+        "formsubmit.co/ajax/"
+      );
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const json = await res.json().catch(() => ({}));
+      const ok = res.ok && (json.success === "true" || json.success === true);
+      if (!ok) throw new Error("submit failed");
+
+      form.hidden = true;
+      if (sent) sent.hidden = false;
+      sent?.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch {
+      // Let the visitor retry, and show a fallback contact route.
+      send?.setAttribute("aria-busy", "false");
+      send!.querySelector(".lbl")!.textContent = idleLabel;
+      if (formErr) formErr.hidden = false;
+    }
+  });
+
+  ["name", "email", "msg"].forEach((id) => {
+    document
+      .getElementById(id)
+      ?.addEventListener("input", () => showErr(id, false));
+  });
+
+  /* ---- estimator ---- */
+  const est = document.querySelector<HTMLElement>("#estimator");
+  if (est) {
+    const kinds = Array.from(est.querySelectorAll<HTMLButtonElement>("[data-kind]"));
+    const scales = Array.from(est.querySelectorAll<HTMLButtonElement>("[data-mult]"));
+    const outMoney = est.querySelector<HTMLElement>("[data-out-money]")!;
+    const outTime = est.querySelector<HTMLElement>("[data-out-time]")!;
+    const outTier = est.querySelector<HTMLElement>("[data-out-tier]")!;
+
+    const fmt = (n: number) =>
+      Math.round(n / 10000) * 10 >= 1000
+        ? (Math.round(n / 100000) / 10).toFixed(1).replace(/\.0$/, "") + "M"
+        : Math.round(n / 1000).toLocaleString("en-US") + "K";
+
+    const tierFor = (lo: number) =>
+      lo >= 10000000
+        ? "Enterprise"
+        : lo >= 6000000
+          ? "Professional"
+          : lo >= 2000000
+            ? "Business"
+            : "Starter";
+
+    const paint = () => {
+      const k = kinds.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const s = scales.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const m = Number(s.dataset.mult);
+      const lo = Number(k.dataset.lo) * m;
+      const hi = Number(k.dataset.hi) * m;
+      const [w1, w2] = k.dataset.w!.split(",").map(Number);
+
+      outMoney.textContent = `RWF ${fmt(lo)} – ${fmt(hi)}`;
+      const range = `${Math.round(w1 * (m * 0.72 + 0.28))} – ${Math.round(w2 * (m * 0.72 + 0.28))}`;
+      outTime.textContent = L.unitFirst ? `${L.weeks} ${range}` : `${range} ${L.weeks}`;
+      outTier.textContent = tierFor(lo);
+
+      [outMoney, outTime, outTier].forEach((el) => {
+        el.animate(
+          [
+            { opacity: 0, transform: "translateY(5px)" },
+            { opacity: 1, transform: "none" },
+          ],
+          { duration: 320, easing: "cubic-bezier(0.16,1,0.3,1)" }
+        );
+      });
+    };
+
+    const wire = (group: HTMLButtonElement[]) =>
+      group.forEach((b) =>
+        b.addEventListener("click", () => {
+          group.forEach((x) => x.setAttribute("aria-pressed", "false"));
+          b.setAttribute("aria-pressed", "true");
+          paint();
+        })
+      );
+
+    wire(kinds);
+    wire(scales);
+    paint();
+
+    /* ---- Attach a chosen estimate or package to the enquiry ----
+       "Turn this into a quote" used to link to the top of this same page, and
+       a pricing card's "Choose Business" sent ?package=business here, which
+       nothing read. Both now land in the form, visibly, and in the email. */
+    const attached = document.querySelector<HTMLElement>("[data-attached]");
+    const attachedTitle = document.querySelector<HTMLElement>("[data-attached-title]");
+    const attachedText = document.querySelector<HTMLElement>("[data-attached-text]");
+    const subject = form?.querySelector<HTMLInputElement>('input[name="_subject"]');
+    const baseSubject = subject?.value ?? "";
+    const msgBox = document.getElementById("msg") as HTMLTextAreaElement | null;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const setLabel = (txt: string) => {
+      idleLabel = txt;
+      const l = send?.querySelector(".lbl");
+      if (l) l.textContent = txt;
+    };
+
+    const attach = (o: {
+      title: string;
+      summary: string;
+      subject: string;
+      topic?: string;
+      message: string;
+      scroll: boolean;
+    }) => {
+      if (!form) return;
+      let field = form.querySelector<HTMLInputElement>('input[name="estimate"]');
+      if (!field) {
+        field = document.createElement("input");
+        field.type = "hidden";
+        field.name = "estimate";
+        form.prepend(field);
+      }
+      field.value = o.summary; // reaches the inbox with the enquiry
+      if (subject) subject.value = o.subject;
+      if (o.topic) {
+        document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((c) => {
+          if (c.dataset.topic === o.topic) c.setAttribute("aria-pressed", "true");
+        });
+      }
+      if (msgBox && !msgBox.value.trim()) msgBox.value = o.message;
+      if (attached && attachedText) {
+        if (attachedTitle) attachedTitle.textContent = o.title;
+        attachedText.textContent = o.summary;
+        attached.hidden = false;
+      }
+      setLabel(L.sendQuote);
+      if (o.scroll) {
+        document.getElementById("request")?.scrollIntoView({
+          behavior: reduce ? "auto" : "smooth",
+          block: "start",
+        });
+        window.setTimeout(
+          () => (document.getElementById("name") as HTMLInputElement | null)?.focus({ preventScroll: true }),
+          reduce ? 0 : 600
+        );
+      }
+    };
+
+    est.querySelector<HTMLAnchorElement>("[data-to-quote]")?.addEventListener("click", (e) => {
+      if (!form) return; // no form: let the link jump as normal
+      e.preventDefault();
+      const k = kinds.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const s = scales.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const kind = k.textContent!.trim();
+      const scale = s.querySelector("b")!.textContent!.trim();
+      attach({
+        title: L.estimateAttached,
+        summary: `${kind} · ${scale} · ${outMoney.textContent} · ${outTime.textContent} · ${L.tier.replace("{t}", outTier.textContent ?? "")}`,
+        subject: L.subjectQuote,
+        topic: k.dataset.topic,
+        message: `${L.quotePrefix} ${kind.toLowerCase()}, ${scale.toLowerCase()}.\n\n`,
+        scroll: true,
+      });
+    });
+
+    // Arriving from a pricing card: /contact?package=business
+    const pkgId = new URLSearchParams(location.search).get("package");
+    const packs: Record<string, { name: string; setup: string; monthly: string }> = JSON.parse(
+      form?.dataset.packages ?? "{}"
+    );
+    const pkg = pkgId ? packs[pkgId] : undefined;
+    if (pkg) {
+      attach({
+        title: L.packageAttached,
+        summary: L.packageSummary.replace("{n}", pkg.name).replace("{s}", pkg.setup).replace("{m}", pkg.monthly),
+        subject: L.subjectPackage,
+        topic: "website",
+        message: `${L.packageLine.replace("{n}", pkg.name)}\n\n`,
+        scroll: false, // the form is already the first thing on the page
+      });
+    }
+
+    document.querySelector("[data-attached-clear]")?.addEventListener("click", () => {
+      form?.querySelector('input[name="estimate"]')?.remove();
+      if (subject) subject.value = baseSubject;
+      if (attached) attached.hidden = true;
+      setLabel(L.send);
+    });
+  }
+</script>

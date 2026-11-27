@@ -5,7 +5,12 @@
  * permission. With an empty list this component outputs nothing at all, so the
  * page never shows a placeholder, a lorem quote or an invented name.
  */
-import { testimonials } from "../../data/site";
+import { langOf } from "../../i18n";
+import { t } from "../../i18n/strings";
+import { dataFor } from "../../i18n/data";
+const lang = langOf(Astro.url);
+const tm = t(lang).testimonials;
+const { testimonials } = dataFor(lang);
 ---
 
 {
@@ -13,11 +18,9 @@ import { testimonials } from "../../data/site";
     <section class="tm">
       <div class="page">
         <p class="tag" data-reveal>
-          <span class="idx">04</span> What clients say
+          <span class="idx">04</span> {tm.tag}
         </p>
-        <h2 class="d1" data-reveal style="--rd:60ms">
-          In their <span class="accent">own words.</span>
-        </h2>
+        <h2 class="d1" data-reveal style="--rd:60ms" set:html={tm.h2} />
         <div class="tm-grid">
           {testimonials.map((t, i) => (
             <figure class="tm-card" data-reveal style={`--rd:${120 + i * 70}ms`}>
@@ -54,7 +57,7 @@ import { testimonials } from "../../data/site";
   }
   .tm-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
     gap: var(--s-5);
   }
   .tm-card {

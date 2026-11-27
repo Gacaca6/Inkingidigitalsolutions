@@ -1,0 +1,27 @@
+---
+/**
+ * The home page, in either language (read from the URL). Served at / and /rw/.
+ */
+import Base from "../layouts/Base.astro";
+import Hero from "../components/home/Hero.astro";
+import WhatWeDo from "../components/home/WhatWeDo.astro";
+import Belief from "../components/home/Belief.astro";
+import Promise from "../components/home/Promise.astro";
+import WorkTeaser from "../components/home/WorkTeaser.astro";
+import Testimonials from "../components/home/Testimonials.astro";
+import Cta from "../components/Cta.astro";
+import { langOf } from "../i18n";
+import { t } from "../i18n/strings";
+
+const s = t(langOf(Astro.url));
+---
+
+<Base title="home" description={s.base.homeDescription}>
+  <Hero />
+  <WhatWeDo />
+  <Belief />
+  <Promise />
+  <WorkTeaser />
+  <Testimonials />
+  <Cta />
+</Base>

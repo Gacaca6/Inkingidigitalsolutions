@@ -1,38 +1,30 @@
 ---
 import Arrow from "../Arrow.astro";
+import { langOf, href } from "../../i18n";
+import { t } from "../../i18n/strings";
+const lang = langOf(Astro.url);
+const b = t(lang).belief;
 ---
 
 <section class="belief" data-track>
   <div class="page">
-    <p class="tag" data-reveal><span class="idx">01</span> Why foundations</p>
+    <p class="tag" data-reveal><span class="idx">01</span> {b.tag}</p>
 
     <!-- The thesis, at scale. Type is the image here. -->
     <p class="thesis d1 lines">
-      <span><span style="--ld:0ms"><b>Inkingi</b> is Kinyarwanda for</span></span>
-      <span><span style="--ld:90ms"><em>pillar</em>. A pillar is not</span></span>
-      <span><span style="--ld:180ms">decoration. It is the thing</span></span>
-      <span><span style="--ld:270ms">everything else rests on.</span></span>
+      {b.lines.map((l, i) => (
+        <span><span style={`--ld:${i * 90}ms`} set:html={l} /></span>
+      ))}
     </p>
 
     <div class="two">
       <div data-reveal>
-        <p class="rule body">
-          Most technology sold on this continent is disposable. A template
-          rebranded as a platform. A project abandoned the week after launch.
-          A vendor who stops answering once the invoice clears. The real cost
-          is not the money — it is the three years a business spends operating
-          on something that cannot carry it.
-        </p>
+        <p class="rule body">{b.p1}</p>
       </div>
       <div data-reveal style="--rd:120ms">
-        <p class="rule body">
-          A digital foundation behaves differently. It automates the work that
-          drains your people. It shows you the operation as it actually is,
-          today, not at month end. And it holds weight when you double in size,
-          because it was engineered to.
-        </p>
-        <a href="/about" class="tlink more">
-          How we work
+        <p class="rule body">{b.p2}</p>
+        <a href={href("/about", lang)} class="tlink more">
+          {b.how}
           <Arrow />
         </a>
       </div>

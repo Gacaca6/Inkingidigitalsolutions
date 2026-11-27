@@ -1,21 +1,19 @@
 ---
 import Arrow from "../Arrow.astro";
+import { langOf, href } from "../../i18n";
+import { t } from "../../i18n/strings";
+const lang = langOf(Astro.url);
+const w = t(lang).work;
 ---
 
 <section class="wt">
   <div class="page wt-in">
     <div class="wt-say" data-reveal>
-      <p class="tag"><span class="idx">03</span> Our work</p>
-      <h2 class="d1">
-        Don't take our word.<br /><span class="accent">Click our work.</span>
-      </h2>
-      <p class="body">
-        Real websites, platforms, and apps we've designed and built — every one
-        a live link you can open right now. Start with this site itself, then
-        see what we've made for others.
-      </p>
-      <a href="/work" class="btn">
-        See our work
+      <p class="tag"><span class="idx">03</span> {w.tag}</p>
+      <h2 class="d1" set:html={w.h2} />
+      <p class="body">{w.body}</p>
+      <a href={href("/work", lang)} class="btn">
+        {w.btn}
         <span class="well"><Arrow /></span>
       </a>
     </div>

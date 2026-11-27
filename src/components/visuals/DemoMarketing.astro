@@ -1,4 +1,8 @@
 ---
+import { langOf } from "../../i18n";
+const rw = langOf(Astro.url) === "rw";
+/** Plain-language labels follow the page; technical ones (api-1, PostgreSQL) stay as on a real screen. */
+const v = (en: string, kin: string) => (rw ? kin : en);
 /* Digital marketing shown as a growth panel: reach chart, metrics, channels. */
 const area = [18, 24, 21, 33, 30, 44, 52, 61, 58, 74, 82, 96];
 const w = 300;
@@ -14,23 +18,23 @@ const chans = ["Instagram", "Facebook", "Google", "TikTok"];
   <div class="tray">
     <div class="plate">
       <div class="head">
-        <b>Campaign performance</b>
-        <span class="live"><em></em>This month</span>
+        <b>{v("Campaign performance", "Ibyagezweho")}</b>
+        <span class="live"><em></em>{v("This month", "Uku kwezi")}</span>
       </div>
 
       <div class="mets">
         <div class="met">
-          <i>Reach</i>
+          <i>{v("Reach", "Abo wagezeho")}</i>
           <b class="num">128,400</b>
           <u class="up num">↑ 34%</u>
         </div>
         <div class="met">
-          <i>Leads</i>
+          <i>{v("Leads", "Abakugannye")}</i>
           <b class="num">312</b>
           <u class="up num">↑ 21%</u>
         </div>
         <div class="met">
-          <i>Cost / lead</i>
+          <i>{v("Cost / lead", "Ikiguzi / ukugannye")}</i>
           <b class="num">1,480<small> RWF</small></b>
           <u class="down num">↓ 12%</u>
         </div>
@@ -99,7 +103,9 @@ const chans = ["Instagram", "Facebook", "Google", "TikTok"];
 
   .mets {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* minmax(0, …): a long label (e.g. Kinyarwanda "Abakugannye") must not
+       widen the card past a phone screen. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.6rem;
   }
   .met {
@@ -116,6 +122,7 @@ const chans = ["Instagram", "Facebook", "Google", "TikTok"];
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--ink-4);
+    overflow-wrap: anywhere;
   }
   .met b {
     font-size: 1.15rem;

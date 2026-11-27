@@ -1,4 +1,8 @@
 ---
+import { langOf } from "../../i18n";
+const rw = langOf(Astro.url) === "rw";
+/** Plain-language labels follow the page; technical ones (api-1, PostgreSQL) stay as on a real screen. */
+const v = (en: string, kin: string) => (rw ? kin : en);
 /* Graphic design shown as an identity board: mark, palette, type, card. */
 const swatches = ["#0e0c0b", "#c0562e", "#c99a3e", "#f6f2ea"];
 ---
@@ -7,8 +11,8 @@ const swatches = ["#0e0c0b", "#c0562e", "#c99a3e", "#f6f2ea"];
   <div class="tray">
     <div class="plate">
       <div class="head">
-        <b>Identity system</b>
-        <span class="chip">v3 · approved</span>
+        <b>{v("Identity system", "Isura y'ikirango")}</b>
+        <span class="chip">{v("v3 · approved", "v3 · byemejwe")}</span>
       </div>
 
       <div class="grid">
@@ -23,7 +27,7 @@ const swatches = ["#0e0c0b", "#c0562e", "#c99a3e", "#f6f2ea"];
 
         <!-- palette -->
         <div class="cell pal-cell">
-          <span class="cl">Palette</span>
+          <span class="cl">{v("Palette", "Amabara")}</span>
           <div class="pal">
             {swatches.map((c, i) => (
               <span class="sw" style={`--c:${c}; --sd:${600 + i * 110}ms`} />
@@ -33,7 +37,7 @@ const swatches = ["#0e0c0b", "#c0562e", "#c99a3e", "#f6f2ea"];
 
         <!-- type specimen -->
         <div class="cell type-cell">
-          <span class="cl">Typeface</span>
+          <span class="cl">{v("Typeface", "Imyandikire")}</span>
           <p class="spec">Aa</p>
           <p class="specn">Satoshi · Black / Bold / Regular</p>
         </div>

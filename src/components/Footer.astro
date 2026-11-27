@@ -1,21 +1,23 @@
 ---
 import Mark from "./Mark.astro";
-import { site, services } from "../data/site";
+import { site } from "../data/site";
+import { langOf, href } from "../i18n";
+import { t } from "../i18n/strings";
+import { dataFor } from "../i18n/data";
 const year = new Date().getFullYear();
+const lang = langOf(Astro.url);
+const f = t(lang).footer;
+const { services, city, hours } = dataFor(lang);
+const to = (p: string) => href(p, lang);
 ---
 
 <footer class="ft on-navy">
   <div class="page">
     <!-- Editorial statement -->
     <div class="say">
-      <p class="hero-type" data-reveal>
-        Building<br />what comes<br /><span class="accent">next.</span>
-      </p>
+      <p class="hero-type" data-reveal set:html={f.statement} />
       <div class="say-side" data-reveal style="--rd:120ms">
-        <p class="body">
-          {site.name} is a technology partner in {site.city}, engineering the
-          digital foundations that African businesses run on.
-        </p>
+        <p class="body">{f.about}</p>
         <form
           class="sub"
           data-newsletter
@@ -23,7 +25,7 @@ const year = new Date().getFullYear();
           novalidate
         >
           <div class="sub-row">
-            <label for="nl" class="sr">Email address</label>
+            <label for="nl" class="sr">{f.emailLabel}</label>
             <input
               id="nl"
               class="input"
@@ -34,22 +36,19 @@ const year = new Date().getFullYear();
               autocomplete="email"
             />
             <button class="sub-go" type="submit">
-              <span>Get the letter</span>
+              <span>{f.subscribe}</span>
             </button>
           </div>
-          <p class="err" data-err>Enter a valid email address.</p>
-          <p class="xs sub-note">
-            One letter a month on building software in African markets.
-            Unsubscribe in a click.
-          </p>
+          <p class="err" data-err>{f.invalid}</p>
+          <p class="xs sub-note">{f.note}</p>
           <p class="err on" data-nl-fail hidden>
-            That did not go through. Email
+            {f.failBefore}
             <a href={`mailto:${site.email}?subject=Newsletter`}>{site.email}</a>
-            and we will add you.
+            {f.failAfter}
           </p>
           <p class="done" data-done hidden>
             <span class="tick" aria-hidden="true"></span>
-            You are on the list. The next letter goes out at month end.
+            {f.done}
           </p>
         </form>
       </div>
@@ -58,24 +57,24 @@ const year = new Date().getFullYear();
     <!-- Columns -->
     <div class="cols">
       <div>
-        <p class="ch">Services</p>
+        <p class="ch">{f.services}</p>
         <ul class="cl">
-          {services.map((s) => (
-            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+          {services.map((sv) => (
+            <li><a href={to(`/services/${sv.slug}`)}>{sv.name}</a></li>
           ))}
-          <li><a href="/pricing">Pricing</a></li>
+          <li><a href={to("/pricing")}>{f.pricing}</a></li>
         </ul>
       </div>
       <div>
-        <p class="ch">Company</p>
+        <p class="ch">{f.company}</p>
         <ul class="cl">
-          <li><a href="/about">About</a></li>
-          <li><a href="/insights">Insights</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href={to("/about")}>{f.about_}</a></li>
+          <li><a href={to("/insights")}>{f.insights}</a></li>
+          <li><a href={to("/contact")}>{f.contact}</a></li>
         </ul>
       </div>
       <div>
-        <p class="ch">Reach us</p>
+        <p class="ch">{f.reach}</p>
         <ul class="cl">
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
           {site.phones.map((p) => (
@@ -86,22 +85,19 @@ const year = new Date().getFullYear();
               <a href={x.url} target="_blank" rel="noopener me">{x.label}</a>
             </li>
           ))}
-          <li class="plain">{site.city}</li>
-          <li class="plain">{site.hours}</li>
+          <li class="plain">{city}</li>
+          <li class="plain">{hours}</li>
         </ul>
       </div>
       <div class="concept">
         <Mark size={40} />
-        <p class="xs">
-          Three connected elements forming a strong foundation for growth,
-          innovation and the future. Simple. Solid. Forward.
-        </p>
+        <p class="xs">{f.concept}</p>
       </div>
     </div>
 
     <div class="base">
-      <p class="xs">© {year} {site.name} Ltd. All rights reserved.</p>
-      <p class="xs num">Engineered in Kigali · 1°56′S 30°03′E</p>
+      <p class="xs">© {year} {site.name} {f.rights}</p>
+      <p class="xs num">{f.engineered} · 1°56′S 30°03′E</p>
     </div>
   </div>
 </footer>
@@ -194,6 +190,7 @@ const year = new Date().getFullYear();
   }
   .cl a {
     color: var(--ink-2);
+    overflow-wrap: anywhere; /* the email address, on a 320px phone */
     transition: color var(--d-fast) var(--e-swift);
   }
   .cl a:hover {
@@ -230,6 +227,11 @@ const year = new Date().getFullYear();
     .cols {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--s-7) var(--s-5);
+    }
+  }
+  @media (max-width: 400px) {
+    .cols {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 480px) {
