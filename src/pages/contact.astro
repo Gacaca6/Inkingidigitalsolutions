@@ -45,7 +45,7 @@ const interests = [
   <section class="main">
     <div class="page main-in">
       <!-- form -->
-      <div class="fwrap" data-reveal>
+      <div class="fwrap" id="request" data-reveal>
         <form
           class="form"
           data-form
@@ -59,6 +59,14 @@ const interests = [
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="interests" data-interests />
           <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div class="attached" data-attached hidden>
+            <div>
+              <p class="ak">Your estimate is attached</p>
+              <p class="av" data-attached-text></p>
+            </div>
+            <button type="button" class="ax" data-attached-clear>Remove</button>
+          </div>
 
           <div class="frow">
             <div class="field">
@@ -150,6 +158,16 @@ const interests = [
 
       <!-- aside -->
       <aside class="side">
+        {site.bookingUrl && (
+          <div class="scell" data-reveal style="--rd:40ms">
+            <p class="sk">Book directly</p>
+            <p class="sm">Pick a 30-minute slot that suits you — no back-and-forth.</p>
+            <a class="btn accentbtn book" href={site.bookingUrl} target="_blank" rel="noopener">
+              Pick a time
+              <span class="well"><Arrow /></span>
+            </a>
+          </div>
+        )}
         <div class="scell" data-reveal style="--rd:80ms">
           <p class="sk">Direct</p>
           <ul class="sl">
@@ -258,7 +276,7 @@ const interests = [
             Assumes discovery has not yet happened. A fixed quote follows the
             strategy session, and it is the number we hold ourselves to.
           </p>
-          <a href="#main" class="btn accentbtn eob">
+          <a href="#request" class="btn accentbtn eob" data-to-quote>
             Turn this into a quote
             <span class="well"><Arrow /></span>
           </a>
@@ -271,6 +289,52 @@ const interests = [
 <style>
   .main {
     padding-block: var(--band-tight) var(--band);
+  }
+  .book {
+    margin-block-start: var(--s-4);
+  }
+  /* Land below the sticky header, not under it. */
+  #request {
+    scroll-margin-top: 6.5rem;
+  }
+  .attached {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 0.9rem 1rem;
+    border-radius: var(--r-2, 12px);
+    background: var(--emerald-wash);
+    box-shadow: inset 3px 0 0 var(--emerald);
+  }
+  .attached[hidden] {
+    display: none;
+  }
+  .ak {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--emerald-2);
+  }
+  .av {
+    margin-block-start: 0.3rem;
+    font-size: var(--t-sm);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ax {
+    flex: none;
+    min-block-size: 44px;
+    padding-inline: 0.6rem;
+    border: 0;
+    background: none;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
   }
   .main-in {
     display: grid;
@@ -623,6 +687,9 @@ const interests = [
   };
 
   const formErr = document.querySelector<HTMLElement>("[data-form-err]");
+  // The send button reads "Request the session", or "Request my quote" once an
+  // estimate is attached — failure handling restores whichever is current.
+  let idleLabel = "Request the session";
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -676,7 +743,7 @@ const interests = [
     } catch {
       // Let the visitor retry, and show a fallback contact route.
       send?.setAttribute("aria-busy", "false");
-      send!.querySelector(".lbl")!.textContent = "Request the session";
+      send!.querySelector(".lbl")!.textContent = idleLabel;
       if (formErr) formErr.hidden = false;
     }
   });
@@ -747,5 +814,86 @@ const interests = [
     wire(kinds);
     wire(scales);
     paint();
+
+    /* ---- "Turn this into a quote": carry the estimate into the form ----
+       It used to be a plain link to #main, i.e. the top of this same page, so
+       it looked like the page had simply reloaded and the estimate was lost. */
+    const toQuote = est.querySelector<HTMLAnchorElement>("[data-to-quote]");
+    const attached = document.querySelector<HTMLElement>("[data-attached]");
+    const attachedText = document.querySelector<HTMLElement>("[data-attached-text]");
+    const subject = form?.querySelector<HTMLInputElement>('input[name="_subject"]');
+    const baseSubject = subject?.value ?? "";
+    const msgBox = document.getElementById("msg") as HTMLTextAreaElement | null;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Estimator kind -> the matching topic chip on the form.
+    const topicFor: Record<string, string> = {
+      site: "Website",
+      platform: "Business platform",
+      mobile: "Mobile app",
+      automation: "Automation",
+      ai: "Applied AI",
+      enterprise: "Custom software",
+    };
+
+    const setLabel = (t: string) => {
+      idleLabel = t;
+      const l = send?.querySelector(".lbl");
+      if (l) l.textContent = t;
+    };
+
+    toQuote?.addEventListener("click", (e) => {
+      if (!form) return; // no form: let the link jump as normal
+      e.preventDefault();
+      const k = kinds.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const s = scales.find((b) => b.getAttribute("aria-pressed") === "true")!;
+      const kind = k.textContent!.trim();
+      const scale = s.querySelector("b")!.textContent!.trim();
+      const summary = `${kind} · ${scale} · ${outMoney.textContent} · ${outTime.textContent} · ${outTier.textContent} tier`;
+
+      // Sent with the enquiry, so the estimate reaches the inbox.
+      let field = form.querySelector<HTMLInputElement>('input[name="estimate"]');
+      if (!field) {
+        field = document.createElement("input");
+        field.type = "hidden";
+        field.name = "estimate";
+        form.prepend(field);
+      }
+      field.value = summary;
+      if (subject) subject.value = "Quote request — inkingidigitalsolutions.rw";
+
+      const topic = topicFor[k.dataset.kind ?? ""];
+      document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((c) => {
+        if (c.textContent?.trim() === topic) c.setAttribute("aria-pressed", "true");
+      });
+
+      if (msgBox && !msgBox.value.trim()) {
+        msgBox.value = `I'd like a quote for: ${kind.toLowerCase()}, ${scale.toLowerCase()}.
+
+`;
+      }
+
+      if (attached && attachedText) {
+        attachedText.textContent = summary;
+        attached.hidden = false;
+      }
+      setLabel("Request my quote");
+
+      document.getElementById("request")?.scrollIntoView({
+        behavior: reduce ? "auto" : "smooth",
+        block: "start",
+      });
+      window.setTimeout(
+        () => (document.getElementById("name") as HTMLInputElement | null)?.focus({ preventScroll: true }),
+        reduce ? 0 : 600
+      );
+    });
+
+    document.querySelector("[data-attached-clear]")?.addEventListener("click", () => {
+      form?.querySelector('input[name="estimate"]')?.remove();
+      if (subject) subject.value = baseSubject;
+      if (attached) attached.hidden = true;
+      setLabel("Request the session");
+    });
   }
 </script>

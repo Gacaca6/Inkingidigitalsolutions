@@ -5,6 +5,16 @@ export const site = {
   url: "https://inkingidigitalsolutions.rw",
   email: "inkingidigitalsolutions@gmail.com",
   phones: ["+250 791 631 361", "+250 794 875 957"],
+  /* Social profiles — REAL accounts only. Each one shows in the footer and in
+     the site's structured data (schema.org sameAs) the moment it is added.
+     Left empty until the real handles are confirmed: a link to a dead or
+     wrong profile costs more trust than having none. Example:
+       { label: "Instagram", url: "https://www.instagram.com/<handle>" } */
+  socials: [] as { label: string; url: string }[],
+  /* Online booking for the free strategy session — e.g. a Cal.com or
+     Calendly link. When set, the contact page offers "Pick a time" alongside
+     the form; when empty, the form is the way to book. */
+  bookingUrl: "",
   whatsapp: "+250 794 875 957",
   city: "Kigali, Rwanda",
   hours: "Mon–Fri · 08:00–18:00 CAT",
@@ -603,3 +613,19 @@ export const stack = [
   { name: "Figma", role: "Design & brand" },
   { name: "Analytics", role: "Measurement" },
 ];
+
+/* ------------------------------------------------------------------
+   TESTIMONIALS — real words from real clients, used with their
+   permission. Nothing is ever invented here. The home-page section stays
+   hidden while this list is empty. Example:
+     { quote: "…", name: "Full Name", role: "Owner", org: "Business",
+       url: "https://their-site" }
+------------------------------------------------------------------ */
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  org: string;
+  url?: string;
+};
+export const testimonials: Testimonial[] = [];

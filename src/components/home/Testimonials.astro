@@ -1,0 +1,104 @@
+---
+/**
+ * What clients say — rendered ONLY when `testimonials` in src/data/site.ts has
+ * real entries. Every quote must be a client's own words, used with their
+ * permission. With an empty list this component outputs nothing at all, so the
+ * page never shows a placeholder, a lorem quote or an invented name.
+ */
+import { testimonials } from "../../data/site";
+---
+
+{
+  testimonials.length > 0 && (
+    <section class="tm">
+      <div class="page">
+        <p class="tag" data-reveal>
+          <span class="idx">04</span> What clients say
+        </p>
+        <h2 class="d1" data-reveal style="--rd:60ms">
+          In their <span class="accent">own words.</span>
+        </h2>
+        <div class="tm-grid">
+          {testimonials.map((t, i) => (
+            <figure class="tm-card" data-reveal style={`--rd:${120 + i * 70}ms`}>
+              <blockquote>
+                <p>{t.quote}</p>
+              </blockquote>
+              <figcaption>
+                <b>{t.name}</b>
+                <span>
+                  {t.role},{" "}
+                  {t.url ? (
+                    <a href={t.url} target="_blank" rel="noopener">
+                      {t.org}
+                    </a>
+                  ) : (
+                    t.org
+                  )}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .tm {
+    padding-block: var(--band);
+  }
+  .tm h2 {
+    margin-block: var(--s-4) var(--s-8);
+  }
+  .tm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--s-5);
+  }
+  .tm-card {
+    margin: 0;
+    display: grid;
+    gap: var(--s-5);
+    align-content: space-between;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border-radius: var(--r-3);
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--hair), var(--lift-1);
+  }
+  blockquote {
+    margin: 0;
+  }
+  blockquote p {
+    font-size: var(--t-lg, 1.15rem);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  blockquote p::before {
+    content: "“";
+    color: var(--emerald);
+    font-weight: 900;
+    margin-inline-end: 0.08em;
+  }
+  blockquote p::after {
+    content: "”";
+    color: var(--emerald);
+    font-weight: 900;
+  }
+  figcaption {
+    display: grid;
+    gap: 0.2rem;
+  }
+  figcaption b {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  figcaption span {
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+  figcaption a {
+    color: var(--emerald-2);
+  }
+</style>

@@ -31,6 +31,8 @@ const ld = {
   },
   areaServed: "Africa",
   slogan: site.tagline,
+  // Lets search engines connect the site to its social profiles, once there are any.
+  ...(site.socials.length ? { sameAs: site.socials.map((x) => x.url) } : {}),
 };
 ---
 

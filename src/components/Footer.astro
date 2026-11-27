@@ -16,7 +16,12 @@ const year = new Date().getFullYear();
           {site.name} is a technology partner in {site.city}, engineering the
           digital foundations that African businesses run on.
         </p>
-        <form class="sub" data-newsletter novalidate>
+        <form
+          class="sub"
+          data-newsletter
+          data-endpoint={`https://formsubmit.co/ajax/${site.email}`}
+          novalidate
+        >
           <div class="sub-row">
             <label for="nl" class="sr">Email address</label>
             <input
@@ -36,6 +41,11 @@ const year = new Date().getFullYear();
           <p class="xs sub-note">
             One letter a month on building software in African markets.
             Unsubscribe in a click.
+          </p>
+          <p class="err on" data-nl-fail hidden>
+            That did not go through. Email
+            <a href={`mailto:${site.email}?subject=Newsletter`}>{site.email}</a>
+            and we will add you.
           </p>
           <p class="done" data-done hidden>
             <span class="tick" aria-hidden="true"></span>
@@ -60,7 +70,6 @@ const year = new Date().getFullYear();
         <p class="ch">Company</p>
         <ul class="cl">
           <li><a href="/about">About</a></li>
-          <li><a href="/clients">Our Clients</a></li>
           <li><a href="/insights">Insights</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
@@ -71,6 +80,11 @@ const year = new Date().getFullYear();
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
           {site.phones.map((p) => (
             <li><a href={`tel:${p.replace(/\s/g, "")}`}>{p}</a></li>
+          ))}
+          {site.socials.map((x) => (
+            <li>
+              <a href={x.url} target="_blank" rel="noopener me">{x.label}</a>
+            </li>
           ))}
           <li class="plain">{site.city}</li>
           <li class="plain">{site.hours}</li>
@@ -229,20 +243,51 @@ const year = new Date().getFullYear();
 </style>
 
 <script>
+  /* Newsletter sign-up.
+     This used to show "You are on the list" without sending the address
+     anywhere, so every sign-up was silently lost. It now goes to the same
+     FormSubmit inbox as the contact form, and only says "done" once that
+     inbox has actually accepted it. */
   const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
-  form?.addEventListener("submit", (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const input = form.querySelector<HTMLInputElement>("input[type=email]")!;
     const err = form.querySelector<HTMLElement>("[data-err]")!;
+    const fail = form.querySelector<HTMLElement>("[data-nl-fail]")!;
+    const go = form.querySelector<HTMLButtonElement>(".sub-go")!;
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
     input.setAttribute("aria-invalid", String(!ok));
     err.classList.toggle("on", !ok);
+    fail.hidden = true;
     if (!ok) {
       input.focus();
       return;
     }
-    form.querySelector<HTMLElement>(".sub-row")!.hidden = true;
-    form.querySelector<HTMLElement>(".sub-note")!.hidden = true;
-    form.querySelector<HTMLElement>("[data-done]")!.hidden = false;
+
+    const body = new FormData();
+    body.append("email", input.value.trim());
+    body.append("_subject", "Newsletter sign-up — inkingidigitalsolutions.rw");
+    body.append("_template", "table");
+    body.append("_captcha", "false");
+
+    go.disabled = true;
+    go.setAttribute("aria-busy", "true");
+    try {
+      const res = await fetch(form.dataset.endpoint!, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!(res.ok && (json.success === "true" || json.success === true))) throw new Error();
+      form.querySelector<HTMLElement>(".sub-row")!.hidden = true;
+      form.querySelector<HTMLElement>(".sub-note")!.hidden = true;
+      form.querySelector<HTMLElement>("[data-done]")!.hidden = false;
+    } catch {
+      fail.hidden = false;
+    } finally {
+      go.disabled = false;
+      go.setAttribute("aria-busy", "false");
+    }
   });
 </script>
