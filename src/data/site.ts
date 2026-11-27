@@ -628,4 +628,23 @@ export type Testimonial = {
   org: string;
   url?: string;
 };
-export const testimonials: Testimonial[] = [];
+export const testimonials: Testimonial[] = [
+  {
+    // Relayed by the founder from Abikunda Macrine; confirm wording with her.
+    quote:
+      "So many people have found Ongera Ubeho through the website Inkingi built for us. It has been a real part of our success — and we got there without having to do much marketing at all.",
+    name: "Abikunda Macrine",
+    role: "CEO",
+    org: "Ongera Ubeho",
+    url: "https://ongeraubeho.rw",
+  },
+  {
+    // Relayed by the founder from Iragaba Eric; confirm wording with him.
+    quote:
+      "Inkingi had Kina Wige live on the Play Store faster than we expected, and the design is full of life — exactly how an app for young children should feel.",
+    name: "Iragaba Eric",
+    role: "CFO",
+    org: "Kina Wige",
+    url: "https://kinawige.org",
+  },
+];
