@@ -41,7 +41,7 @@ const HIDE = `
 
 /** @type {{ id: string, url: string, then?: (page: import('playwright-core').Page) => Promise<void> }[]} */
 const SHOTS = [
-  { id: 'iduka-home', url: 'https://app.idukarw.workers.dev/' },
+  { id: 'iduka-home', url: 'https://iduka.app/' },
 
   { id: 'somabooks-home', url: 'https://www.somabooks.workers.dev/' },
   { id: 'somabooks-browse', url: 'https://www.somabooks.workers.dev/search' },
@@ -81,7 +81,7 @@ const SHOTS = [
   { id: 'learn4africa-home', url: 'https://learn4africa.vercel.app/' },
   { id: 'akazi-home', url: 'https://akaziconnect.vercel.app/' },
   { id: 'hanobus-home', url: 'https://hanobusapp.vercel.app/' },
-  { id: 'kinawige-home', url: 'https://kina-wige.vercel.app/' },
+  { id: 'kinawige-home', url: 'https://kinawige.org/' },
   { id: 'musime-home', url: 'https://musi-me.vercel.app/' },
 
   // One step past each first-run screen. Skipping an intro or choosing a
@@ -104,7 +104,7 @@ const SHOTS = [
   },
   {
     id: 'kinawige-main',
-    url: 'https://kina-wige.vercel.app/',
+    url: 'https://kinawige.org/',
     then: async (page) => {
       const rw = page.getByRole('button', { name: /^ikinyarwanda$/i }).first();
       if (await rw.count()) { await rw.click(); await page.waitForTimeout(2500); }

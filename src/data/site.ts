@@ -370,6 +370,7 @@ export type Project = {
   year: string;
   blurb: string;
   live: string; // real, deployed URL
+  store?: { label: string; url: string }; // an app-store listing, when there is one
   tags: string[];
 };
 
@@ -381,7 +382,7 @@ export const portfolio: Project[] = [
     year: "2026",
     blurb:
       "Shop management for Rwandan shops, pharmacies and supermarkets — sell at the counter, keep stock and the credit book, and see what the business actually kept. In Kinyarwanda, English or French.",
-    live: "https://app.idukarw.workers.dev",
+    live: "https://iduka.app",
     tags: ["Retail", "Stock & credit", "3 languages"],
   },
   {
@@ -447,11 +448,15 @@ export const portfolio: Project[] = [
   {
     id: "kina-wige",
     name: "Kina Wige",
-    kind: "Web app · Education",
+    kind: "Android & web app · Education",
     year: "2026",
     blurb:
-      "A playful learning game that teaches young children to read and count in Kinyarwanda.",
-    live: "https://kina-wige.vercel.app",
+      "A playful learning app that teaches children aged three to six to read and count in Kinyarwanda — on the web and on Google Play.",
+    live: "https://kinawige.org",
+    store: {
+      label: "Get it on Google Play",
+      url: "https://play.google.com/store/apps/details?id=rw.kinawige.app",
+    },
     tags: ["Kids", "Education", "Kinyarwanda"],
   },
   {
